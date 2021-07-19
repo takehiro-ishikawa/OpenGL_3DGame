@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include <SDL_ttf.h>
+#include <SDL/SDL_ttf.h>
 #include "Math.h"
 
 // プロトタイプ宣言

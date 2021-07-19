@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include "Math.h"
 
 #pragma region プロトタイプ宣言

@@ -90,19 +90,19 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\External\SDL\include;packages\rapidjson.1.0.2\build\native\include;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;..\External\FBX SDK\2020.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\External\SDL\include;packages\rapidjson.1.0.2\build\native\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;..\..\External\FBX SDK\2020.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\External\SDL\lib\x86;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;..\External\FBX SDK\2020.2\lib\vs2019\x86\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\..\External\SDL\lib\win\x86;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;..\..\External\FBX SDK\2020.2\lib\vs2019\x86\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_ttf.lib;opengl32.lib;fmodL_vc.lib;fmodstudioL_vc.lib;libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "..\External\SDL\lib\x86\*.dll" "$(OutDir)" /i /s /y
-xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
-xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll" "$(OutDir)" /i /s /y</Command>
+      <Command>xcopy "..\..\External\SDL\lib\win\x86\*.dll" "$(OutDir)" /i /s /y
+xcopy "..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib\*.dll" "$(OutDir)" /i /s /y
+xcopy "..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll" "$(OutDir)" /i /s /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -192,6 +192,8 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="AIComponent.cpp" />
+    <ClCompile Include="AIState.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="AudioSystem.cpp" />
@@ -241,6 +243,8 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="AIComponent.h" />
+    <ClInclude Include="AIState.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="AudioSystem.h" />

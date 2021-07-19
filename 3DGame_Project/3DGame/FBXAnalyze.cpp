@@ -1,5 +1,5 @@
 #include "FBXAnalyze.h"
-#include <SDL_log.h>
+#include <SDL/SDL_log.h>
 #include "BoneTransform.h"
 
 using namespace std;

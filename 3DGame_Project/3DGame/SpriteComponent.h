@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "SDL.h"
+#include "SDL/SDL.h"
 
 #pragma region プロトタイプ宣言
 class Actor;

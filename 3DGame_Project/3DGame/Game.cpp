@@ -9,7 +9,7 @@
 #include "MeshComponent.h"
 #include "PlaneActor.h"
 #include "Player.h"
-#include <SDL_ttf.h>
+#include <SDL/SDL_ttf.h>
 #include "UIScreen.h"
 #include "PauseMenu.h"
 #include "HUD.h"

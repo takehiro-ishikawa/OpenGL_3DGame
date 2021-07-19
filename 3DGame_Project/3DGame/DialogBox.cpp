@@ -1,7 +1,7 @@
 #include "DialogBox.h"
 #include "Game.h"
 #include "Renderer.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 DialogBox::DialogBox(Game* game, const std::string& text,
 	std::function<void()> onOK)

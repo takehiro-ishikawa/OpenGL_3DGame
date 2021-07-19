@@ -1,7 +1,7 @@
 #include "PauseMenu.h"
 #include "Game.h"
 #include "DialogBox.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "InputSystem.h"
 #include "StartScene.h"
 

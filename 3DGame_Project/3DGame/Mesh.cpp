@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <rapidjson/document.h>
-#include <SDL_log.h>
+#include <SDL/SDL_log.h>
 #include "Math.h"
 #include <fbxsdk.h>
 #include "FBXAnalyze.h"

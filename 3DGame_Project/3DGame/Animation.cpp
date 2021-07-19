@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <rapidjson/document.h>
-#include <SDL_log.h>
+#include <SDL/SDL_log.h>
 #include "FBXAnalyze.h"
 
 bool Animation::Load(const std::string& fileName, const std::string& animationName)

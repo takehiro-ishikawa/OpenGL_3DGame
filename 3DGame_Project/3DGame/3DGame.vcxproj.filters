@@ -40,6 +40,9 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{ed91095e-9531-42e7-90c6-82a6b7f1c48c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\AI">
+      <UniqueIdentifier>{b607774f-3006-4215-856e-e96b4145a3ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -219,6 +222,12 @@
     <ClCompile Include="Character.cpp">
       <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="AIComponent.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="AIState.cpp">
+      <Filter>ソース ファイル\AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VertexArray.h">
@@ -360,6 +369,12 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AIComponent.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="AIState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,8 +4,7 @@
 #pragma region プロトタイプ宣言
 class Game;
 class SkeletalMeshComponent;
-class BoxComponent;
-class AudioComponent;
+class AIComponent;
 #pragma endregion
 
 #define ENEMY_WIDTH  1.2f // AABBの幅
@@ -19,4 +18,5 @@ public:
 
 private:
 	SkeletalMeshComponent* mMeshComp;
+	AIComponent* mAIComp;
 };

@@ -3,7 +3,6 @@
 
 #pragma region プロトタイプ宣言
 class Game;
-class SkeletalMeshComponent;
 class BoxComponent;
 class AudioComponent;
 #pragma endregion

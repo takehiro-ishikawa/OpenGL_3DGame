@@ -1,7 +1,7 @@
 #pragma once
-#include <SDL_scancode.h>
-#include <SDL_gamecontroller.h>
-#include <SDL_mouse.h>
+#include <SDL/SDL_scancode.h>
+#include <SDL/SDL_gamecontroller.h>
+#include <SDL/SDL_mouse.h>
 #include "Math.h"
 #include <string>
 #include <unordered_map>

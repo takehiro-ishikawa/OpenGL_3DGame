@@ -5,6 +5,7 @@
 #include "SkeletalMeshComponent.h"
 #include "BoxComponent.h"
 #include "AudioComponent.h"
+#include "AIComponent.h"
 
 
 Enemy::Enemy(Game* game)
@@ -26,4 +27,7 @@ Enemy::Enemy(Game* game)
 	box.SetMinMax(ENEMY_WIDTH, ENEMY_DEPTH, ENEMY_HEIGHT);
 	mBoxComp->SetObjectBox(box);
 	mBoxComp->SetShouldRotate(false);
+
+	// 他コンポーネント
+	mAIComp = new AIComponent(this);
 }
