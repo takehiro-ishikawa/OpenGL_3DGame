@@ -40,7 +40,7 @@
     <Filter Include="ソース ファイル\Scene">
       <UniqueIdentifier>{ed91095e-9531-42e7-90c6-82a6b7f1c48c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\AI">
+    <Filter Include="ソース ファイル\StateMachine">
       <UniqueIdentifier>{b607774f-3006-4215-856e-e96b4145a3ba}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -222,11 +222,20 @@
     <ClCompile Include="Character.cpp">
       <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="AIComponent.cpp">
+    <ClCompile Include="AIState.cpp">
+      <Filter>ソース ファイル\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>ソース ファイル\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>ソース ファイル\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletMove.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
-    <ClCompile Include="AIState.cpp">
-      <Filter>ソース ファイル\AI</Filter>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>ソース ファイル\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -371,10 +380,19 @@
     <ClInclude Include="Character.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="AIComponent.h">
+    <ClInclude Include="StateMachine.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="AIState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletMove.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

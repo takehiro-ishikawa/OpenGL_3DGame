@@ -1,6 +1,7 @@
 #include "Character.h"
 #include "Game.h"
 #include "PhysWorld.h"
+#include "SkeletalMeshComponent.h"
 #include "BoxComponent.h"
 #include "AudioComponent.h"
 #include "PlaneActor.h"
@@ -9,8 +10,25 @@
 Character::Character(Game* game)
 	:Actor(game)
 {
+	mMeshComp = new SkeletalMeshComponent(this);
 	mAudioComp = new AudioComponent(this);
 	mBoxComp = new BoxComponent(this);
+}
+
+bool Character::CheckGround()
+{
+	// ü•ª‚Ìì¬
+	float segmentLength = 2.0f;
+	Vector3 start = GetPosition();
+	start.z += 1.0f;
+	Vector3 end = start + Vector3::UnitZ * -segmentLength;
+
+	LineSegment segment(start, end);
+
+	PhysWorld* phys = GetGame()->GetPhysWorld();
+	PhysWorld::CollisionInfo info;
+
+	return phys->SegmentCast(segment, info, this);
 }
 
 void Character::FixCollisions()

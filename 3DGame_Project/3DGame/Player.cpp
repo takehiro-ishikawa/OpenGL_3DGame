@@ -1,11 +1,14 @@
 #include "Player.h"
+#include "PlayerState.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Game.h"
 #include "Renderer.h"
 #include "TPSCamera.h"
 #include "PlayerMove.h"
+#include "AudioComponent.h"
 #include "BoxComponent.h"
+#include "Bullet.h"
 #include "SkeletalMeshComponent.h"
 #include "PhysWorld.h"
 #include "InputSystem.h"
@@ -19,9 +22,9 @@ Player::Player(Game* game)
 	SetPosition(GetPosition());
 
 	// メッシュの生成
-	mMeshComp = new SkeletalMeshComponent(this);
 	mMeshComp->SetMesh(game->GetRenderer()->GetMesh("Assets/Player.fbx"));
 	mMeshComp->SetSkeleton(game->GetSkeleton("Assets/Player.fbx"));
+	GetGame()->GetRenderer()->GetMesh("Assets/Bullet.fbx");
 
 	// アニメーションのロード
 	mMeshComp->PlayAnimation(game->GetAnimation("Walk", "Assets/Player.fbx"), 1.0f);
@@ -32,6 +35,11 @@ Player::Player(Game* game)
 	mMoveComp->SetIsFall(mIsGround);
 	mCameraComp = new TPSCamera(this);
 	
+	// ステートの設定
+	RegisterState(new PlayerIdle(this));
+	RegisterState(new PlayerWalk(this));
+	ChangeState(PLAYER_IDLE);
+
 	// AABBの設定
 	AABB box = mMeshComp->GetMesh()->GetBox();
 	box.SetMinMax(PLAYER_WIDTH, PLAYER_DEPTH, PLAYER_HEIGHT);
@@ -41,41 +49,11 @@ Player::Player(Game* game)
 
 void Player::ActorInput(const struct InputState& state)
 {
-	// WASD移動
-	InputDevice device;
-	Vector2 leftAxis = state.GetMappedAxis("LeftAxis", device);
-
-	mMoveComp->SetForward(mCameraComp->GetForward());
-	mMoveComp->SetRight(mCameraComp->GetRight());
-	Vector3 forward(leftAxis.y, leftAxis.x, 0);
-	forward = Vector3::Transform(forward, mCameraComp->GetQuaternion());
-
-	// プレイヤーの向き
-	float angular = Vector3::Dot(forward, GetRight());
-	mMoveComp->SetAngularSpeed(angular * 10);
-
-	leftAxis *= 400.0f;
-	mMoveComp->SetMoveSpeed(leftAxis);
-
-	// アニメーション遷移
-	if (leftAxis != Vector2::Zero && mCurrentState != PlayerState::Walk) ChangeWalk();
-	else if(leftAxis == Vector2::Zero && mCurrentState != PlayerState::Idle) ChangeIdle();
-	
-
-	// ジャンプ
 	// 着地判定
 	bool result = CheckGround();
-
 	// 着地している
 	if (result)
 	{
-		// ジャンプ
-		if (state.GetMappedButtonState("Jump") == ButtonState::EPressed)
-		{
-			mMoveComp->SetJumpSpeed(600.0f);
-			mMoveComp->SetIsFall(true);
-		}
-
 		// 今回着地した
 		if (mIsGround == false)
 		{
@@ -94,6 +72,12 @@ void Player::ActorInput(const struct InputState& state)
 			mIsGround = false;
 		}
 	}
+
+	// 現在の状態に応じた入力処理
+	if (mCurrentState)
+	{
+		mCurrentState->Input(state);
+	}
 }
 
 void Player::UpdateActor(float deltaTime)
@@ -101,6 +85,11 @@ void Player::UpdateActor(float deltaTime)
 	Actor::UpdateActor(deltaTime);
 
 	FixCollisions();
+
+	if (mCurrentState)
+	{
+		mCurrentState->Update(deltaTime);
+	}
 }
 
 void Player::SetVisible(bool visible)
@@ -108,30 +97,16 @@ void Player::SetVisible(bool visible)
 	mMeshComp->SetVisible(visible);
 }
 
-bool Player::CheckGround()
+void Player::Shoot()
 {
-	// 線分の作成
-	float segmentLength = 2.0f;
+	// 開始点を取得
 	Vector3 start = GetPosition();
-	start.z += 1.0f;
-	Vector3 end = start + Vector3::UnitZ * -segmentLength;
-
-	LineSegment segment(start, end);
-
-	PhysWorld* phys = GetGame()->GetPhysWorld();
-	PhysWorld::CollisionInfo info;
-
-	return phys->SegmentCast(segment, info, this);
-}
-
-void Player::ChangeIdle()
-{
-	mCurrentState = PlayerState::Idle;
-	mMeshComp->PlayAnimation(GetGame()->GetAnimation("Idle", "Assets/Player.fbx"), 1.0f);
-}
-
-void Player::ChangeWalk()
-{
-	mCurrentState = PlayerState::Walk;
-	mMeshComp->PlayAnimation(GetGame()->GetAnimation("Walk", "Assets/Player.fbx"), 1.0f);
+	start.z += 150.0f;
+	
+	// ボールをスポーンする
+	Bullet * bullet = new Bullet(GetGame());
+	bullet->SetPlayer(this);
+	bullet->SetPosition(start + GetForward() * 20.0f);
+	// ボールを回転させて新しい方向を向く
+	bullet->RotateToNewForward(GetForward());
 }

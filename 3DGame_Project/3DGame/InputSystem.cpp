@@ -244,6 +244,7 @@ bool InputSystem::Initialize()
 	mState.SetInputMap("Jump", SDL_SCANCODE_SPACE, 0, SDL_CONTROLLER_BUTTON_A);
 	mState.SetInputMap("Up", SDL_SCANCODE_E, 0, SDL_CONTROLLER_BUTTON_B);
 	mState.SetInputMap("Down", SDL_SCANCODE_Q, 0, SDL_CONTROLLER_BUTTON_X);
+	mState.SetInputMap("Fire", SDL_SCANCODE_F, SDL_BUTTON_LEFT, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
 
 	mIsResumed = false;
 

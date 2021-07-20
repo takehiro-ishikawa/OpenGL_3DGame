@@ -1,5 +1,6 @@
 #pragma once
 #include "Character.h"
+#include "StateMachine.h"
 #include "SoundEvent.h"
 
 #pragma region プロトタイプ宣言
@@ -15,14 +16,8 @@ class AudioComponent;
 #define PLAYER_DEPTH  1.4f // AABBの奥行
 #define PLAYER_HEIGHT 3.2f // AABBの高さ
 
-// プレイヤーの状態
-enum class PlayerState
-{
-	Idle, // 待機
-	Walk  // 歩行
-};
 
-class Player : public Character
+class Player : public Character, public StateMachine
 {
 public:
 	Player(Game* game);
@@ -31,24 +26,19 @@ public:
 	void UpdateActor(float deltaTime) override;
 
 	void SetVisible(bool visible);
+	PlayerMove* GetMoveComp() { return mMoveComp; }
+	TPSCamera* GetCameraComp() { return mCameraComp; }
+	bool GetIsGround() { return mIsGround; }
+
+	// 弾の発射
+	void Shoot();
 
 private:
 
-	// 着地判定
-	bool CheckGround();
-
-	// 状態遷移
-	void ChangeIdle();
-	void ChangeWalk();
-
 	PlayerMove* mMoveComp;
 	TPSCamera* mCameraComp;
-	SkeletalMeshComponent* mMeshComp;
 
 	SoundEvent mWalk;
-
-	// 現在の状態
-	PlayerState mCurrentState;
 
 	// 着地しているか
 	bool mIsGround;

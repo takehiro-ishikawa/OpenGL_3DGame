@@ -1,46 +1,44 @@
 #pragma once
+#include "StateMachine.h"
 
-// プロトタイプ宣言
-class AIComponent;
+// ステート名
+#define AI_IDLE "Idle" // 待機
+#define AI_DEAD "Dead" // 死亡
 
-class AIState
+class AIIdle : public State
 {
 public:
-	AIState(AIComponent* owner)
-		:mOwner(owner)
-	{ }
-	// 状態固有の動作
-	virtual void Update(float deltaTime) = 0;
-	virtual void OnEnter() = 0;
-	virtual void OnExit() = 0;
-
-	// 状態の文字列名のゲッター
-	virtual const char* GetName() const = 0;
-
-protected:
-	AIComponent* mOwner;
-};
-
-class AIIdle : public AIState
-{
-public:
-	AIIdle(AIComponent* owner)
-		:AIState(owner)
+	AIIdle(Character* owner)
+		:State(owner)
 	{ }
 
 	void Update(float deltaTime) override;
 	void OnEnter() override;
 	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return AI_IDLE;
+	}
 };
 
-class AIDead : public AIState
+class AIDead : public State
 {
 public:
-	AIDead(AIComponent* owner)
-		:AIState(owner)
+	AIDead(Character* owner)
+		:State(owner)
+		,mLifeSpan(0)
 	{ }
 
 	void Update(float deltaTime) override;
 	void OnEnter() override;
 	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return AI_DEAD;
+	}
+
+private:
+	float mLifeSpan;
 };

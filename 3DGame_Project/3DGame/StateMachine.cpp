@@ -1,23 +1,14 @@
-#include "AIComponent.h"
+#include "StateMachine.h"
 #include "Actor.h"
 #include "AIState.h"
 #include <SDL/SDL_log.h>
 
-AIComponent::AIComponent(class Actor* owner)
-	:Component(owner)
-	, mCurrentState(nullptr)
+StateMachine::StateMachine()
+	:mCurrentState(nullptr)
 {
 }
 
-void AIComponent::Update(float deltaTime)
-{
-	if (mCurrentState)
-	{
-		mCurrentState->Update(deltaTime);
-	}
-}
-
-void AIComponent::ChangeState(const std::string& name)
+void StateMachine::ChangeState(const std::string& name)
 {
 	// Å‰‚ÉŒ»Ý‚Ìó‘Ô‚ðI—¹‚³‚¹‚é
 	if (mCurrentState)
@@ -42,7 +33,7 @@ void AIComponent::ChangeState(const std::string& name)
 	}
 }
 
-void AIComponent::RegisterState(AIState* state)
+void StateMachine::RegisterState(State* state)
 {
 	mStateMap.emplace(state->GetName(), state);
 }
