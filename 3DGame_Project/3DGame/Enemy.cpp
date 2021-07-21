@@ -7,6 +7,7 @@
 #include "AudioComponent.h"
 #include "StateMachine.h"
 #include "AIState.h"
+#include <typeinfo>
 
 
 Enemy::Enemy(Game* game)
@@ -16,12 +17,12 @@ Enemy::Enemy(Game* game)
 	SetPosition(GetPosition());
 
 	// メッシュの生成
-	mMeshComp->SetMesh(game->GetRenderer()->GetMesh("Assets/Enemy01.fbx"));
-	mMeshComp->SetSkeleton(game->GetSkeleton("Assets/Enemy01.fbx"));
+	mMeshComp->SetMesh(game->GetRenderer()->GetMesh(ENEMY_FILEPATH));
+	mMeshComp->SetSkeleton(game->GetSkeleton(ENEMY_FILEPATH));
 
 	// アニメーションのロード
-	mMeshComp->PlayAnimation(game->GetAnimation("Die", "Assets/Enemy01.fbx"), 1.0f);
-	mMeshComp->PlayAnimation(game->GetAnimation("Vigilant", "Assets/Enemy01.fbx"), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(ENEMY_ANIMATION_DEAD, ENEMY_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(ENEMY_ANIMATION_VIGILANT, ENEMY_FILEPATH), 1.0f);
 
 	// AABBの設定
 	AABB box = mMeshComp->GetMesh()->GetBox();
@@ -47,5 +48,8 @@ void Enemy::UpdateActor(float deltaTime)
 
 void Enemy::Damage()
 {
-	ChangeState(AI_DEAD);
+	if (typeid(*mCurrentState) != typeid(AIDead))
+	{
+		ChangeState(AI_DEAD);
+	}
 }

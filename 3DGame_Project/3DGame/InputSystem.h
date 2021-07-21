@@ -6,6 +6,12 @@
 #include <string>
 #include <unordered_map>
 
+#define INPUT_LEFT_AXIS  "LeftAxis"
+#define INPUT_RIGHT_AXIS "RightAxis"
+#define INPUT_JUMP       "Jump"
+#define INPUT_UP         "Up"
+#define INPUT_DOWN       "Down"
+#define INPUT_FIRE       "Fire"
 
 // ƒ{ƒ^ƒ“‚Ì“ü—Íó‘Ô
 enum class ButtonState

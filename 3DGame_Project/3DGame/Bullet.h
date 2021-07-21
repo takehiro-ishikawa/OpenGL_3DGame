@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 
+#define BULLET_FILEPATH "Assets/Bullet.fbx"
 #define BULLET_LIFE 5.0f     // è¡ñ≈Ç∑ÇÈÇ‹Ç≈ÇÃéûä‘
 #define BULLET_SPEED 1000.0f // ë¨ìx
 

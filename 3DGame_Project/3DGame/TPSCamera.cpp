@@ -20,7 +20,7 @@ void TPSCamera::ProcessInput(const struct InputState& state)
 
 	// マウスでの視点操作
 	InputDevice device;
-	Vector2 rightAxis = state.GetMappedAxis("RightAxis", device);
+	Vector2 rightAxis = state.GetMappedAxis(INPUT_RIGHT_AXIS, device);
 	if (device == InputDevice::EKeyBoard || device == InputDevice::EController) rightAxis *= 20;
 
 	// 1フレームでの最大移動量（マウスの動きは通常-500から+500の間で設定）

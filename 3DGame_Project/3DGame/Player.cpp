@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "PlayerState.h"
+#include "Bullet.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Game.h"
@@ -22,13 +23,13 @@ Player::Player(Game* game)
 	SetPosition(GetPosition());
 
 	// メッシュの生成
-	mMeshComp->SetMesh(game->GetRenderer()->GetMesh("Assets/Player.fbx"));
-	mMeshComp->SetSkeleton(game->GetSkeleton("Assets/Player.fbx"));
-	GetGame()->GetRenderer()->GetMesh("Assets/Bullet.fbx");
+	mMeshComp->SetMesh(game->GetRenderer()->GetMesh(PLAYER_FILEPATH));
+	mMeshComp->SetSkeleton(game->GetSkeleton(PLAYER_FILEPATH));
+	GetGame()->GetRenderer()->GetMesh(BULLET_FILEPATH);
 
 	// アニメーションのロード
-	mMeshComp->PlayAnimation(game->GetAnimation("Walk", "Assets/Player.fbx"), 1.0f);
-	mMeshComp->PlayAnimation(game->GetAnimation("Idle", "Assets/Player.fbx"), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_WALK, PLAYER_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_IDLE, PLAYER_FILEPATH), 1.0f);
 	
 	// 他コンポーネントの生成
 	mMoveComp = new PlayerMove(this);

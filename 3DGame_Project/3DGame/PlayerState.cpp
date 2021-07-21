@@ -24,22 +24,22 @@ void PlayerIdle::Input(const struct InputState& state)
 	// ジャンプ
 	if (mPlayer->GetIsGround())
 	{
-		if (state.GetMappedButtonState("Jump") == ButtonState::EPressed)
+		if (state.GetMappedButtonState(INPUT_JUMP) == ButtonState::EPressed)
 		{
-			mPlayer->GetMoveComp()->SetJumpSpeed(600.0f);
+			mPlayer->GetMoveComp()->SetJumpSpeed(800.0f);
 			mPlayer->GetMoveComp()->SetIsFall(true);
 		}
 	}
 
 	// 射撃
-	if (state.GetMappedButtonState("Fire") == ButtonState::EPressed)
+	if (state.GetMappedButtonState(INPUT_FIRE) == ButtonState::EPressed)
 	{
 		mPlayer->Shoot();
 	}
 
 	// 移動入力で歩行状態への遷移
 	InputDevice device;
-	Vector2 leftAxis = state.GetMappedAxis("LeftAxis", device);
+	Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
 	if (leftAxis != Vector2::Zero)
 	{
 		mPlayer->ChangeState(PLAYER_WALK);
@@ -65,7 +65,7 @@ void PlayerWalk::Input(const struct InputState& state)
 {
 	// WASD移動
 	InputDevice device;
-	Vector2 leftAxis = state.GetMappedAxis("LeftAxis", device);
+	Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
 
 	mPlayer->GetMoveComp()->SetForward(mPlayer->GetCameraComp()->GetForward());
 	mPlayer->GetMoveComp()->SetRight(mPlayer->GetCameraComp()->GetRight());
@@ -82,7 +82,7 @@ void PlayerWalk::Input(const struct InputState& state)
 	// ジャンプ
 	if (mPlayer->GetIsGround())
 	{
-		if (state.GetMappedButtonState("Jump") == ButtonState::EPressed)
+		if (state.GetMappedButtonState(INPUT_JUMP) == ButtonState::EPressed)
 		{
 			mPlayer->GetMoveComp()->SetJumpSpeed(600.0f);
 			mPlayer->GetMoveComp()->SetIsFall(true);
@@ -90,7 +90,7 @@ void PlayerWalk::Input(const struct InputState& state)
 	}
 
 	// 射撃
-	if (state.GetMappedButtonState("Fire") == ButtonState::EPressed)
+	if (state.GetMappedButtonState(INPUT_FIRE) == ButtonState::EPressed)
 	{
 		mPlayer->Shoot();
 	}
