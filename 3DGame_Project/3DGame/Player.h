@@ -12,14 +12,6 @@ class BoxComponent;
 class AudioComponent;
 #pragma endregion
 
-#define PLAYER_FILEPATH       "Assets/Player.fbx" // プレイヤーモデルのファイルパス
-#define PLAYER_ANIMATION_IDLE "Idle"              // プレイヤーの"待機"アニメーション
-#define PLAYER_ANIMATION_WALK "Walk"              // プレイヤーの"歩行"アニメーション
-
-#define PLAYER_WIDTH  1.4f // AABBの幅
-#define PLAYER_DEPTH  1.4f // AABBの奥行
-#define PLAYER_HEIGHT 3.2f // AABBの高さ
-
 
 class Player : public Character, public StateMachine
 {

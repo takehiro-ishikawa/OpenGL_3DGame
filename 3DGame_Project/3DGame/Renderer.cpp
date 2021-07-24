@@ -321,19 +321,15 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 	// デプスバッファリングを有効にする/アルファブレンドを無効にする
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
-
 	// メッシュシェーダーをアクティブに設定する
 	mMeshShader->SetActive();
-
 	// ビュー射影行列を更新する
 	mMeshShader->SetMatrixUniform("uViewProj", view * proj);
-
 	// 照明のユニフォームを更新する
 	if (lit)
 	{
 		SetLightUniforms(mMeshShader, view);
 	}
-
 	for (auto mc : mMeshComps)
 	{
 		if (mc->GetVisible())

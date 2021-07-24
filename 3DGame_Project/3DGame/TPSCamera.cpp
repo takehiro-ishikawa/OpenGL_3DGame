@@ -1,4 +1,5 @@
 #include "TPSCamera.h"
+#include "PlayerParameters.h"
 #include "Actor.h"
 #include "InputSystem.h"
 #include <iostream>
@@ -6,11 +7,13 @@
 TPSCamera::TPSCamera(Actor* owner)
 	:CameraComponent(owner)
 	, mRotation(Quaternion::Identity)
-	, mDist(550.0f)
-	, mCameraZOffset(350.0f)
+	, mCameraDist(CAMERA_NORMAL_DIST)
+	, mOffsetPos(CAMERA_NORMAL_OFFSETPOS)
 	, mTargetDist(100.0f)
 	, mSpringConstant(1000.0f)
 	, mMaxPitch(Math::Pi / 5.0f)
+	, mMaxYawSpeed(CAMERA_NORMAL_YAWSPEED)
+	, mMaxPitchSpeed(CAMERA_NORMAL_PITCHSPEED)
 {
 }
 
@@ -21,20 +24,14 @@ void TPSCamera::ProcessInput(const struct InputState& state)
 	// マウスでの視点操作
 	InputDevice device;
 	Vector2 rightAxis = state.GetMappedAxis(INPUT_RIGHT_AXIS, device);
-	if (device == InputDevice::EKeyBoard || device == InputDevice::EController) rightAxis *= 20;
-
-	// 1フレームでの最大移動量（マウスの動きは通常-500から+500の間で設定）
-	const int maxMouseSpeed = 500;
-    // 最大回転速度
-	const float maxYawSpeed = Math::Pi * 25;
-	const float maxPitchSpeed = Math::Pi * 8;
+	if (device == InputDevice::EKeyBoard || device == InputDevice::EController) rightAxis *= INPUT_CORRECTION_VALUE;
 
 	// ヨーを設定
 	float yawSpeed = 0.0f;
 	if (rightAxis.x != 0)
 	{
-		yawSpeed = static_cast<float>(rightAxis.x) / maxMouseSpeed;
-		yawSpeed *= maxYawSpeed;
+		yawSpeed = static_cast<float>(rightAxis.x) / CAMERA_MAX_ROTATE_SPEED;
+		yawSpeed *= mMaxYawSpeed;
 	}
 	mYawSpeed = yawSpeed;
 
@@ -42,8 +39,8 @@ void TPSCamera::ProcessInput(const struct InputState& state)
 	float pitchSpeed = 0.0f;
 	if (rightAxis.y != 0)
 	{
-		pitchSpeed = static_cast<float>(rightAxis.y) / maxMouseSpeed;
-		pitchSpeed *= maxPitchSpeed;
+		pitchSpeed = static_cast<float>(rightAxis.y) / CAMERA_MAX_ROTATE_SPEED;
+		pitchSpeed *= mMaxPitchSpeed;
 	}
 	mPitchSpeed = pitchSpeed;
 }
@@ -54,7 +51,9 @@ void TPSCamera::Update(float deltaTime)
 
 	// カメラの位置は所有アクターの位置からmCameraZOffsetだけ上
 	Vector3 cameraPos = mOwner->GetPosition();
-	cameraPos += Vector3::UnitZ * mCameraZOffset;
+	cameraPos += Vector3::UnitZ * mOffsetPos.z;
+	cameraPos += GetRight()     * mOffsetPos.x;
+	cameraPos += GetForward()   * mOffsetPos.y;
 
 	// ---------- ヨー回転処理 ---------- //
 	// ヨーの角速度に基づいてヨーを更新する
@@ -82,7 +81,7 @@ void TPSCamera::Update(float deltaTime)
 	Vector3 viewForward = Vector3::Transform(cameraForward, q);
 
 	// 所有アクターからmDistだけ離す
-	cameraPos -= viewForward * mDist;
+	cameraPos -= viewForward * mCameraDist;
 
 	// ターゲットの位置は所有アクターの前方100単位
 	Vector3 target = cameraPos + viewForward * 100.0f;

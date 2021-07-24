@@ -6,12 +6,15 @@
 #include <string>
 #include <unordered_map>
 
-#define INPUT_LEFT_AXIS  "LeftAxis"
-#define INPUT_RIGHT_AXIS "RightAxis"
-#define INPUT_JUMP       "Jump"
-#define INPUT_UP         "Up"
-#define INPUT_DOWN       "Down"
-#define INPUT_FIRE       "Fire"
+// 入力名
+#define INPUT_LEFT_AXIS    "LeftAxis"
+#define INPUT_RIGHT_AXIS   "RightAxis"
+#define INPUT_JUMP         "Jump"
+#define INPUT_UP           "Up"
+#define INPUT_DOWN         "Down"
+#define INPUT_SPRINT       "Sprint"
+#define INPUT_FIRE         "Fire"
+#define INPUT_FIRE_STANDBY "FireStandBy"
 
 // ボタンの入力状態
 enum class ButtonState
@@ -171,7 +174,7 @@ public:
 	// SDL_PollEventsループの直後に呼ばれる
 	void Update();
 
-	// Called to process an SDL event in input system
+	// InputSystemでSDLイベントを処理するために呼び出される
 	void ProcessEvent(union SDL_Event& event);
 
 	const InputState& GetState() const { return mState; }

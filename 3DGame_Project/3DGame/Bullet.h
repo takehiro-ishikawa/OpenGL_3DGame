@@ -3,7 +3,7 @@
 
 #define BULLET_FILEPATH "Assets/Bullet.fbx"
 #define BULLET_LIFE 5.0f     // 消滅するまでの時間
-#define BULLET_SPEED 1000.0f // 速度
+#define BULLET_SPEED 5000.0f // 速度
 
 #pragma region プロトタイプ宣言
 class Game;

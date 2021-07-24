@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "PlayerParameters.h"
 #include "PlayerState.h"
 #include "Bullet.h"
 #include "Mesh.h"
@@ -28,7 +29,10 @@ Player::Player(Game* game)
 	GetGame()->GetRenderer()->GetMesh(BULLET_FILEPATH);
 
 	// アニメーションのロード
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_SHOOT, PLAYER_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_SHOOT_WALK, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_WALK, PLAYER_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_RUN, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_IDLE, PLAYER_FILEPATH), 1.0f);
 	
 	// 他コンポーネントの生成
@@ -39,7 +43,10 @@ Player::Player(Game* game)
 	// ステートの設定
 	RegisterState(new PlayerIdle(this));
 	RegisterState(new PlayerWalk(this));
-	ChangeState(PLAYER_IDLE);
+	RegisterState(new PlayerRun(this));
+	RegisterState(new PlayerShoot(this));
+	RegisterState(new PlayerShootWalk(this));
+	ChangeState(PLAYER_ANIMATION_IDLE);
 
 	// AABBの設定
 	AABB box = mMeshComp->GetMesh()->GetBox();
@@ -102,12 +109,16 @@ void Player::Shoot()
 {
 	// 開始点を取得
 	Vector3 start = GetPosition();
-	start.z += 150.0f;
+	start.z += 130.0f;
+	start += GetRight() * 50;
+	start += GetForward() * 60.0f;
 	
 	// ボールをスポーンする
 	Bullet * bullet = new Bullet(GetGame());
 	bullet->SetPlayer(this);
-	bullet->SetPosition(start + GetForward() * 20.0f);
+	bullet->SetPosition(start);
 	// ボールを回転させて新しい方向を向く
 	bullet->RotateToNewForward(GetForward());
+
+	mAudioComp->PlayEvent("event:/Shoot");
 }

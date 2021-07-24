@@ -1,12 +1,8 @@
 #pragma once
 #include "StateMachine.h"
+#include "Player.h"
+#include "PlayerParameters.h"
 
-// プロトタイプ宣言
-class Player;
-
-// ステート名
-#define PLAYER_IDLE "Idle" // 待機
-#define PLAYER_WALK "Walk" // 歩行
 
 class PlayerState : public State
 {
@@ -31,7 +27,7 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_IDLE;
+		return PLAYER_ANIMATION_IDLE;
 	}
 };
 
@@ -49,6 +45,60 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_WALK;
+		return PLAYER_ANIMATION_WALK;
+	}
+};
+
+class PlayerRun : public PlayerState
+{
+public:
+	PlayerRun(Character* owner)
+		:PlayerState(owner)
+	{ }
+
+	void Input(const struct InputState& state) override;
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return PLAYER_ANIMATION_RUN;
+	}
+};
+
+class PlayerShoot : public PlayerState
+{
+public:
+	PlayerShoot(Character* owner)
+		:PlayerState(owner)
+	{ }
+
+	void Input(const struct InputState& state) override;
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return PLAYER_ANIMATION_SHOOT;
+	}
+};
+
+class PlayerShootWalk : public PlayerState
+{
+public:
+	PlayerShootWalk(Character* owner)
+		:PlayerState(owner)
+	{ }
+
+	void Input(const struct InputState& state) override;
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return PLAYER_ANIMATION_SHOOT_WALK;
 	}
 };

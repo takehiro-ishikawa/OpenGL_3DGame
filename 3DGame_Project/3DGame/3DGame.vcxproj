@@ -246,6 +246,7 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="PlayerParameters.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="AIState.h" />
