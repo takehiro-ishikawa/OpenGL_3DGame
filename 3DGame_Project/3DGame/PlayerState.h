@@ -1,8 +1,16 @@
 #pragma once
 #include "StateMachine.h"
-#include "Player.h"
 #include "PlayerParameters.h"
 
+// プロトタイプ宣言
+class Player;
+
+// ステート名
+#define PLAYER_IDLE      "Idle"      // 待機
+#define PLAYER_WALK      "Walk"      // 歩行
+#define PLAYER_RUN       "Run"       // ダッシュ
+#define PLAYER_SHOOT     "Shoot"     // 射撃
+#define PLAYER_SHOOTWALK "ShootWalk" // 射撃&歩行
 
 class PlayerState : public State
 {
@@ -27,7 +35,7 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_ANIMATION_IDLE;
+		return PLAYER_IDLE;
 	}
 };
 
@@ -45,7 +53,7 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_ANIMATION_WALK;
+		return PLAYER_WALK;
 	}
 };
 
@@ -63,7 +71,7 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_ANIMATION_RUN;
+		return PLAYER_RUN;
 	}
 };
 
@@ -81,7 +89,7 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_ANIMATION_SHOOT;
+		return PLAYER_SHOOT;
 	}
 };
 
@@ -99,6 +107,6 @@ public:
 
 	const char* GetName() const override
 	{
-		return PLAYER_ANIMATION_SHOOT_WALK;
+		return PLAYER_SHOOTWALK;
 	}
 };

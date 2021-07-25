@@ -20,6 +20,8 @@ public:
 
 	void ActorInput(const struct InputState& state) override;
 	void UpdateActor(float deltaTime) override;
+	void Damage(float value) override;
+	void Dead() override;
 
 	void SetVisible(bool visible);
 	PlayerMove* GetMoveComp() { return mMoveComp; }

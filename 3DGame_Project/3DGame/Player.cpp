@@ -14,6 +14,7 @@
 #include "SkeletalMeshComponent.h"
 #include "PhysWorld.h"
 #include "InputSystem.h"
+#include "HUD.h"
 #include <iostream>
 
 Player::Player(Game* game)
@@ -46,13 +47,16 @@ Player::Player(Game* game)
 	RegisterState(new PlayerRun(this));
 	RegisterState(new PlayerShoot(this));
 	RegisterState(new PlayerShootWalk(this));
-	ChangeState(PLAYER_ANIMATION_IDLE);
+	ChangeState(PLAYER_IDLE);
 
 	// AABBの設定
 	AABB box = mMeshComp->GetMesh()->GetBox();
 	box.SetMinMax(PLAYER_WIDTH, PLAYER_DEPTH, PLAYER_HEIGHT);
 	mBoxComp->SetObjectBox(box);
 	mBoxComp->SetShouldRotate(false);
+
+	// 体力の設定
+	mHealth = PLAYER_MAX_HEALTH;
 }
 
 void Player::ActorInput(const struct InputState& state)
@@ -100,6 +104,23 @@ void Player::UpdateActor(float deltaTime)
 	}
 }
 
+void Player::Damage(float value)
+{
+	mHealth -= value;
+	mHealth = Math::Max(mHealth, 0.0f);
+	mHealth = Math::Min(mHealth, PLAYER_MAX_HEALTH);
+
+	if (mHealth <= 0)
+	{
+		Dead();
+	}
+}
+
+void Player::Dead()
+{
+
+}
+
 void Player::SetVisible(bool visible)
 {
 	mMeshComp->SetVisible(visible);
@@ -109,9 +130,10 @@ void Player::Shoot()
 {
 	// 開始点を取得
 	Vector3 start = GetPosition();
-	start.z += 130.0f;
-	start += GetRight() * 50;
-	start += GetForward() * 60.0f;
+	Vector3 offset = PLAYER_SHOOT_POSITION_OFFSET;
+	start += GetRight() * offset.x;
+	start += GetForward() * offset.y;
+	start.z += offset.z;
 	
 	// ボールをスポーンする
 	Bullet * bullet = new Bullet(GetGame());

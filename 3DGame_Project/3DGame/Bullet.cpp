@@ -5,13 +5,14 @@
 #include "Mesh.h"
 #include "BulletMove.h"
 #include "AudioComponent.h"
+#include "PointLightComponent.h"
 
 Bullet::Bullet(Game* game)
 	:Actor(game)
 	,mLifeSpan(BULLET_LIFE)
 {
-	SetScale(7.0f);
-
+	SetScale(1.0f);
+	
 	MeshComponent* mc = new MeshComponent(this, false);
 	Mesh* mesh = GetGame()->GetRenderer()->GetMesh("Assets/Bullet.fbx");
 	mc->SetMesh(mesh);
@@ -19,6 +20,10 @@ Bullet::Bullet(Game* game)
 	mMoveComp->SetMoveSpeed(Vector2(0, BULLET_SPEED));
 
 	mAudioComp = new AudioComponent(this);
+	mPointLight = new PointLightComponent(this);
+	mPointLight->mDiffuseColor = Color::Green;
+	mPointLight->mOuterRadius = 200.0f;
+	mPointLight->mInnerRadius = 100.0f;
 }
 
 void Bullet::UpdateActor(float deltaTime)

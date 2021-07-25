@@ -100,7 +100,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 
-	mPointLightMesh = GetMesh("Assets/Floor.fbx");
+	mPointLightMesh = GetMesh("Assets/Sphere.fbx");
 
 	return true;
 }

@@ -5,6 +5,9 @@
 #include <vector>
 #include "Math.h"
 
+#define SCREEN_WIDTH  1024.0f // 画面の横幅
+#define SCREEN_HEIGHT 768.0f  // 画面の縦幅
+
 #pragma region プロトタイプ宣言
 class Actor;
 class UIScreen;
@@ -67,6 +70,7 @@ public:
 	Player* GetPlayer() { return mPlayer; }
 	void SetPlayer(Player* tpsActor) { mPlayer = tpsActor; }
 	std::vector<PlaneActor*>& GetPlanes() { return mPlanes; }
+	float GetFrameRate() { return mFrameRate; }
 
 private:
 	void ProcessInput();
@@ -98,9 +102,10 @@ private:
 	std::unordered_map<std::string, Skeleton*> mSkeletons; // ロードされたスケルトンのマップ
 	std::unordered_map<std::string, Animation*> mAnims;    // ロードされたアニメーションのマップ
 
-	Uint32 mTicksCount;
+	Uint32 mTicksCount;   // 経過時間を保持(ミリ秒)
 	GameState mGameState; // 現在のゲームの状態
 	bool mUpdatingActors; // 現在アクターを更新しているか
+	float mFrameRate;     // 現在のフレームレート
 
 	// ゲーム固有のコード
 	Player* mPlayer; // 操作するプレイヤー

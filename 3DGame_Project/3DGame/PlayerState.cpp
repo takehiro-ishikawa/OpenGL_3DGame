@@ -1,4 +1,5 @@
 #include "PlayerState.h"
+#include "Player.h"
 #include "Game.h"
 #include "Renderer.h"
 #include "Character.h"
@@ -41,17 +42,17 @@ void PlayerIdle::Input(const struct InputState& state)
 	if (leftAxis != Vector2::Zero)
 	{
 		// 射撃キー入力で"射撃&歩行"に遷移
-		if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed) mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT_WALK);
+		if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed) mPlayer->ChangeState(PLAYER_SHOOTWALK);
 		// ダッシュキー入力で"ダッシュ"に遷移
-	    else if (state.GetMappedButtonState(INPUT_SPRINT) == ButtonState::EHeld) mPlayer->ChangeState(PLAYER_ANIMATION_RUN);
+	    else if (state.GetMappedButtonState(INPUT_SPRINT) == ButtonState::EHeld) mPlayer->ChangeState(PLAYER_RUN);
 		// それ以外は"歩行"に遷移
-		else mPlayer->ChangeState(PLAYER_ANIMATION_WALK);
+		else mPlayer->ChangeState(PLAYER_WALK);
 	}
 	// 射撃準備キー入力
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
 		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
-		mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT);
+		mPlayer->ChangeState(PLAYER_SHOOT);
 	}
 }
 
@@ -108,19 +109,19 @@ void PlayerWalk::Input(const struct InputState& state)
 	if (leftAxis == Vector2::Zero)
 	{
 		// "待機"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_IDLE);
+		mPlayer->ChangeState(PLAYER_IDLE);
 	}
 	else if (state.GetMappedButtonState(INPUT_SPRINT) == ButtonState::EPressed)
 	{
 		// "ダッシュ"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_RUN);
+		mPlayer->ChangeState(PLAYER_RUN);
 	}
 	// 射撃準備キー入力
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
 		// "射撃&歩行"に遷移
 		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
-		mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT_WALK);
+		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 }
 
@@ -177,20 +178,20 @@ void PlayerRun::Input(const struct InputState& state)
 	if (leftAxis == Vector2::Zero)
 	{
 		// "待機"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_IDLE);
+		mPlayer->ChangeState(PLAYER_IDLE);
 	}
 	// ダッシュキー入力
 	else if (state.GetMappedButtonState(INPUT_SPRINT) == ButtonState::EPressed)
 	{
 		// "歩行"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_WALK);
+		mPlayer->ChangeState(PLAYER_WALK);
 	}
 	// 射撃準備キー入力
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
 		// "射撃&歩行"に遷移
 		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
-		mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT_WALK);
+		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 }
 
@@ -235,13 +236,13 @@ void PlayerShoot::Input(const struct InputState& state)
 	if (leftAxis != Vector2::Zero)
 	{
 		// "射撃&歩行"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT_WALK);
+		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 	// 射撃準備キーが放された
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EReleased)
 	{
 		// "待機"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_IDLE);
+		mPlayer->ChangeState(PLAYER_IDLE);
 	}
 }
 
@@ -252,8 +253,8 @@ void PlayerShoot::Update(float deltaTime)
 
 void PlayerShoot::OnEnter()
 {
-	mPlayer->GetCameraComp()->SetDist(CAMERA_AIM_DIST);
-	mPlayer->GetCameraComp()->SetOffsetPos(CAMERA_AIM_OFFSETPOS);
+	mPlayer->GetCameraComp()->SetIdealDist(CAMERA_AIM_DIST);
+	mPlayer->GetCameraComp()->SetIdealOffsetPos(CAMERA_AIM_OFFSETPOS);
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_AIM_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_AIM_YAWSPEED);
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_SHOOT, PLAYER_FILEPATH), 1.0f);
@@ -261,9 +262,9 @@ void PlayerShoot::OnEnter()
 
 void PlayerShoot::OnExit()
 {
-	mPlayer->GetCameraComp()->SetDist(CAMERA_NORMAL_DIST);
+	mPlayer->GetCameraComp()->SetIdealDist(CAMERA_NORMAL_DIST);
 	mPlayer->GetMoveComp()->SetAngularSpeed(0);
-	mPlayer->GetCameraComp()->SetOffsetPos(CAMERA_NORMAL_OFFSETPOS);
+	mPlayer->GetCameraComp()->SetIdealOffsetPos(CAMERA_NORMAL_OFFSETPOS);
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_NORMAL_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_NORMAL_YAWSPEED);
 }
@@ -303,13 +304,13 @@ void PlayerShootWalk::Input(const struct InputState& state)
 	if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EReleased)
 	{
 		// "待機"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_IDLE);
+		mPlayer->ChangeState(PLAYER_IDLE);
 	}
 	// 移動キー未入力
 	else if (leftAxis == Vector2::Zero)
 	{
 		// "射撃"に遷移
-		mPlayer->ChangeState(PLAYER_ANIMATION_SHOOT);
+		mPlayer->ChangeState(PLAYER_SHOOT);
 	}
 }
 
@@ -320,8 +321,8 @@ void PlayerShootWalk::Update(float deltaTime)
 
 void PlayerShootWalk::OnEnter()
 {
-	mPlayer->GetCameraComp()->SetDist(CAMERA_AIM_DIST);
-	mPlayer->GetCameraComp()->SetOffsetPos(CAMERA_AIM_OFFSETPOS);
+	mPlayer->GetCameraComp()->SetIdealDist(CAMERA_AIM_DIST);
+	mPlayer->GetCameraComp()->SetIdealOffsetPos(CAMERA_AIM_OFFSETPOS);
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_AIM_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_AIM_YAWSPEED);
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_SHOOT_WALK, PLAYER_FILEPATH), 1.0f);
@@ -329,9 +330,9 @@ void PlayerShootWalk::OnEnter()
 
 void PlayerShootWalk::OnExit()
 {
-	mPlayer->GetCameraComp()->SetDist(CAMERA_NORMAL_DIST);
+	mPlayer->GetCameraComp()->SetIdealDist(CAMERA_NORMAL_DIST);
 	mPlayer->GetMoveComp()->SetAngularSpeed(0);
-	mPlayer->GetCameraComp()->SetOffsetPos(CAMERA_NORMAL_OFFSETPOS);
+	mPlayer->GetCameraComp()->SetIdealOffsetPos(CAMERA_NORMAL_OFFSETPOS);
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_NORMAL_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_NORMAL_YAWSPEED);
 }

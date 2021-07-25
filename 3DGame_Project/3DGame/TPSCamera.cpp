@@ -7,8 +7,10 @@
 TPSCamera::TPSCamera(Actor* owner)
 	:CameraComponent(owner)
 	, mRotation(Quaternion::Identity)
-	, mCameraDist(CAMERA_NORMAL_DIST)
-	, mOffsetPos(CAMERA_NORMAL_OFFSETPOS)
+	, mIdealCameraDist(CAMERA_NORMAL_DIST)
+	, mActualCameraDist(CAMERA_NORMAL_DIST)
+	, mIdealOffsetPos(CAMERA_NORMAL_OFFSETPOS)
+	, mActualOffsetPos(CAMERA_NORMAL_OFFSETPOS)
 	, mTargetDist(100.0f)
 	, mSpringConstant(1000.0f)
 	, mMaxPitch(Math::Pi / 5.0f)
@@ -48,12 +50,13 @@ void TPSCamera::ProcessInput(const struct InputState& state)
 void TPSCamera::Update(float deltaTime)
 {
 	CameraComponent::Update(deltaTime);
+	ComputeCameraPos(deltaTime * 8.0f);
 
 	// カメラの位置は所有アクターの位置からmCameraZOffsetだけ上
 	Vector3 cameraPos = mOwner->GetPosition();
-	cameraPos += Vector3::UnitZ * mOffsetPos.z;
-	cameraPos += GetRight()     * mOffsetPos.x;
-	cameraPos += GetForward()   * mOffsetPos.y;
+	cameraPos += Vector3::UnitZ * mActualOffsetPos.z;
+	cameraPos += GetRight()     * mActualOffsetPos.x;
+	cameraPos += GetForward()   * mActualOffsetPos.y;
 
 	// ---------- ヨー回転処理 ---------- //
 	// ヨーの角速度に基づいてヨーを更新する
@@ -81,7 +84,7 @@ void TPSCamera::Update(float deltaTime)
 	Vector3 viewForward = Vector3::Transform(cameraForward, q);
 
 	// 所有アクターからmDistだけ離す
-	cameraPos -= viewForward * mCameraDist;
+	cameraPos -= viewForward * mActualCameraDist;
 
 	// ターゲットの位置は所有アクターの前方100単位
 	Vector3 target = cameraPos + viewForward * 100.0f;
@@ -89,34 +92,13 @@ void TPSCamera::Update(float deltaTime)
 	// 上方向ベクトルもピッチのクォータニオンで回転する
 	Vector3 up = Vector3::Transform(Vector3::UnitZ, mRotation);
 
-
 	// 注視行列を作ってビューに設定する
 	Matrix4 view = Matrix4::CreateLookAt(cameraPos, target, up);
 	SetViewMatrix(view);
 }
 
-void TPSCamera::SnapToIdeal()
+void TPSCamera::ComputeCameraPos(float value)
 {
-	// 実際の位置を理想の位置と同じに設定
-	mActualPos = ComputeCameraPos();
-
-	// 速度はゼロ
-	mVelocity = Vector3::Zero;
-
-	// ターゲットを計算して表示する
-	Vector3 target = mOwner->GetPosition() + mOwner->GetForward() * mTargetDist;
-
-	// ここでは実際の位置を使用しますが、理想的ではない
-	Matrix4 view = Matrix4::CreateLookAt(mActualPos, target, Vector3::UnitZ);
-
-	SetViewMatrix(view);
-}
-
-Vector3 TPSCamera::ComputeCameraPos() const
-{
-	// カメラの位置を所有アクターの上後方にセット
-	Vector3 cameraPos = mOwner->GetPosition();
-	//cameraPos -= mOwner->GetForward() * mHorzDist;
-	//cameraPos += Vector3::UnitZ * mVertDist;
-	return cameraPos;
+	mActualCameraDist = Math::Lerp(mActualCameraDist, mIdealCameraDist, value);
+	mActualOffsetPos = Vector3::Lerp(mActualOffsetPos, mIdealOffsetPos, value);
 }

@@ -30,7 +30,7 @@ void BulletMove::Update(float deltaTime)
 		Character* target = dynamic_cast<Character*>(info.mActor);
 		if (target)
 		{
-			target->Damage();
+			target->Damage(1.0f);
 		}
 
 		// 自身のアクターを消滅させる

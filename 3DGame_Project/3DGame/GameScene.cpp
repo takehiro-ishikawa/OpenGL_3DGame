@@ -39,7 +39,7 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
-	for (int i = 0; i < 9; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		a = new Enemy(mGame);
 		a->SetPosition(Vector3(1000, -1200 + (i * 300), 0));
@@ -85,7 +85,7 @@ void GameScene::LoadSceneData()
 	}
 
 	// 平行光源の設定
-	mGame->GetRenderer()->SetAmbientLight(Vector3(0.6f, 0.6f, 0.6f));
+	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
 	DirectionalLight& dir = mGame->GetRenderer()->GetDirectionalLight();
 	dir.mDirection = Vector3(-0.17f, -0.55f, -0.55f);
 	dir.mDiffuseColor = Vector3(0.7f, 0.7f, 0.7f);
@@ -96,7 +96,7 @@ void GameScene::LoadSceneData()
 	mGame->SetHUD(hud);
 
 	// 点光源メッシュをロード
-	Mesh* pointLightMesh = mGame->GetRenderer()->GetMesh("Assets/Floor.fbx");
+	Mesh* pointLightMesh = mGame->GetRenderer()->GetMesh("Assets/Sphere.fbx");
 	mGame->GetRenderer()->SetPointLightMesh(pointLightMesh);
 }
 

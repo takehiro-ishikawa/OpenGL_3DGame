@@ -13,12 +13,15 @@ class Character : public Actor
 public:
 	Character(Game* game);
 
-	virtual void Damage() {};
+	virtual void Damage(float damage) {};
+	virtual void Dead() {};
 
 	// ÉQÉbÉ^Å[
 	SkeletalMeshComponent* GetMeshComp() { return mMeshComp; }
 	BoxComponent* GetBoxComp() { return mBoxComp; }
 	AudioComponent* GetAudioComp() { return mAudioComp; }
+	float GetHealth() { return mHealth; }
+	void SetHealth(float value) { mHealth = value; }
 
 protected:
 
@@ -31,4 +34,7 @@ protected:
 	SkeletalMeshComponent* mMeshComp;
 	BoxComponent* mBoxComp;
 	AudioComponent* mAudioComp;
+
+	// ëÃóÕ
+	float mHealth;
 };

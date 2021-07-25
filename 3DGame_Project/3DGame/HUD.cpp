@@ -10,12 +10,15 @@
 
 HUD::HUD(Game* game)
 	:UIScreen(game)
+	, mNormalizeHealth(1.0f)
 	, mRadarRange(2000.0f)
 	, mRadarRadius(92.0f)
 	, mTargetEnemy(false)
 {
 	Renderer* r = mGame->GetRenderer();
+	mHealthBarBack = r->GetTexture("Assets/HealthBarBack.png");
 	mHealthBar = r->GetTexture("Assets/HealthBar.png");
+	mHealthBarEmpty = r->GetTexture("Assets/HealthBarEmpty.png");
 	mRadar = r->GetTexture("Assets/Radar.png");
 	mBlipTex = r->GetTexture("Assets/Blip.png");
 	mRadarArrow = r->GetTexture("Assets/RadarArrow.png");
@@ -38,7 +41,7 @@ void HUD::Update(float deltaTime)
 void HUD::Draw(Shader* shader)
 {
 	// レーダー
-	const Vector2 cRadarPos(-390.0f, 275.0f);
+	const Vector2 cRadarPos(-390.0f, 200.0f);
 	DrawTexture(shader, mRadar, cRadarPos);
 
 	// Blips
@@ -48,11 +51,12 @@ void HUD::Draw(Shader* shader)
 	}
 	// Radar arrow
 	DrawTexture(shader, mRadarArrow, cRadarPos);
-
-	// Health bar
-	DrawTexture(shader, mHealthBar, Vector2(-350.0f, -300.0f));
+	
+	// 体力ゲージ
+	DrawHealthBar(shader);
 
 	DrawTexture(shader, mBack, Vector2(0.0f, -359.0f));
+	DrawTexture(shader, mBack, Vector2(0.0f, 359.0f));
 }
 
 void HUD::AddTargetComponent(TargetComponent* tc)
@@ -65,6 +69,20 @@ void HUD::RemoveTargetComponent(TargetComponent* tc)
 	auto iter = std::find(mTargetComps.begin(), mTargetComps.end(),
 		tc);
 	mTargetComps.erase(iter);
+}
+
+void HUD::DrawHealthBar(Shader* shader)
+{
+	Vector2 pos = HEALTH_POSITION;
+
+	// 体力ゲージの背景と本体を描画
+	DrawTexture(shader, mHealthBarBack, pos);
+	DrawTexture(shader, mHealthBar, pos);
+
+	// mNormalizeHealthの値に基いて体力ゲージ減少分の画像を表示位置とサイズ幅を決めて描画
+	float posX = Math::Lerp(pos.x, pos.x + mHealthBarEmpty->GetWidth() / 2, mNormalizeHealth);
+	float width = Math::Lerp(1, 0, mNormalizeHealth);
+	DrawTexture(shader, mHealthBarEmpty, Vector2(posX, pos.y), Vector2(width, 1));
 }
 
 void HUD::UpdateCrosshair(float deltaTime)

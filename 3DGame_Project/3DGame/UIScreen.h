@@ -39,8 +39,8 @@ public:
 private:
 	std::function<void()> mOnClick; // カプセル化したコールバック関数
 	std::string mName;              // ボタンの名前
-	Texture* mNameTex;        // ボタンのテクスチャ
-	Font* mFont;              // ボタンのフォント
+	Texture* mNameTex;              // ボタンのテクスチャ
+	Font* mFont;                    // ボタンのフォント
 	Vector2 mPosition;              // ボタンの位置
 	Vector2 mDimensions;
 	bool mHighlighted;

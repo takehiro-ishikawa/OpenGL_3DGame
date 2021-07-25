@@ -555,6 +555,7 @@ bool FBXAnalyze::ComputeAnimation(const std::string& animationName, AnimInfo& an
 		// 取得したアニメーションの名前が使用したいアニメーションの名前と同じ場合のみ処理を行う
 		string animName = FixAnimationName(animStack->GetName());
 		if (animName != animationName) continue;
+		std::cout << animName << std::endl;
 
 		// アニメーションのフレーム数を取得
 		auto startTime = animStack->GetLocalTimeSpan().GetStart().Get(); //アニメーション開始時間
@@ -593,8 +594,10 @@ bool FBXAnalyze::ComputeAnimation(const std::string& animationName, AnimInfo& an
 			}
 		}
 
+		std::cout << "成功" << std::endl;
 		return true;
 	}
 
+	std::cout << "失敗" << std::endl;
 	return false;
 }

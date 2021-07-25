@@ -16,7 +16,6 @@
 #include "Font.h"
 #include <fstream>
 #include <sstream>
-#include <rapidjson/document.h>
 #include "Skeleton.h"
 #include "Animation.h"
 #include "SkeletalMeshComponent.h"
@@ -24,6 +23,7 @@
 #include "InputSystem.h"
 #include "GameScene.h"
 #include "StartScene.h"
+#include <iomanip>
 
 Game::Game()
 	:mRenderer(nullptr)
@@ -54,7 +54,7 @@ bool Game::Initialize()
 
 	// レンダラーを作成する
 	mRenderer = new Renderer(this);
-	if (!mRenderer->Initialize(1024.0f, 768.0f)) // 1024 768
+	if (!mRenderer->Initialize(SCREEN_WIDTH, SCREEN_HEIGHT))
 	{
 		SDL_Log("Failed to initialize renderer");
 		delete mRenderer;
@@ -180,11 +180,15 @@ void Game::HandleKeyPress(const struct InputState& state)
 
 void Game::UpdateGame()
 {
-	// デルタタイムを計算する
-	// 最後のフレームから16msが経過するまで待つ
+	// フレーム制限(最後のフレームから16msが経過するまで待つ)
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
+	// デルタタイムを計算
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+
+	// フレームレートを計測
+	mFrameRate = 1 / deltaTime;
+
 	if (deltaTime > 0.05f)
 	{
 		deltaTime = 0.05f;

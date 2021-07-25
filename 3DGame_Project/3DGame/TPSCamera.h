@@ -16,7 +16,6 @@ public:
 	void ProcessInput(const struct InputState& state) override;
 	void Update(float deltaTime) override;
 
-	void SnapToIdeal();
 	void SetTargetDist(float dist) { mTargetDist = dist; }
 	void SetSpringConstant(float spring) { mSpringConstant = spring; }
 
@@ -28,27 +27,29 @@ public:
 	float GetPitch() const { return mPitch; }                      // 現在のピッチを取得
 	float GetPitchSpeed() const { return mPitchSpeed; }            // ピッチの回転/秒速度を取得
 	float GetMaxPitch() const { return mMaxPitch; }                // 最大ピッチ角度を取得
-	Vector3 GetOffsetPos() const { return mOffsetPos; }            // 位置のオフセット値を取得
-	float GetDist() const { return mCameraDist; }                  // 所有アクターとの距離を取得
+	Vector3 GetIdealOffsetPos() const { return mIdealOffsetPos; }  // 位置の理想のオフセット値を取得
+	float GetIdealDist() const { return mIdealCameraDist; }        // 所有アクターとの理想の距離を取得
 	float GetMaxYawSpeed() const { return mMaxYawSpeed; }          // ヨーの最大回転速度を取得
 	float GetMaxPitchSpeed() const { return mMaxPitchSpeed; }      // ピッチの最大回転速度を取得
 
 	void SetPitchSpeed(float speed) { mPitchSpeed = speed; }       // ピッチの回転/秒速度を設定
 	void SetMaxPitch(float pitch) { mMaxPitch = pitch; }           // 最大ピッチ角度を設定
-	void SetOffsetPos(Vector3 value) { mOffsetPos = value; }       // 位置のオフセット値を設定
-	void SetDist(float dist) { mCameraDist = dist; }               // 所有アクターとの距離を設定
+	void SetIdealOffsetPos(Vector3 value) { mIdealOffsetPos = value; }       // 位置のオフセット値を設定
+	void SetIdealDist(float dist) { mIdealCameraDist = dist; }               // 所有アクターとの距離を設定
 	void SetMaxYawSpeed(float speed) { mMaxYawSpeed = speed; }     // ヨーの最大回転速度を設定
 	void SetMaxPitchSpeed(float speed) { mMaxPitchSpeed = speed; } // ピッチの最大回転速度を設定
 
 private:
-	Vector3 ComputeCameraPos() const;
+	void ComputeCameraPos(float value);
 
 	Vector3 mActualPos;    // カメラの実際の位置
 	Vector3 mVelocity;     // 実際のカメラの速度
 	Quaternion mRotation;  // カメラの回転
 
-	Vector3 mOffsetPos;    // 位置のオフセット値
-	float mCameraDist;     // アクターから離す距離
+	Vector3 mIdealOffsetPos;    // 位置の理想のオフセット値
+	Vector3 mActualOffsetPos;   // 位置の実際のオフセット値
+	float mIdealCameraDist;     // アクターから離す理想の距離
+	float mActualCameraDist;    // アクターから離す実際の距離
 	float mTargetDist;     // 目標距離
 	float mSpringConstant; // ばね定数（高いほど硬い）
 
