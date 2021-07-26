@@ -15,6 +15,7 @@
 #include "PhysWorld.h"
 #include "InputSystem.h"
 #include "HUD.h"
+#include "PointLightComponent.h"
 #include <iostream>
 
 Player::Player(Game* game)
@@ -27,7 +28,7 @@ Player::Player(Game* game)
 	// メッシュの生成
 	mMeshComp->SetMesh(game->GetRenderer()->GetMesh(PLAYER_FILEPATH));
 	mMeshComp->SetSkeleton(game->GetSkeleton(PLAYER_FILEPATH));
-	GetGame()->GetRenderer()->GetMesh(BULLET_FILEPATH);
+	GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH);
 
 	// アニメーションのロード
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_SHOOT, PLAYER_FILEPATH), 1.0f);
@@ -57,6 +58,9 @@ Player::Player(Game* game)
 
 	// 体力の設定
 	mHealth = PLAYER_MAX_HEALTH;
+
+	// タグの設定
+	mTag = CharacterTag::EPlayer;
 }
 
 void Player::ActorInput(const struct InputState& state)
@@ -106,10 +110,15 @@ void Player::UpdateActor(float deltaTime)
 
 void Player::Damage(float value)
 {
+	// 体力からダメージを引く
 	mHealth -= value;
 	mHealth = Math::Max(mHealth, 0.0f);
 	mHealth = Math::Min(mHealth, PLAYER_MAX_HEALTH);
 
+	// 現在の体力を正規化してHUDに反映させる
+	GetGame()->GetHUD()->SetNormalizeHealth(mHealth / PLAYER_MAX_HEALTH);
+
+	// 体力が0になったら死亡
 	if (mHealth <= 0)
 	{
 		Dead();
@@ -136,7 +145,11 @@ void Player::Shoot()
 	start.z += offset.z;
 	
 	// ボールをスポーンする
-	Bullet * bullet = new Bullet(GetGame());
+	Bullet * bullet = new Bullet(GetGame(), CharacterTag::EEnemy);
+	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH));
+	bullet->GetPointLightComp()->mDiffuseColor = Color::Green;
+	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
+	bullet->GetPointLightComp()->mInnerRadius = 100.0f;
 	bullet->SetPlayer(this);
 	bullet->SetPosition(start);
 	// ボールを回転させて新しい方向を向く

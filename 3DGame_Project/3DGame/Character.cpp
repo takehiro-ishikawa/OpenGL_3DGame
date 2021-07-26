@@ -9,6 +9,7 @@
 
 Character::Character(Game* game)
 	:Actor(game)
+	,mTag(CharacterTag::ENone)
 {
 	mMeshComp = new SkeletalMeshComponent(this);
 	mAudioComp = new AudioComponent(this);
@@ -18,10 +19,9 @@ Character::Character(Game* game)
 bool Character::CheckGround()
 {
 	// ü•ª‚Ìì¬
-	float segmentLength = 2.0f;
 	Vector3 start = GetPosition();
-	start.z += 1.0f;
-	Vector3 end = start + Vector3::UnitZ * -segmentLength;
+	start.z += CHECKGROUND_OFFSET;
+	Vector3 end = start + Vector3::UnitZ * -CHECKGROUND_RENGE;
 
 	LineSegment segment(start, end);
 

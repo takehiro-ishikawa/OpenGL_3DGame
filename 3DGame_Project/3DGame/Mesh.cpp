@@ -47,7 +47,7 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	if (t == nullptr)
 	{
 		// デフォルトのテクスチャを使用する
-		t = renderer->GetTexture("Assets/Default.png");
+		t = renderer->GetTexture("Assets/Textures/Default.png");
 	}
 	mTextures.emplace_back(t);
 

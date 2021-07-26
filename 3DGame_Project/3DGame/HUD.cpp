@@ -16,14 +16,14 @@ HUD::HUD(Game* game)
 	, mTargetEnemy(false)
 {
 	Renderer* r = mGame->GetRenderer();
-	mHealthBarBack = r->GetTexture("Assets/HealthBarBack.png");
-	mHealthBar = r->GetTexture("Assets/HealthBar.png");
-	mHealthBarEmpty = r->GetTexture("Assets/HealthBarEmpty.png");
-	mRadar = r->GetTexture("Assets/Radar.png");
-	mBlipTex = r->GetTexture("Assets/Blip.png");
-	mRadarArrow = r->GetTexture("Assets/RadarArrow.png");
+	mHealthBarBack = r->GetTexture(HEALTHBAR_BACK_FILEPATH);
+	mHealthBar = r->GetTexture(HEALTHBAR_FILEPATH);
+	mHealthBarEmpty = r->GetTexture(HEALTHBAR_EMPTY_FILEPATH);
+	mRadar = r->GetTexture("Assets/Textures/UI/Radar.png");
+	mBlipTex = r->GetTexture("Assets/Textures/UI/Blip.png");
+	mRadarArrow = r->GetTexture("Assets/Textures/UI/RadarArrow.png");
 
-	mBack = r->GetTexture("Assets/HUD_Back.png");
+	mBack = r->GetTexture(HUD_BACK);
 }
 
 HUD::~HUD()

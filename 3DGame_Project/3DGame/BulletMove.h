@@ -1,5 +1,6 @@
 #pragma once
 #include "MoveComponent.h"
+#include "Character.h"
 
 #pragma region プロトタイプ宣言
 class Actor;
@@ -8,11 +9,16 @@ class Actor;
 class BulletMove : public MoveComponent
 {
 public:
-	BulletMove(Actor* owner);
+	BulletMove(Actor* owner, CharacterTag targetTag);
 
-	void SetPlayer(Actor* player) { mPlayer = player; }
 	void Update(float deltaTime) override;
+
+	// ゲッター/セッター
+	CharacterTag GetTargetTag() { return mTargetTag; }
+	void SetTargetTag(CharacterTag tag) { mTargetTag = tag; }
+	void SetPlayer(Actor* player) { mPlayer = player; }
 
 protected:
 	Actor* mPlayer;
+	CharacterTag mTargetTag;
 };

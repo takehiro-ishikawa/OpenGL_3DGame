@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Actor.h"
 #include "Enemy.h"
+#include "Player.h"
 #include "SkeletalMeshComponent.h"
 #include "MoveComponent.h"
 #include <iostream>
@@ -67,6 +68,11 @@ void AIDead::OnExit()
 
 void AIVigilant::Update(float deltaTime)
 {
+	if (mEnemy->CheckPlayerVisible())
+	{
+		mEnemy->ChangeState(AI_ATTACK);
+	}
+
 	// ‰ñ“]’†
 	if (mIsRotate)
 	{
@@ -109,6 +115,38 @@ void AIVigilant::Rest()
 	mIsRotate = false;
 	mRestTime = ENEMY_RESTTIME;
 	mNextDir = mEnemy->GetRight();
+}
+
+#pragma endregion
+
+#pragma region "UŒ‚"ó‘Ô
+
+void AIAttack::Update(float deltaTime)
+{
+	// ƒvƒŒƒCƒ„[‚Ì‚¢‚é•ûŒü‚ðŒü‚­
+	Vector3 playerDir = mEnemy->GetGame()->GetPlayer()->GetPosition() - mEnemy->GetPosition();
+	playerDir.z = 0;
+	playerDir.Normalize();
+	float angular = Vector3::Dot(mEnemy->GetRight(), playerDir);
+	mEnemy->GetMoveComp()->SetAngularSpeed(angular * ENEMY_ROTATE_SPEED);
+
+	mAttackSpan -= deltaTime;
+	if (mAttackSpan <= 0)
+	{
+		mAttackSpan = ENEMY_ATTACK_TIME;
+		mEnemy->Shoot();
+	}
+}
+
+void AIAttack::OnEnter()
+{
+	mAttackSpan = ENEMY_ATTACK_TIME;
+	mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_IDLE, ENEMY_FILEPATH), 1.0f);
+}
+
+void AIAttack::OnExit()
+{
+
 }
 
 #pragma endregion

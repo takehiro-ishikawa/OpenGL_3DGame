@@ -10,7 +10,7 @@ PlaneActor::PlaneActor(Game* game)
 {
 	SetScale(25.0f);
 	MeshComponent* mc = new MeshComponent(this, false);
-	Mesh* mesh = GetGame()->GetRenderer()->GetMesh("Assets/Ground.fbx");
+	Mesh* mesh = GetGame()->GetRenderer()->GetMesh("Assets/Models/Ground.fbx");
 	mc->SetMesh(mesh);
 
 	// コリジョンボックスを追加

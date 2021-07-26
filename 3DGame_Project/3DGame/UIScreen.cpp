@@ -18,8 +18,8 @@ UIScreen::UIScreen(Game* game)
 	// UI Stack‚ÉŽ©g‚ð’Ç‰Á
 	mGame->PushUI(this);
 	mFont = mGame->GetFont("Assets/Carlito-Regular.ttf");
-	mButtonOn = mGame->GetRenderer()->GetTexture("Assets/ButtonYellow.png");
-	mButtonOff = mGame->GetRenderer()->GetTexture("Assets/ButtonBlue.png");
+	mButtonOn = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonYellow.png");
+	mButtonOff = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonBlue.png");
 }
 
 UIScreen::~UIScreen()

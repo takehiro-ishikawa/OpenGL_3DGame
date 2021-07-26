@@ -6,8 +6,9 @@
 #include "TargetActor.h"
 #include "Bullet.h"
 
-BulletMove::BulletMove(Actor* owner)
+BulletMove::BulletMove(Actor* owner, CharacterTag targetTag)
 	:MoveComponent(owner)
+	,mTargetTag(targetTag)
 {
 
 }
@@ -26,11 +27,12 @@ void BulletMove::Update(float deltaTime)
 	PhysWorld::CollisionInfo info;
 	if (phys->SegmentCast(l, info) && info.mActor != mPlayer) // (プレイヤーとは衝突しない)
 	{
-		// 敵に当たった場合、ダメージを与える
 		Character* target = dynamic_cast<Character*>(info.mActor);
+		// キャラクターに当たった場合
 		if (target)
 		{
-			target->Damage(1.0f);
+			// 当たったキャラクターが自身の標的ならダメージを与える
+			if(target->GetCharacterTag() == mTargetTag) target->Damage(1.0f);
 		}
 
 		// 自身のアクターを消滅させる

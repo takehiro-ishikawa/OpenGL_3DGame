@@ -3,12 +3,13 @@
 
 // プレイヤーに関係する各種パラメーターを設定する
 
-#define PLAYER_FILEPATH             "Assets/Player.fbx" // プレイヤーモデルのファイルパス
-#define PLAYER_ANIMATION_IDLE       "Player_Idle"              // プレイヤーの"待機"アニメーション名
-#define PLAYER_ANIMATION_WALK       "Player_Walk"              // プレイヤーの"歩行"アニメーション名
-#define PLAYER_ANIMATION_RUN        "Player_Run"               // プレイヤーの"ダッシュ"アニメーション名
-#define PLAYER_ANIMATION_SHOOT      "Player_Shoot"             // プレイヤーの"射撃"アニメーション名
-#define PLAYER_ANIMATION_SHOOT_WALK "Player_ShootAndWalk"      // プレイヤーの"射撃&歩行"アニメーション名
+#define PLAYER_FILEPATH             "Assets/Models/Player.fbx"       // プレイヤーモデルのファイルパス
+#define PLAYERBULLET_FILEPATH       "Assets/Models/PlayerBullet.fbx" // プレイヤーの弾モデルのファイルパス
+#define PLAYER_ANIMATION_IDLE       "Player_Idle"                    // プレイヤーの"待機"アニメーション名
+#define PLAYER_ANIMATION_WALK       "Player_Walk"                    // プレイヤーの"歩行"アニメーション名
+#define PLAYER_ANIMATION_RUN        "Player_Run"                     // プレイヤーの"ダッシュ"アニメーション名
+#define PLAYER_ANIMATION_SHOOT      "Player_Shoot"                   // プレイヤーの"射撃"アニメーション名
+#define PLAYER_ANIMATION_SHOOT_WALK "Player_ShootAndWalk"            // プレイヤーの"射撃&歩行"アニメーション名
 
 #define PLAYER_WIDTH  1.4f // AABBの幅
 #define PLAYER_DEPTH  1.4f // AABBの奥行

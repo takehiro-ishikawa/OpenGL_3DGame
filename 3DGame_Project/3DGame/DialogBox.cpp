@@ -13,7 +13,7 @@ DialogBox::DialogBox(Game* game, const std::string& text,
 	mNextButtonPos = Vector2(0.0f, 0.0f);
 
 	// 背景のテクスチャを設定
-	mBackground = mGame->GetRenderer()->GetTexture("Assets/DialogBG.png");
+	mBackground = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/DialogBG.png");
 	SetTitle(text, Vector3::Zero, 30);
 
 	// ボタンの設定

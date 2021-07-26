@@ -11,6 +11,12 @@ class Texture;
 class TargetComponent;
 #pragma endregion
 
+// テクスチャ画像のファイルパス
+#define HEALTHBAR_BACK_FILEPATH  "Assets/Textures/UI/HealthBarBack.png"  // 体力ゲージ背景
+#define HEALTHBAR_FILEPATH       "Assets/Textures/UI/HealthBar.png"      // 体力ゲージ
+#define HEALTHBAR_EMPTY_FILEPATH "Assets/Textures/UI/HealthBarEmpty.png" // 体力ゲージ減少部分
+#define HUD_BACK                 "Assets/Textures/UI/HUD_Back.png"       // HUD背景
+
 class HUD : public UIScreen
 {
 public:

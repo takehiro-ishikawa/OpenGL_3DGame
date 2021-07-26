@@ -47,7 +47,7 @@ void StartScene::LoadSceneData()
 	dir.mSpecColor = Vector3(0.8f, 0.8f, 0.8f);
 
 	// 点光源メッシュをロード
-	Mesh* pointLightMesh = mGame->GetRenderer()->GetMesh("Assets/Sphere.fbx");
+	Mesh* pointLightMesh = mGame->GetRenderer()->GetMesh("Assets/Models/Sphere.fbx");
 	mGame->GetRenderer()->SetPointLightMesh(pointLightMesh);
 
 	new MainMenu(mGame);
