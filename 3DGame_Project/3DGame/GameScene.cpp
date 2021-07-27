@@ -23,15 +23,14 @@ GameScene::~GameScene()
 
 void GameScene::LoadSceneData()
 {
+	// ゲームプレイ状態に設定
+	mGame->SetState(Game::GameState::EGameplay);
 	// カメラルックの相対マウスモードを有効にする
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	mGame->GetInputSystem()->SetRelativeMouseMode(true);
 	// クリアするために相対的に取得するために最初の呼び出しを行う
 	SDL_GetRelativeMouseState(nullptr, nullptr);
 
-	mGame->SetState(Game::GameState::EGameplay);
-	mGame->GetInputSystem()->SetRelativeMouseMode(true);
-
-	// 操作するプレイヤー代わりのアクターの作成
+	// プレイヤーの生成
 	Player* player = new Player(mGame);
 	mGame->SetPlayer(player);
 

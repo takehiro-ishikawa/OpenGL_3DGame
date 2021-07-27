@@ -7,14 +7,19 @@
 MainMenu::MainMenu(Game* game)
 	:UIScreen(game)
 {
-	mGame->SetState(Game::GameState::EPaused);
+	// 非ポーズ中でも入力を受け取るように設定
+	mIsInputAccept = true;
+
+	// マウスの相対モードをOFFにしてカーソルを非表示
+	SDL_ShowCursor(SDL_DISABLE);
 	mGame->GetInputSystem()->SetRelativeMouseMode(false);
+
 	SetTitle("[ 3D GAME ]");
 	AddButton("Start", [this]() {
 		LoadGameScene();
 	});
 	AddButton("Quit", [this]() {
-		new DialogBox(mGame, "Quit?", [this]() {mGame->SetState(Game::GameState::EQuit); });
+		new DialogBox(mGame, "Quit?", mIsInputAccept, [this]() {mGame->SetState(Game::GameState::EQuit); });
 	});
 }
 

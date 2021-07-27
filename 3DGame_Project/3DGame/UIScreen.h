@@ -69,8 +69,9 @@ public:
 	// 状態をクロージングにする
 	void Close();
 
-	// 状態を取得
+	// ゲッター
 	UIState GetState() const { return mState; }
+	bool GetIsInputAccept() { return mIsInputAccept; } 
 
 	// タイトルの文字列を変更
 	void SetTitle(const std::string& text, const Vector3& color = Color::White, int pointSize = 40);
@@ -95,6 +96,7 @@ protected:
 	Texture* mBackground; // ボタン背景のテクスチャ
 	Texture* mButtonOn;   // 選択されているボタンのテクスチャ
 	Texture* mButtonOff;  // 選択されていないボタンのテクスチャ
+	Texture* mCursor;     // カーソル
 
 	// UIの各要素を構成する時の位置
 	Vector2 mTitlePos;
@@ -105,4 +107,9 @@ protected:
 	UIState mState;
 	// Buttonポインタ群の配列
 	std::vector<Button*> mButtons;
+
+	// 非ポーズ中に入力処理を受け付けるか？
+	bool mIsInputAccept;
+
+	Vector2 mPrevMousePos;
 };

@@ -8,6 +8,7 @@
 #include "CameraActor.h"
 #include "Player.h"
 #include "HUD.h"
+#include "Enemy.h"
 
 StartScene::StartScene(Game* game)
 	:BaseScene(game)
@@ -25,6 +26,8 @@ void StartScene::LoadSceneData()
 	mPointCamera = new CameraActor(mGame);
 
 	Actor* a;
+	a = new Enemy(mGame);
+	a->SetPosition(Vector3(1000, 0, 0));
 
 	// è∞ÇÃê›íË
 	const float start = -2500.0f;
@@ -34,7 +37,7 @@ void StartScene::LoadSceneData()
 		for (int j = 0; j < 10; j++)
 		{
 			a = new PlaneActor(mGame);
-			Vector3 pos = Vector3(start + i * size, start + j * size, 50.0f);
+			Vector3 pos = Vector3(start + i * size, start + j * size, 0);
 			a->SetPosition(pos);
 		}
 	}

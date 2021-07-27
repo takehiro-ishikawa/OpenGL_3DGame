@@ -13,13 +13,16 @@ UIScreen::UIScreen(Game* game)
 	, mTitlePos(0.0f, 300.0f)
 	, mNextButtonPos(0.0f, 200.0f)
 	, mBGPos(0.0f, 250.0f)
+	, mIsInputAccept(false)
 	, mState(EActive)
 {
 	// UI Stackに自身を追加
 	mGame->PushUI(this);
+
 	mFont = mGame->GetFont("Assets/Carlito-Regular.ttf");
 	mButtonOn = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonYellow.png");
 	mButtonOff = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonBlue.png");
+	mCursor = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/Cursor.png");
 }
 
 UIScreen::~UIScreen()
@@ -63,6 +66,11 @@ void UIScreen::Draw(Shader* shader)
 		// ボタンのテキストを描画
 		DrawTexture(shader, b->GetNameTex(), b->GetPosition());
 	}
+	// カーソルの描画
+	if (mCursor)
+	{
+		DrawTexture(shader, mCursor, mGame->GetRenderer()->GetCursorPosition());
+	}
 	// サブクラスでオーバーライドして、テクスチャを描画する
 }
 
@@ -71,16 +79,32 @@ void UIScreen::ProcessInput(const struct InputState& state)
 	// ボタンがあるか?
 	if (!mButtons.empty())
 	{
+		Vector2 cursorPos = mGame->GetRenderer()->GetCursorPosition();
+
 		// マウスの位置を取得
-		// (0,0)を中心とする座標に変換(1024×768を想定)
 		Vector2 mousePos = state.Mouse.GetPosition();
-		mousePos.x -= mGame->GetRenderer()->GetScreenWidth() * 0.5f;
-		mousePos.y = mGame->GetRenderer()->GetScreenHeight() * 0.5f - mousePos.y;
+		mousePos = mousePos - mPrevMousePos;
+		mPrevMousePos = state.Mouse.GetPosition();
+
+		InputDevice device;
+		Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
+		// コントローラかキーボードの操作があった
+		if (device == InputDevice::EController || device == InputDevice::EKeyBoard)
+		{
+			cursorPos += leftAxis * 8.0f;
+		}
+		else
+		{
+			
+			cursorPos += mousePos;
+		}
+		// カーソルの位置を設定
+		mGame->GetRenderer()->SetCursorPosition(cursorPos);
 
 		// 選択されているボタンの強調
 		for (auto b : mButtons)
 		{
-			if (b->ContainsPoint(mousePos))
+			if (b->ContainsPoint(cursorPos))
 			{
 				b->SetHighlighted(true);
 			}

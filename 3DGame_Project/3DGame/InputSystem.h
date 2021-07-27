@@ -62,7 +62,7 @@ private:
 	// マウスの位置を格納
 	Vector2 mMousePos;
 
-	// Motion of scroll wheel
+	// マウスホイールの動きを格納
 	Vector2 mScrollWheel;
 
 	// ボタンのデータを格納
@@ -152,7 +152,6 @@ struct InputState
 	// mInputMapsへの値の格納に使用するヘルパー関数
 	void SetInputMap(const std::string& actionName,
 		SDL_Scancode keyBoard, int mouseButton, SDL_GameControllerButton controllerButton);
-
 	// mAxisMapsへの値の格納に使用するヘルパー関数
 	void SetAxisMap(const std::string& axisName, SDL_Scancode verHigh, SDL_Scancode verLow,
 		SDL_Scancode horHigh, SDL_Scancode horLow, bool mouseValue, bool ctrlValue);

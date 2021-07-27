@@ -3,10 +3,11 @@
 #include "Renderer.h"
 #include <SDL/SDL.h>
 
-DialogBox::DialogBox(Game* game, const std::string& text,
-	std::function<void()> onOK)
+DialogBox::DialogBox(Game* game, const std::string& text, bool isInputAccept, std::function<void()> onOK)
 	:UIScreen(game)
 {
+	mIsInputAccept = isInputAccept;
+
 	// ダイアログボックス用に位置を調整
 	mBGPos = Vector2(0.0f, 0.0f);
 	mTitlePos = Vector2(0.0f, 100.0f);

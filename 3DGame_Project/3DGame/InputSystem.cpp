@@ -298,7 +298,6 @@ void InputSystem::Update()
 	{
 		x = 0; y = 0;
 		mIsResumed = false;
-		SDL_Log("IsResumed");
 	}
 
 	mState.Mouse.mMousePos.x = static_cast<float>(x);

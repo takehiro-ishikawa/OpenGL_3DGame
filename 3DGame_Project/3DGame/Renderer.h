@@ -84,6 +84,9 @@ public:
 	
 	void SetPointLightMesh(Mesh* mesh) { mPointLightMesh = mesh; }
 
+	Vector2 GetCursorPosition() { return mCursorPosition; }
+	void SetCursorPosition(Vector2 position) { mCursorPosition = position; }
+
 private:
 
 	// レンダリング処理のヘルパー関数
@@ -144,4 +147,7 @@ private:
 	Shader* mGPointLightShader;
 	std::vector<PointLightComponent*> mPointLights;
 	Mesh* mPointLightMesh;
+
+	// カーソル
+	Vector2 mCursorPosition;
 };

@@ -21,6 +21,7 @@ Renderer::Renderer(Game* game)
 	, mGGlobalShader(nullptr)
 	, mGBuffer(nullptr)
 	, mGPointLightShader(nullptr)
+	, mCursorPosition(Vector2::Zero)
 {
 }
 

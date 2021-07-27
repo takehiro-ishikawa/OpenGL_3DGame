@@ -4,8 +4,7 @@
 CameraActor::CameraActor(Game* game)
 :Actor(game)
 {
-	SetPosition(Vector3(0, 0, -200));
+	SetPosition(Vector3(0, 0, 400));
 
 	mCameraComp = new PointCamera(this);
-	mCameraComp->SetPitch(Math::Pi);
 }

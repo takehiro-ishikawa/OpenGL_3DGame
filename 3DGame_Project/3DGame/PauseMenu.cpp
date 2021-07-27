@@ -13,7 +13,7 @@ PauseMenu::PauseMenu(Game* game)
 	SetTitle("Pause");
 	AddButton("Resume", [this]() { Close(); });
 	AddButton("Back to Menu", [this]() {
-		new DialogBox(mGame, "Back to Menu ?", [this]() {mGame->LoadScene(new StartScene(mGame));});
+		new DialogBox(mGame, "Back to Menu ?", mIsInputAccept, [this]() {mGame->LoadScene(new StartScene(mGame));});
 	});
 }
 

@@ -126,28 +126,34 @@ void Game::ProcessInput()
 	{
 		switch (event.type)
 		{
-		case SDL_QUIT:
-			mGameState = GameState::EQuit;
-			break;
 		default:
 			break;
 		}
 	}
 
+	// デバイスからの入力情報を取得
 	mInputSystem->Update();
 	const InputState& state = mInputSystem->GetState();
 
-	// ゲームプレイ状態なら全ての入力アクションがゲームワールドに流される
+	// ゲームプレイ状態なら全ての入力アクションがゲームワールドと、UIスタックのトップにある許可されたUI画面に流される
 	if (mGameState == GameState::EGameplay)
 	{
 		mCurrentScene->HandleKeyPress(state);
 		HandleKeyPress(state);
+		// アクターへの入力
 		for (auto actor : mActors)
 		{
 			if (actor->GetState() == Actor::ActorState::EActive)
 			{
 				actor->ProcessInput(state);
 			}
+		}
+
+		// 許可されたUIへの入力
+		if (!mUIStack.empty() && mUIStack.back()->GetIsInputAccept())
+		{
+			mUIStack.back()->HandleKeyPress(state);
+			mUIStack.back()->ProcessInput(state);
 		}
 	}
 	// ポーズ状態では全ての入力アクションがUIスタックのトップにあるUI画面に流される
