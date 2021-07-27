@@ -10,9 +10,8 @@ MainMenu::MainMenu(Game* game)
 	// 非ポーズ中でも入力を受け取るように設定
 	mIsInputAccept = true;
 
-	// マウスの相対モードをOFFにしてカーソルを非表示
-	SDL_ShowCursor(SDL_DISABLE);
-	mGame->GetInputSystem()->SetRelativeMouseMode(false);
+	// マウスの相対モードを有効にする
+	mGame->GetInputSystem()->SetRelativeMouseMode(true);
 
 	SetTitle("[ 3D GAME ]");
 	AddButton("Start", [this]() {

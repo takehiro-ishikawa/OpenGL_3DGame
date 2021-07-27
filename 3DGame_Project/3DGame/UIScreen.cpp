@@ -14,6 +14,7 @@ UIScreen::UIScreen(Game* game)
 	, mNextButtonPos(0.0f, 200.0f)
 	, mBGPos(0.0f, 250.0f)
 	, mIsInputAccept(false)
+	, mCursorMovePos(Vector2::Zero)
 	, mState(EActive)
 {
 	// UI Stackに自身を追加
@@ -42,7 +43,30 @@ UIScreen::~UIScreen()
 
 void UIScreen::Update(float deltaTime)
 {
+	// ボタンがあるか?
+	if (!mButtons.empty())
+	{
+		// カーソルの位置を取得
+		Vector2 cursorPos = mGame->GetRenderer()->GetCursorPosition();
+		// 移動量を加算する
+		if (mIsInputMouse) cursorPos += mCursorMovePos;
+		else cursorPos += mCursorMovePos * CURSOR_SPEED * deltaTime;
+		// カーソルの位置を設定
+		mGame->GetRenderer()->SetCursorPosition(cursorPos);
 
+		// 選択されているボタンの強調
+		for (auto b : mButtons)
+		{
+			if (b->ContainsPoint(cursorPos))
+			{
+				b->SetHighlighted(true);
+			}
+			else
+			{
+				b->SetHighlighted(false);
+			}
+		}
+	}
 }
 
 void UIScreen::Draw(Shader* shader)
@@ -79,50 +103,35 @@ void UIScreen::ProcessInput(const struct InputState& state)
 	// ボタンがあるか?
 	if (!mButtons.empty())
 	{
-		Vector2 cursorPos = mGame->GetRenderer()->GetCursorPosition();
-
-		// マウスの位置を取得
-		Vector2 mousePos = state.Mouse.GetPosition();
-		mousePos = mousePos - mPrevMousePos;
-		mPrevMousePos = state.Mouse.GetPosition();
-
 		InputDevice device;
 		Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
-		// コントローラかキーボードの操作があった
+		// コントローラかキーボードの入力があった場合
 		if (device == InputDevice::EController || device == InputDevice::EKeyBoard)
 		{
-			cursorPos += leftAxis * 8.0f;
+			// コントローラかキーボードからの入力値を移動量として設定
+			mCursorMovePos = leftAxis;
+			mIsInputMouse = false;
 		}
 		else
 		{
-			
-			cursorPos += mousePos;
-		}
-		// カーソルの位置を設定
-		mGame->GetRenderer()->SetCursorPosition(cursorPos);
-
-		// 選択されているボタンの強調
-		for (auto b : mButtons)
-		{
-			if (b->ContainsPoint(cursorPos))
-			{
-				b->SetHighlighted(true);
-			}
-			else
-			{
-				b->SetHighlighted(false);
-			}
+			// マウスの相対座標を移動量として設定
+			Vector2 mousePos = state.Mouse.GetPosition();
+			mousePos.y *= -1; // Y成分を反転
+			mCursorMovePos = mousePos;
+			mIsInputMouse = true;
 		}
 	}
 }
 
 void UIScreen::HandleKeyPress(const struct InputState& state)
 {
-	// マウスが左クリックされた時
-	if (state.Mouse.GetButtonState(SDL_BUTTON_LEFT) == ButtonState::EPressed)
+	// 決定キーが押された時
+	if (state.GetMappedButtonState(INPUT_OK) == ButtonState::EPressed)
 	{
+		// ボタンがあるか？
 		if (!mButtons.empty())
 		{
+			// カーソルが範囲内に入っていたボタンのOnClick()を実行する
 			for (auto b : mButtons)
 			{
 				if (b->GetHighlighted())
@@ -144,7 +153,7 @@ void UIScreen::SetTitle(const std::string& text,
 	const Vector3& color,
 	int pointSize)
 {
-	// Clear out previous title texture if it exists
+	// 以前のタイトルテクスチャが存在する場合はクリアする
 	if (mTitle)
 	{
 		mTitle->Unload();

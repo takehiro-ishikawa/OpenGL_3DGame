@@ -5,6 +5,8 @@
 #include <functional>
 #include <vector>
 
+#define CURSOR_SPEED 500.0f
+
 #pragma region プロトタイプ宣言
 class Font;
 class Texture;
@@ -111,5 +113,8 @@ protected:
 	// 非ポーズ中に入力処理を受け付けるか？
 	bool mIsInputAccept;
 
-	Vector2 mPrevMousePos;
+	// カーソルの移動量
+	Vector2 mCursorMovePos;
+	// マウスからの入力があったか？
+	bool mIsInputMouse;
 };

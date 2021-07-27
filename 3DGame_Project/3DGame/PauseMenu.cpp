@@ -9,7 +9,7 @@ PauseMenu::PauseMenu(Game* game)
 	:UIScreen(game)
 {
 	mGame->SetState(Game::GameState::EPaused);
-	mGame->GetInputSystem()->SetRelativeMouseMode(false);
+	mGame->GetInputSystem()->SetRelativeMouseMode(true);
 	SetTitle("Pause");
 	AddButton("Resume", [this]() { Close(); });
 	AddButton("Back to Menu", [this]() {
@@ -28,7 +28,7 @@ void PauseMenu::HandleKeyPress(const struct InputState& state)
 {
 	UIScreen::HandleKeyPress(state);
 
-	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == ButtonState::EReleased)
+	if (state.GetMappedButtonState(INPUT_MENU) == ButtonState::EPressed)
 	{
 		Close();
 	}

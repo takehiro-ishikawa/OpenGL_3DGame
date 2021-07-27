@@ -15,6 +15,8 @@
 #define INPUT_SPRINT       "Sprint"
 #define INPUT_FIRE         "Fire"
 #define INPUT_FIRE_STANDBY "FireStandBy"
+#define INPUT_OK           "OK"
+#define INPUT_MENU         "Menu"
 
 // ƒ{ƒ^ƒ“‚Ì“ü—Íó‘Ô
 enum class ButtonState

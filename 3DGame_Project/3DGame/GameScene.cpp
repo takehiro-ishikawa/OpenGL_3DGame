@@ -101,7 +101,7 @@ void GameScene::LoadSceneData()
 
 void GameScene::HandleKeyPress(const struct InputState& state)
 {
-	if (state.Keyboard.GetKeyState(SDL_SCANCODE_ESCAPE) == ButtonState::EReleased)
+	if (state.GetMappedButtonState(INPUT_MENU) == ButtonState::EPressed)
 	{
 		// PauseMenu‚ğì¬‚·‚é
 		new PauseMenu(mGame);
