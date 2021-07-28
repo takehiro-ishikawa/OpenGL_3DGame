@@ -15,8 +15,6 @@ Bullet::Bullet(Game* game, CharacterTag target)
 	
 	mMeshComp = new MeshComponent(this, false);
 	mMoveComp = new BulletMove(this, target);
-	mMoveComp->SetMoveSpeed(Vector2(0, BULLET_SPEED));
-
 	mAudioComp = new AudioComponent(this);
 	mPointLight = new PointLightComponent(this);
 }

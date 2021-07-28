@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "MeshComponent.h"
 #include "PlaneActor.h"
+#include "Room.h"
 #include "Renderer.h"
 #include "SpriteComponent.h"
 #include "HUD.h"
@@ -38,50 +39,14 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
-	for (int i = 0; i < 1; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		a = new Enemy(mGame);
 		a->SetPosition(Vector3(1000, -1200 + (i * 300), 0));
 	}
 
-	// è∞ÇÃê›íË
-	const float start = -2500.0f;
-	const float size = 500.0f;
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			a = new PlaneActor(mGame);
-			Vector3 pos = Vector3(start + i * size, start + j * size, 0.0f);
-			a->SetPosition(pos);
-		}
-	}
-
-	// ç∂/âEÇÃï«
-	q = Quaternion(Vector3::UnitX, Math::PiOver2);
-	for (int i = 0; i < 10; i++)
-	{
-		a = new PlaneActor(mGame);
-		a->SetPosition(Vector3(start + i * size, start - size * 0.5f, 0.0f));
-		a->SetRotation(q);
-
-		a = new PlaneActor(mGame);
-		a->SetPosition(Vector3(start + i * size, -start - size * 0.5f, 0.0f));
-		a->SetRotation(q);
-	}
-
-	q = Quaternion::Concatenate(q, Quaternion(Vector3::UnitZ, Math::PiOver2));
-	// ëOï«/å„ï«
-	for (int i = 0; i < 10; i++)
-	{
-		a = new PlaneActor(mGame);
-		a->SetPosition(Vector3(start - size * 0.5f, start + i * size, 0.0f));
-		a->SetRotation(q);
-
-		a = new PlaneActor(mGame);
-		a->SetPosition(Vector3(-start - size * 0.5f, start + i * size, 0.0f));
-		a->SetRotation(q);
-	}
+	// ïîâÆÇÃê∂ê¨
+	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 0));	
 
 	// ïΩçsåıåπÇÃê›íË
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

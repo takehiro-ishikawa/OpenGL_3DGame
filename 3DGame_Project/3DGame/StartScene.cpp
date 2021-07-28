@@ -4,7 +4,7 @@
 #include "MeshComponent.h"
 #include "Renderer.h"
 #include "InputSystem.h"
-#include "PlaneActor.h"
+#include "Room.h"
 #include "CameraActor.h"
 #include "Player.h"
 #include "HUD.h"
@@ -26,24 +26,12 @@ void StartScene::LoadSceneData()
 	mPointCamera = new CameraActor(mGame);
 
 	Actor* a;
-	a = new Enemy(mGame);
-	a->SetPosition(Vector3(1000, 0, 0));
 
-	// è∞ÇÃê›íË
-	const float start = -2500.0f;
-	const float size = 500.0f;
-	for (int i = 0; i < 10; i++)
-	{
-		for (int j = 0; j < 10; j++)
-		{
-			a = new PlaneActor(mGame);
-			Vector3 pos = Vector3(start + i * size, start + j * size, 0);
-			a->SetPosition(pos);
-		}
-	}
+	// ïîâÆÇÃê∂ê¨
+	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 0));
 
 	// ïΩçsåıåπÇÃê›íË
-	mGame->GetRenderer()->SetAmbientLight(Vector3(0.6f, 0.6f, 0.6f));
+	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));
 	DirectionalLight& dir = mGame->GetRenderer()->GetDirectionalLight();
 	dir.mDirection = Vector3(-0.17f, -0.55f, -0.55f);
 	dir.mDiffuseColor = Vector3(0.7f, 0.7f, 0.7f);

@@ -5,12 +5,12 @@
 #include "BoxComponent.h"
 #include "Mesh.h"
 
-PlaneActor::PlaneActor(Game* game)
+PlaneActor::PlaneActor(Game* game, float scale)
 	:Actor(game)
 {
-	SetScale(25.0f);
+	SetScale(scale);
 	MeshComponent* mc = new MeshComponent(this, false);
-	Mesh* mesh = GetGame()->GetRenderer()->GetMesh("Assets/Models/Ground.fbx");
+	Mesh* mesh = GetGame()->GetRenderer()->GetMesh("Assets/Models/GrayFloor.fbx");
 	mc->SetMesh(mesh);
 
 	// コリジョンボックスを追加

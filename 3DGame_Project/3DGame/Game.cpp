@@ -32,6 +32,7 @@ Game::Game()
 	, mGameState(GameState::EPaused)
 	, mUpdatingActors(false)
 	, mCurrentScene(nullptr)
+	, mWaitTime(16.0f)
 {
 	
 }
@@ -81,6 +82,9 @@ bool Game::Initialize()
 		SDL_Log("Failed to initialize SDL_ttf");
 		return false;
 	}
+
+	// 設定したフレームレートからmWaitTimeを計算する
+	mWaitTime = static_cast<int>(1 / FRAME_RATE * 1000);
 
 	mTicksCount = SDL_GetTicks();
 
@@ -186,8 +190,8 @@ void Game::HandleKeyPress(const struct InputState& state)
 
 void Game::UpdateGame()
 {
-	// フレーム制限(最後のフレームから16msが経過するまで待つ)
-	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+	// フレーム制限(最後のフレームからmWaitTimeミリ秒が経過するまで待つ)
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + mWaitTime));
 
 	// デルタタイムを計算
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;

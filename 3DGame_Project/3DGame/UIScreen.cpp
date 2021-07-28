@@ -11,7 +11,6 @@ UIScreen::UIScreen(Game* game)
 	, mTitle(nullptr)
 	, mBackground(nullptr)
 	, mTitlePos(0.0f, 300.0f)
-	, mNextButtonPos(0.0f, 200.0f)
 	, mBGPos(0.0f, 250.0f)
 	, mIsInputAccept(false)
 	, mCursorMovePos(Vector2::Zero)
@@ -163,16 +162,12 @@ void UIScreen::SetTitle(const std::string& text,
 	mTitle = mFont->RenderText(text, color, pointSize);
 }
 
-void UIScreen::AddButton(const std::string& name, std::function<void()> onClick)
+void UIScreen::AddButton(const std::string& name, Vector2 pos, std::function<void()> onClick)
 {
 	Vector2 dims(static_cast<float>(mButtonOn->GetWidth()),
 		         static_cast<float>(mButtonOn->GetHeight()));
-	Button* b = new Button(name, mFont, onClick, mNextButtonPos, dims);
+	Button* b = new Button(name, mFont, onClick, pos, dims);
 	mButtons.emplace_back(b);
-
-	// 次のボタンの位置を更新
-	// ボタンの高さ + 余白の分だけ位置を下げる
-	mNextButtonPos.y -= mButtonOff->GetHeight() + 20.0f;
 }
 
 void UIScreen::DrawTexture(class Shader* shader, class Texture* texture,

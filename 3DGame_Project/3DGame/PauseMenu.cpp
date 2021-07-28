@@ -10,9 +10,10 @@ PauseMenu::PauseMenu(Game* game)
 {
 	mGame->SetState(Game::GameState::EPaused);
 	mGame->GetInputSystem()->SetRelativeMouseMode(true);
+	mTitlePos = PAUSE_TITLE_POSITION;
 	SetTitle("Pause");
-	AddButton("Resume", [this]() { Close(); });
-	AddButton("Back to Menu", [this]() {
+	AddButton("Resume", PAUSE_RESUME_POSITION, [this]() { Close(); });
+	AddButton("Back to Menu", PAUSE_BACKMENU_POSITION, [this]() {
 		new DialogBox(mGame, "Back to Menu ?", mIsInputAccept, [this]() {mGame->LoadScene(new StartScene(mGame));});
 	});
 }

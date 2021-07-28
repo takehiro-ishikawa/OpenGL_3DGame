@@ -22,7 +22,8 @@
 
 #define PLAYER_MAX_HEALTH 100.0f // 体力の最大値
 
-#define PLAYER_SHOOT_POSITION_OFFSET Vector3(50.0f, 60.0f, 130.0f);
+#define PLAYER_SHOOT_POSITION_OFFSET Vector3(50.0f, 60.0f, 130.0f) // 弾の発射位置のオフセット値
+#define PLAYER_BULLET_SPEED 5000.0f // 弾の速度
 
 #define CAMERA_NORMAL_DIST       600.0f // 通常時の所有アクターとの距離
 #define CAMERA_AIM_DIST          400.0f // 射撃時の所有アクターとの距離

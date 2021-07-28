@@ -6,6 +6,7 @@
 #include "BoxComponent.h"
 #include "AudioComponent.h"
 #include "MoveComponent.h"
+#include "BulletMove.h"
 #include "StateMachine.h"
 #include "AIState.h"
 #include "PhysWorld.h"
@@ -96,6 +97,7 @@ void Enemy::Shoot()
 	// ボールをスポーンする
 	Bullet* bullet = new Bullet(GetGame(), CharacterTag::EPlayer);
 	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(ENEMYBULLET_FILEPATH));
+	bullet->GetMoveComp()->SetMoveSpeed(Vector2(0, ENEMY_BULLET_SPEED));
 	bullet->GetPointLightComp()->mDiffuseColor = Color::Red;
 	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
 	bullet->GetPointLightComp()->mInnerRadius = 100.0f;

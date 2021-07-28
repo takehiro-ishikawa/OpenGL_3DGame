@@ -2,8 +2,7 @@
 #include "Actor.h"
 #include "Character.h"
 
-#define BULLET_LIFE 10.0f    // 消滅するまでの時間
-#define BULLET_SPEED 5000.0f // 速度
+#define BULLET_LIFE 5.0f    // 消滅するまでの時間
 
 #pragma region プロトタイプ宣言
 class Game;
@@ -21,6 +20,7 @@ public:
 	void UpdateActor(float deltaTime) override;
 	void SetPlayer(Actor* player);
 	MeshComponent* GetMeshComp() { return mMeshComp; }
+	BulletMove* GetMoveComp() { return mMoveComp; }
 	PointLightComponent* GetPointLightComp() { return mPointLight; }
 
 	void HitTarget();

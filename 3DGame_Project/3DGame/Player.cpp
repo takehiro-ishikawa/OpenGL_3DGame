@@ -1,7 +1,6 @@
 #include "Player.h"
 #include "PlayerParameters.h"
 #include "PlayerState.h"
-#include "Bullet.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
 #include "Game.h"
@@ -11,6 +10,7 @@
 #include "AudioComponent.h"
 #include "BoxComponent.h"
 #include "Bullet.h"
+#include "BulletMove.h"
 #include "SkeletalMeshComponent.h"
 #include "PhysWorld.h"
 #include "InputSystem.h"
@@ -147,8 +147,9 @@ void Player::Shoot()
 	// ボールをスポーンする
 	Bullet * bullet = new Bullet(GetGame(), CharacterTag::EEnemy);
 	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH));
+	bullet->GetMoveComp()->SetMoveSpeed(Vector2(0, PLAYER_BULLET_SPEED));
 	bullet->GetPointLightComp()->mDiffuseColor = Color::Green;
-	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
+	bullet->GetPointLightComp()->mOuterRadius = 800.0f;
 	bullet->GetPointLightComp()->mInnerRadius = 100.0f;
 	bullet->SetPlayer(this);
 	bullet->SetPosition(start);

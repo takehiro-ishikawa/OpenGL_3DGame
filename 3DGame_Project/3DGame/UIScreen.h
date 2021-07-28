@@ -78,8 +78,8 @@ public:
 	// タイトルの文字列を変更
 	void SetTitle(const std::string& text, const Vector3& color = Color::White, int pointSize = 40);
 
-	// 整列したボタンを追加する
-	void AddButton(const std::string& name, std::function<void()> onClick);
+	// ボタンを追加する
+	void AddButton(const std::string& name, Vector2 pos, std::function<void()> onClick);
 
 protected:
 	// テクスチャを描画するヘルパー関数
@@ -102,7 +102,6 @@ protected:
 
 	// UIの各要素を構成する時の位置
 	Vector2 mTitlePos;
-	Vector2 mNextButtonPos;
 	Vector2 mBGPos;
 
 	// State

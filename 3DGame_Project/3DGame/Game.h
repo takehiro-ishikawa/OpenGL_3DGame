@@ -5,8 +5,9 @@
 #include <vector>
 #include "Math.h"
 
-#define SCREEN_WIDTH  1024.0f // 画面の横幅
+#define SCREEN_WIDTH 1024.0f  // 画面の横幅
 #define SCREEN_HEIGHT 768.0f  // 画面の縦幅
+#define FRAME_RATE     60.0f  // フレームレート(FPS)
 
 #pragma region プロトタイプ宣言
 class Actor;
@@ -105,6 +106,7 @@ private:
 	Uint32 mTicksCount;   // 経過時間を保持(ミリ秒)
 	GameState mGameState; // 現在のゲームの状態
 	bool mUpdatingActors; // 現在アクターを更新しているか
+	int mWaitTime;        // ゲームの更新を待つ時間(ミリ秒)
 	float mFrameRate;     // 現在のフレームレート
 
 	// ゲーム固有のコード
