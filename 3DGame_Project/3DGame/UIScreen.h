@@ -69,7 +69,7 @@ public:
 	};
 
 	// 状態をクロージングにする
-	void Close();
+	virtual void Close();
 
 	// ゲッター
 	UIState GetState() const { return mState; }

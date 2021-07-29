@@ -135,6 +135,13 @@ void Player::SetVisible(bool visible)
 	mMeshComp->SetVisible(visible);
 }
 
+void Player::Jump()
+{
+	mAudioComp->PlayEvent(SE_JUMP);
+	mMoveComp->SetJumpSpeed(PLAYER_JUMP_SPEED);
+	mMoveComp->SetIsFall(true);
+}
+
 void Player::Shoot()
 {
 	// 開始点を取得
@@ -149,12 +156,12 @@ void Player::Shoot()
 	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH));
 	bullet->GetMoveComp()->SetMoveSpeed(Vector2(0, PLAYER_BULLET_SPEED));
 	bullet->GetPointLightComp()->mDiffuseColor = Color::Green;
-	bullet->GetPointLightComp()->mOuterRadius = 800.0f;
+	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
 	bullet->GetPointLightComp()->mInnerRadius = 100.0f;
 	bullet->SetPlayer(this);
 	bullet->SetPosition(start);
 	// ボールを回転させて新しい方向を向く
 	bullet->RotateToNewForward(GetForward());
 
-	mAudioComp->PlayEvent("event:/Shoot");
+	mAudioComp->PlayEvent(SE_SHOOT_P);
 }

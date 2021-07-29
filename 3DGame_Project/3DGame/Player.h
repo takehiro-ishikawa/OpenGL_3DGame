@@ -28,6 +28,9 @@ public:
 	TPSCamera* GetCameraComp() { return mCameraComp; }
 	bool GetIsGround() { return mIsGround; }
 
+	// ƒWƒƒƒ“ƒv
+	void Jump();
+
 	// ’e‚Ì”­ŽË
 	void Shoot();
 

@@ -30,8 +30,7 @@ void PlayerIdle::Input(const struct InputState& state)
 	{
 		if (state.GetMappedButtonState(INPUT_JUMP) == ButtonState::EPressed)
 		{
-			mPlayer->GetMoveComp()->SetJumpSpeed(PLAYER_JUMP_SPEED);
-			mPlayer->GetMoveComp()->SetIsFall(true);
+			mPlayer->Jump();
 		}
 	}
 
@@ -51,7 +50,7 @@ void PlayerIdle::Input(const struct InputState& state)
 	// ŽËŒ‚€”õƒL[“ü—Í
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
-		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
+		mPlayer->GetAudioComp()->PlayEvent(SE_SHOOT_STANDBY);
 		mPlayer->ChangeState(PLAYER_SHOOT);
 	}
 }
@@ -99,8 +98,7 @@ void PlayerWalk::Input(const struct InputState& state)
 	{
 		if (state.GetMappedButtonState(INPUT_JUMP) == ButtonState::EPressed)
 		{
-			mPlayer->GetMoveComp()->SetJumpSpeed(PLAYER_JUMP_SPEED);
-			mPlayer->GetMoveComp()->SetIsFall(true);
+			mPlayer->Jump();
 		}
 	}
 
@@ -120,7 +118,7 @@ void PlayerWalk::Input(const struct InputState& state)
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
 		// "ŽËŒ‚&•às"‚É‘JˆÚ
-		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
+		mPlayer->GetAudioComp()->PlayEvent(SE_SHOOT_STANDBY);
 		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 }
@@ -168,8 +166,7 @@ void PlayerRun::Input(const struct InputState& state)
 	{
 		if (state.GetMappedButtonState(INPUT_JUMP) == ButtonState::EPressed)
 		{
-			mPlayer->GetMoveComp()->SetJumpSpeed(PLAYER_JUMP_SPEED);
-			mPlayer->GetMoveComp()->SetIsFall(true);
+			mPlayer->Jump();
 		}
 	}
 
@@ -190,7 +187,7 @@ void PlayerRun::Input(const struct InputState& state)
 	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EPressed)
 	{
 		// "ŽËŒ‚&•às"‚É‘JˆÚ
-		mPlayer->GetAudioComp()->PlayEvent("event:/ShootStandBy");
+		mPlayer->GetAudioComp()->PlayEvent(SE_SHOOT_STANDBY);
 		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 }
@@ -202,6 +199,7 @@ void PlayerRun::Update(float deltaTime)
 
 void PlayerRun::OnEnter()
 {
+	mPlayer->GetAudioComp()->PlayEvent(SE_DASH);
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_RUN, PLAYER_FILEPATH), 1.0f);
 }
 

@@ -15,4 +15,8 @@ public:
 	~PauseMenu();
 
 	void HandleKeyPress(const struct InputState& state) override;
+	void Close() override;
+
+	// ƒƒCƒ“ƒƒjƒ…[‰æ–Ê‚É–ß‚é
+	void BackMenu();
 };

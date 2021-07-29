@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "Font.h"
 #include "InputSystem.h"
+#include "AudioSystem.h"
 
 UIScreen::UIScreen(Game* game)
 	:mGame(game)
@@ -52,19 +53,6 @@ void UIScreen::Update(float deltaTime)
 		else cursorPos += mCursorMovePos * CURSOR_SPEED * deltaTime;
 		// カーソルの位置を設定
 		mGame->GetRenderer()->SetCursorPosition(cursorPos);
-
-		// 選択されているボタンの強調
-		for (auto b : mButtons)
-		{
-			if (b->ContainsPoint(cursorPos))
-			{
-				b->SetHighlighted(true);
-			}
-			else
-			{
-				b->SetHighlighted(false);
-			}
-		}
 	}
 }
 
@@ -119,6 +107,20 @@ void UIScreen::ProcessInput(const struct InputState& state)
 			mCursorMovePos = mousePos;
 			mIsInputMouse = true;
 		}
+
+		// 選択されているボタンの強調
+		for (auto b : mButtons)
+		{
+			if (b->ContainsPoint(mGame->GetRenderer()->GetCursorPosition()))
+			{
+				if (!b->GetHighlighted()) mGame->GetAudioSystem()->PlayEvent(SE_SELECT);
+				b->SetHighlighted(true);
+			}
+			else
+			{
+				b->SetHighlighted(false);
+			}
+		}
 	}
 }
 
@@ -135,6 +137,7 @@ void UIScreen::HandleKeyPress(const struct InputState& state)
 			{
 				if (b->GetHighlighted())
 				{
+					mCursorMovePos = Vector2::Zero;
 					b->OnClick();
 					break;
 				}

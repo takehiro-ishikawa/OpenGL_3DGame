@@ -39,7 +39,7 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < 1; i++)
 	{
 		a = new Enemy(mGame);
 		a->SetPosition(Vector3(1000, -1200 + (i * 300), 0));

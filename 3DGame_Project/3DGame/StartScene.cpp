@@ -23,9 +23,8 @@ void StartScene::LoadSceneData()
 {
 	mGame->SetState(Game::GameState::EGameplay);
 
+	// ƒJƒƒ‰‚Ì¶¬
 	mPointCamera = new CameraActor(mGame);
-
-	Actor* a;
 
 	// •”‰®‚Ì¶¬
 	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 0));

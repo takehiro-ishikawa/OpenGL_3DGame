@@ -1,5 +1,6 @@
 #include "DialogBox.h"
 #include "Game.h"
+#include "AudioSystem.h"
 #include "Renderer.h"
 #include <SDL/SDL.h>
 
@@ -21,6 +22,7 @@ DialogBox::DialogBox(Game* game, const std::string& text, bool isInputAccept, st
 		onOK();
 	});
 	AddButton("Cancel", DIALOG_CANCEL_BUTTON_POS, [this]() {
+		mGame->GetAudioSystem()->PlayEvent(SE_CANCEL);
 		Close();
 	});
 }

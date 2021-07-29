@@ -3,6 +3,7 @@
 #include "DialogBox.h"
 #include <SDL/SDL.h>
 #include "InputSystem.h"
+#include "AudioSystem.h"
 #include "StartScene.h"
 
 PauseMenu::PauseMenu(Game* game)
@@ -12,10 +13,11 @@ PauseMenu::PauseMenu(Game* game)
 	mGame->GetInputSystem()->SetRelativeMouseMode(true);
 	mTitlePos = PAUSE_TITLE_POSITION;
 	SetTitle("Pause");
-	AddButton("Resume", PAUSE_RESUME_POSITION, [this]() { Close(); });
-	AddButton("Back to Menu", PAUSE_BACKMENU_POSITION, [this]() {
-		new DialogBox(mGame, "Back to Menu ?", mIsInputAccept, [this]() {mGame->LoadScene(new StartScene(mGame));});
-	});
+	AddButton("Resume",       PAUSE_RESUME_POSITION,   [this]() { Close(); });
+	AddButton("Back to Menu", PAUSE_BACKMENU_POSITION, [this]() { BackMenu(); });
+
+	// SEÄ¶
+	mGame->GetAudioSystem()->PlayEvent(SE_OK);
 }
 
 PauseMenu::~PauseMenu()
@@ -33,4 +35,21 @@ void PauseMenu::HandleKeyPress(const struct InputState& state)
 	{
 		Close();
 	}
+}
+
+void PauseMenu::Close()
+{
+	mGame->GetAudioSystem()->PlayEvent(SE_CANCEL);
+	UIScreen::Close();
+}
+
+void PauseMenu::BackMenu()
+{
+	mGame->GetAudioSystem()->PlayEvent(SE_OK);
+
+	new DialogBox(mGame, "Back to Menu ?", mIsInputAccept, [this]() 
+		{
+			mGame->GetAudioSystem()->PlayEvent(SE_OK);
+			mGame->LoadScene(new StartScene(mGame)); 
+		});
 }

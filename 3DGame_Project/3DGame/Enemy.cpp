@@ -106,7 +106,8 @@ void Enemy::Shoot()
 	// ƒ{[ƒ‹‚ð‰ñ“]‚³‚¹‚ÄV‚µ‚¢•ûŒü‚ðŒü‚­
 	bullet->RotateToNewForward(GetForward());
 
-	mAudioComp->PlayEvent("event:/Shoot");
+	// SE‚ð–Â‚ç‚·
+	mAudioComp->PlayEvent(SE_SHOOT_E);
 }
 
 bool Enemy::CheckPlayerVisible()

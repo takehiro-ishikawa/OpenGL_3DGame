@@ -4,6 +4,7 @@
 #include "InputSystem.h"
 #include "DialogBox.h"
 #include "GameScene.h"
+#include "AudioSystem.h"
 
 MainMenu::MainMenu(Game* game)
 	:UIScreen(game)
@@ -17,9 +18,11 @@ MainMenu::MainMenu(Game* game)
 	mTitle = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/Title.png");
 
 	AddButton("Start", MENU_START_BUTTON_POSITION, [this]() {
+		mGame->GetAudioSystem()->PlayEvent(SE_OK);
 		LoadGameScene();
 	});
 	AddButton("Quit", MENU_QUIT_BUTTON_POSITION, [this]() {
+		mGame->GetAudioSystem()->PlayEvent(SE_OK);
 		new DialogBox(mGame, "Quit?", mIsInputAccept, [this]() {mGame->SetState(Game::GameState::EQuit); });
 	});
 }

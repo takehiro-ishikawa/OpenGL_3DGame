@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "AudioSystem.h"
 #include <vector>
 #include <string>
 

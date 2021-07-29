@@ -4,6 +4,22 @@
 #include "SoundEvent.h"
 #include "Math.h"
 
+// サウンドの呼び出し名
+#define SE_OK             "event:/Button_OK"     // OKボタン
+#define SE_CANCEL         "event:/Button_Cancel" // キャンセルボタン
+#define SE_SELECT         "event:/ButtonSelect"  // ボタン選択
+#define SE_SHOOT_P        "event:/PlayerShoot"   // プレイヤーの弾発射音
+#define SE_SHOOT_E        "event:/EnemyShoot"    // 敵の弾発射音
+#define SE_JUMP           "event:/Jump"          // ジャンプ
+#define SE_DASH           "event:/DashStart"     // ダッシュ直後
+#define SE_FOOTSTEP_WALK  "event:/FootStep_Walk" // 歩行時の足音
+#define SE_FOOTSTEP_DASH  "event:/FootStep_Run"  // ダッシュ時の足音
+#define SE_SHOOT_STANDBY  "event:/ShootStandBy"  // 射撃体勢
+#define SE_SLASH          "event:/Slash"         // 近接攻撃
+#define SE_FOOTSTEP_ENEMY "event:/EnemyFootStep" // 敵の足音
+#define SE_ENEMY_DOWN     "event:/EnemyDown"     // 敵の倒れる音
+#define SE_ENEMY_DISCOVER "event:/EnemyDiscover" // 敵のプレイヤー発見音
+
 #pragma region プロトタイプ宣言
 class Game;
 class SoundEvent;
@@ -39,6 +55,7 @@ public:
 
 	SoundEvent PlayEvent(const std::string& name);
 
+	// ビュー行列からリスナーを設定する
 	void SetListener(const Matrix4& viewMatrix);
 
 	// バスの制御

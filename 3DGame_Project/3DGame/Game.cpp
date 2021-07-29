@@ -291,7 +291,7 @@ void Game::UnloadData()
 	}
 	mUIStack.clear();
 
-	// レンダラーを削除
+	// テクスチャ、メッシュを削除
 	if (mRenderer)
 	{
 		mRenderer->UnloadData();
