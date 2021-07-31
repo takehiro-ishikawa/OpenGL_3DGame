@@ -31,8 +31,10 @@ public:
 	SkeletalMeshComponent* GetMeshComp() { return mMeshComp; }
 	BoxComponent* GetBoxComp() { return mBoxComp; }
 	AudioComponent* GetAudioComp() { return mAudioComp; }
+	Vector3 GetCenterPosition() { return GetPosition() + mCenterOffset; }
 	float GetHealth() { return mHealth; }
 	void SetCharacterTag(CharacterTag tag) { mTag = tag; }
+	void SetCenterOffset(const Vector3& offset) { mCenterOffset = offset; }
 	void SetHealth(float value) { mHealth = value; }
 
 protected:
@@ -52,4 +54,7 @@ protected:
 
 	// 体力
 	float mHealth;
+
+	// キャラクター中心位置へのオフセット値
+	Vector3 mCenterOffset;
 };

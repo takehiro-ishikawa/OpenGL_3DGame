@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "PlayerParameters.h"
 #include "PlayerState.h"
 #include "Mesh.h"
 #include "MeshComponent.h"
@@ -35,6 +34,7 @@ Player::Player(Game* game)
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_SHOOT_WALK, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_WALK, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_RUN, PLAYER_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_ATTACK, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_IDLE, PLAYER_FILEPATH), 1.0f);
 	
 	// 他コンポーネントの生成
@@ -48,6 +48,7 @@ Player::Player(Game* game)
 	RegisterState(new PlayerRun(this));
 	RegisterState(new PlayerShoot(this));
 	RegisterState(new PlayerShootWalk(this));
+	RegisterState(new PlayerAttack(this));
 	ChangeState(PLAYER_IDLE);
 
 	// AABBの設定
@@ -56,11 +57,20 @@ Player::Player(Game* game)
 	mBoxComp->SetObjectBox(box);
 	mBoxComp->SetShouldRotate(false);
 
+	// 足音のロード
+	mWalk = mAudioComp->PlayEvent(SE_FOOTSTEP_WALK);
+	mWalk.SetPaused(true);
+	mDash = mAudioComp->PlayEvent(SE_FOOTSTEP_DASH);
+	mDash.SetPaused(true);
+
 	// 体力の設定
 	mHealth = PLAYER_MAX_HEALTH;
 
 	// タグの設定
 	mTag = CharacterTag::EPlayer;
+
+	// 中心座標の設定
+	mCenterOffset = PLAYER_CENTER_OFFSET;
 }
 
 void Player::ActorInput(const struct InputState& state)
@@ -164,4 +174,61 @@ void Player::Shoot()
 	bullet->RotateToNewForward(GetForward());
 
 	mAudioComp->PlayEvent(SE_SHOOT_P);
+}
+
+void Player::Attack()
+{
+	// 線分の作成
+	Vector3 start = GetCenterPosition();
+	Vector3 end = start + GetForward() * PLAYER_ATTACK_RANGE;
+
+	LineSegment segment(start, end);
+
+	PhysWorld* phys = GetGame()->GetPhysWorld();
+	PhysWorld::CollisionInfo info;
+
+	if (phys->SegmentCast(segment, info, this))
+	{
+		Character* target = dynamic_cast<Character*>(info.mActor);
+		// キャラクターに当たった場合
+		if (target)
+		{
+			// 当たったキャラクターが自身の標的ならダメージを与える
+			target->Damage(10.0f);
+		}
+	}
+}
+
+void Player::PlayFootStepWalk(bool isPlay)
+{
+	// 再生
+	if (isPlay)
+	{
+		if (!mWalk.GetPaused()) return;
+
+		mWalk.SetPaused(!isPlay);
+		mWalk.Restart();
+	}
+	// 停止
+	else
+	{
+		mWalk.SetPaused(!isPlay);
+	}
+}
+
+void Player::PlayFootStepDash(bool isPlay)
+{
+	// 再生
+	if (isPlay)
+	{
+		if (!mDash.GetPaused()) return;
+
+		mDash.SetPaused(!isPlay);
+		mDash.Restart();
+	}
+	// 停止
+	else
+	{
+		mDash.SetPaused(!isPlay);
+	}
 }

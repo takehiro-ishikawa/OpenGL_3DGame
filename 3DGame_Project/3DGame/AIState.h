@@ -6,10 +6,11 @@
 class Enemy;
 
 // ステート名
-#define AI_IDLE     "Idle"     // 待機
-#define AI_DEAD     "Dead"     // 死亡
-#define AI_VIGILANT "Vigilant" // 警戒
-#define AI_ATTACK   "Attack"   // 攻撃
+#define AI_IDLE     "Idle"     // 待機状態
+#define AI_DEAD     "Dead"     // 死亡状態
+#define AI_VIGILANT "Vigilant" // 警戒状態
+#define AI_ATTACK   "Attack"   // 攻撃状態
+#define AI_CHASE    "Chase"    // 追跡状態
 
 // 敵AIステートクラスの基底クラス
 class AIState : public State
@@ -107,4 +108,22 @@ public:
 
 private:
 	float mAttackSpan;
+};
+
+// "追跡"状態の敵AIのステート
+class AIChase : public AIState
+{
+public:
+	AIChase(Character* owner)
+		:AIState(owner)
+	{ }
+
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return AI_CHASE;
+	}
 };

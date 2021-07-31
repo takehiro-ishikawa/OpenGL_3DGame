@@ -11,6 +11,7 @@ MoveComponent::MoveComponent(class Actor* owner, int updateOrder)
 
 void MoveComponent::Update(float deltaTime)
 {
+	// 回転
 	if (!Math::NearZero(mAngularSpeed))
 	{
 		// 所有アクターの回転クォータニオンを取得する

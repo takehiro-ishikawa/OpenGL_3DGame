@@ -35,7 +35,7 @@ void BulletMove::Update(float deltaTime)
 			if(target->GetCharacterTag() == mTargetTag) target->Damage(1.0f);
 		}
 
-		// 自身のアクターを消滅させる
+		// 自身を消滅させる
 		mOwner->SetState(Actor::ActorState::EDead);
 	}
 

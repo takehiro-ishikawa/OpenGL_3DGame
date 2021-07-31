@@ -10,7 +10,7 @@ struct LineSegment
 	// 0 <= t <= 1‚Å‚ ‚éƒZƒOƒƒ“ƒg‚É‰ˆ‚Á‚Äƒ|ƒCƒ“ƒg‚ğæ“¾
 	Vector3 PointOnSegment(float t) const;
 
-	// point‚Æü•ª‚ÌŠÔ‚ÌÅ’Z‹——£‚Ì2æ‚ğæ“¾
+	// À•W‚Æü•ª‚ÌŠÔ‚ÌÅ’Z‹——£‚Ì2æ‚ğæ“¾
 	float MinDistSq(const Vector3& point) const;
 
 	// ü•ª‚Æü•ª‚Æ‚ÌŠÔ‚ÌÅ’Z‹——£‚ğŒvZ‚·‚é

@@ -2,6 +2,7 @@
 #include "Character.h"
 #include "StateMachine.h"
 #include "SoundEvent.h"
+#include "PlayerParameters.h"
 
 #pragma region プロトタイプ宣言
 class Game;
@@ -27,19 +28,23 @@ public:
 	PlayerMove* GetMoveComp() { return mMoveComp; }
 	TPSCamera* GetCameraComp() { return mCameraComp; }
 	bool GetIsGround() { return mIsGround; }
+	void PlayFootStepWalk(bool isPlay);
+	void PlayFootStepDash(bool isPlay);
 
 	// ジャンプ
 	void Jump();
 
 	// 弾の発射
 	void Shoot();
+	void Attack();
 
 private:
 
 	PlayerMove* mMoveComp;
 	TPSCamera* mCameraComp;
 
-	SoundEvent mWalk;
+	SoundEvent mWalk; // 足音（歩行）
+	SoundEvent mDash; // 足音（ダッシュ）
 
 	// 着地しているか
 	bool mIsGround;

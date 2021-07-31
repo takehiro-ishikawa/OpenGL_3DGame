@@ -1,7 +1,6 @@
 #include "AudioComponent.h"
 #include "Actor.h"
 #include "Game.h"
-#include "AudioSystem.h"
 
 AudioComponent::AudioComponent(Actor* owner, int updateOrder)
 	:Component(owner, updateOrder)

@@ -59,14 +59,17 @@ float LineSegment::MinDistSq(const LineSegment& s1, const LineSegment& s2)
 	float    sc, sN, sD = D;       // sc = sN / sD, default sD = D >= 0
 	float    tc, tN, tD = D;       // tc = tN / tD, default tD = D >= 0
 
-								   // compute the line parameters of the two closest points
-	if (Math::NearZero(D)) { // the lines are almost parallel
-		sN = 0.0;         // force using point P0 on segment S1
-		sD = 1.0;         // to prevent possible division by 0.0 later
+    // 最も近い2つのポイントのラインパラメータを計算する
+	// 線はほぼ平行なら
+	if (Math::NearZero(D)) 
+	{ 
+		sN = 0.0;         // セグメントS1の点P0を使用して力を加える
+		sD = 1.0;         // 後で0.0で除算される可能性を防ぐため
 		tN = e;
 		tD = c;
 	}
-	else {                 // get the closest points on the infinite lines
+	else 
+	{                 // 無限の線上で最も近い点を取得する
 		sN = (b * e - c * d);
 		tN = (a * e - b * d);
 		if (sN < 0.0) {        // sc < 0 => the s=0 edge is visible

@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "SkeletalMeshComponent.h"
 #include "MoveComponent.h"
+#include "AudioComponent.h"
 #include <iostream>
 
 AIState::AIState(Character* owner)
@@ -52,8 +53,19 @@ void AIDead::Update(float deltaTime)
 
 void AIDead::OnEnter()
 {
+	// SE再生
+	mEnemy->GetAudioComp()->PlayEvent(SE_ENEMY_DOWN);
+	// 足音は止める
+	mEnemy->PlayFootStep(false);
+
+	// 動きを止める
 	mEnemy->GetMoveComp()->SetAngularSpeed(0);
+	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
+
+	// 死亡アニメーション
 	mEnemy->GetMeshComp()->PlayAnimation(mEnemy->GetGame()->GetAnimation(ENEMY_ANIMATION_DEAD, ENEMY_FILEPATH), 1.0f);
+
+	// (ENEMY_DEADTIME)秒後に消える
 	mLifeSpan = ENEMY_DEADTIME;
 }
 
@@ -68,8 +80,10 @@ void AIDead::OnExit()
 
 void AIVigilant::Update(float deltaTime)
 {
-	if (mEnemy->CheckPlayerVisible())
+	// 視界にプレイヤーをとらえた
+	if (mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_ANGLE, ENEMY_VISIBLE_RANGE))
 	{
+		mEnemy->GetAudioComp()->PlayEvent(SE_ENEMY_DISCOVER);
 		mEnemy->ChangeState(AI_ATTACK);
 	}
 
@@ -94,6 +108,7 @@ void AIVigilant::Update(float deltaTime)
 		{
 			mRestTime = 0;
 			mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_MOVE, ENEMY_FILEPATH), 1.0f);
+			mEnemy->PlayFootStep(true);
 			mIsRotate = true;
 		}
 	}
@@ -112,6 +127,7 @@ void AIVigilant::OnExit()
 void AIVigilant::Rest()
 {
 	mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_IDLE, ENEMY_FILEPATH), 1.0f);
+	mEnemy->PlayFootStep(false);
 	mIsRotate = false;
 	mRestTime = ENEMY_RESTTIME;
 	mNextDir = mEnemy->GetRight();
@@ -123,12 +139,14 @@ void AIVigilant::Rest()
 
 void AIAttack::Update(float deltaTime)
 {
-	// プレイヤーのいる方向を向く
+	// プレイヤーの方向を向く
 	Vector3 playerDir = mEnemy->GetGame()->GetPlayer()->GetPosition() - mEnemy->GetPosition();
 	playerDir.z = 0;
 	playerDir.Normalize();
 	float angular = Vector3::Dot(mEnemy->GetRight(), playerDir);
 	mEnemy->GetMoveComp()->SetAngularSpeed(angular * ENEMY_ROTATE_SPEED);
+
+	mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_ANGLE, ENEMY_VISIBLE_RANGE);
 
 	mAttackSpan -= deltaTime;
 	if (mAttackSpan <= 0)
@@ -142,6 +160,7 @@ void AIAttack::OnEnter()
 {
 	mAttackSpan = ENEMY_ATTACK_TIME;
 	mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_IDLE, ENEMY_FILEPATH), 1.0f);
+	mEnemy->PlayFootStep(false);
 }
 
 void AIAttack::OnExit()
@@ -150,3 +169,33 @@ void AIAttack::OnExit()
 }
 
 #pragma endregion
+
+#pragma region "追跡"状態
+
+void AIChase::Update(float deltaTime)
+{
+	// プレイヤーの方向を向く
+	Vector3 playerDir = mEnemy->GetGame()->GetPlayer()->GetPosition() - mEnemy->GetPosition();
+	playerDir.z = 0;
+	playerDir.Normalize();
+	float angular = Vector3::Dot(mEnemy->GetRight(), playerDir);
+	mEnemy->GetMoveComp()->SetAngularSpeed(angular * ENEMY_ROTATE_SPEED);
+
+	// プレイヤーを補足しているか
+	//if(mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_RANGE))
+}
+
+void AIChase::OnEnter()
+{
+	// 移動速度設定
+	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2(0, ENEMY_MOVESPEED));
+}
+
+void AIChase::OnExit()
+{
+	// 停止
+	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
+}
+
+#pragma endregion
+

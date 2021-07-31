@@ -37,6 +37,11 @@ void PlayerIdle::Input(const struct InputState& state)
 	// 状態遷移の確認
 	InputDevice device;
 	Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
+	// 近接攻撃キー入力で"近接攻撃"に遷移
+	if (state.GetMappedButtonState(INPUT_ATTACK) == ButtonState::EPressed)
+	{
+		mPlayer->ChangeState(PLAYER_ATTACK);
+	}
 	// 移動キー入力
 	if (leftAxis != Vector2::Zero)
 	{
@@ -63,6 +68,7 @@ void PlayerIdle::Update(float deltaTime)
 void PlayerIdle::OnEnter()
 {
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_IDLE, PLAYER_FILEPATH), 1.0f);
+	mPlayer->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
 }
 
 void PlayerIdle::OnExit()
@@ -103,6 +109,11 @@ void PlayerWalk::Input(const struct InputState& state)
 	}
 
 	// 状態遷移の確認
+	// 近接攻撃キー入力で"近接攻撃"に遷移
+	if (state.GetMappedButtonState(INPUT_ATTACK) == ButtonState::EPressed)
+	{
+		mPlayer->ChangeState(PLAYER_ATTACK);
+	}
 	// 移動キー未入力
 	if (leftAxis == Vector2::Zero)
 	{
@@ -131,11 +142,12 @@ void PlayerWalk::Update(float deltaTime)
 void PlayerWalk::OnEnter()
 {
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_WALK, PLAYER_FILEPATH), 1.0f);
+	mPlayer->PlayFootStepWalk(true);
 }
 
 void PlayerWalk::OnExit()
 {
-
+	mPlayer->PlayFootStepWalk(false);
 }
 
 #pragma endregion
@@ -171,6 +183,11 @@ void PlayerRun::Input(const struct InputState& state)
 	}
 
 	// 状態遷移の確認
+	// 近接攻撃キー入力で"近接攻撃"に遷移
+	if (state.GetMappedButtonState(INPUT_ATTACK) == ButtonState::EPressed)
+	{
+		mPlayer->ChangeState(PLAYER_ATTACK);
+	}
 	// 移動キー未入力
 	if (leftAxis == Vector2::Zero)
 	{
@@ -201,11 +218,12 @@ void PlayerRun::OnEnter()
 {
 	mPlayer->GetAudioComp()->PlayEvent(SE_DASH);
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_RUN, PLAYER_FILEPATH), 1.0f);
+	mPlayer->PlayFootStepDash(true);
 }
 
 void PlayerRun::OnExit()
 {
-
+	mPlayer->PlayFootStepDash(false);
 }
 
 #pragma endregion
@@ -230,6 +248,11 @@ void PlayerShoot::Input(const struct InputState& state)
 	// 状態遷移の確認
 	InputDevice device;
 	Vector2 leftAxis = state.GetMappedAxis(INPUT_LEFT_AXIS, device);
+	// 近接攻撃キー入力で"近接攻撃"に遷移
+	if (state.GetMappedButtonState(INPUT_ATTACK) == ButtonState::EPressed)
+	{
+		mPlayer->ChangeState(PLAYER_ATTACK);
+	}
 	// 移動キー入力
 	if (leftAxis != Vector2::Zero)
 	{
@@ -237,7 +260,7 @@ void PlayerShoot::Input(const struct InputState& state)
 		mPlayer->ChangeState(PLAYER_SHOOTWALK);
 	}
 	// 射撃準備キーが放された
-	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EReleased)
+	else if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::ENone)
 	{
 		// "待機"に遷移
 		mPlayer->ChangeState(PLAYER_IDLE);
@@ -298,8 +321,13 @@ void PlayerShootWalk::Input(const struct InputState& state)
 	}
 
 	// 状態遷移の確認
+	// 近接攻撃キー入力で"近接攻撃"に遷移
+	if (state.GetMappedButtonState(INPUT_ATTACK) == ButtonState::EPressed)
+	{
+		mPlayer->ChangeState(PLAYER_ATTACK);
+	}
 	// 射撃準備キーが放された
-	if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::EReleased)
+	if (state.GetMappedButtonState(INPUT_FIRE_STANDBY) == ButtonState::ENone)
 	{
 		// "待機"に遷移
 		mPlayer->ChangeState(PLAYER_IDLE);
@@ -324,6 +352,7 @@ void PlayerShootWalk::OnEnter()
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_AIM_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_AIM_YAWSPEED);
 	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_SHOOT_WALK, PLAYER_FILEPATH), 1.0f);
+	mPlayer->PlayFootStepWalk(true);
 }
 
 void PlayerShootWalk::OnExit()
@@ -333,6 +362,49 @@ void PlayerShootWalk::OnExit()
 	mPlayer->GetCameraComp()->SetIdealOffsetPos(CAMERA_NORMAL_OFFSETPOS);
 	mPlayer->GetCameraComp()->SetMaxPitchSpeed(CAMERA_NORMAL_PITCHSPEED);
 	mPlayer->GetCameraComp()->SetMaxYawSpeed(CAMERA_NORMAL_YAWSPEED);
+	mPlayer->PlayFootStepWalk(false);
+}
+
+#pragma endregion
+
+
+#pragma region "近接攻撃"状態
+
+void PlayerAttack::Input(const struct InputState& state)
+{
+
+}
+
+void PlayerAttack::Update(float deltaTime)
+{
+	if (mAttackTime > 0)
+	{
+		mAttackTime -= deltaTime;
+		if (mAttackTime < 0) mPlayer->Attack();
+	}
+
+	mEndTime -= deltaTime;
+	if (mEndTime < 0) mPlayer->ChangeState(PLAYER_IDLE);
+}
+
+void PlayerAttack::OnEnter()
+{
+	// 移動と回転は0にする
+	mPlayer->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
+	mPlayer->GetMoveComp()->SetAngularSpeed(0);
+
+	// 近接攻撃アニメーションとSE再生
+	mPlayer->GetAudioComp()->PlayEvent(SE_SLASH);
+	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_ATTACK, PLAYER_FILEPATH), 1.0f);
+
+	// 攻撃発生と終了のタイミングを設定
+	mAttackTime = PLAYER_ATTACK_TIME;
+	mEndTime = PLAYER_ATTACK_END_TIME;
+}
+
+void PlayerAttack::OnExit()
+{
+
 }
 
 #pragma endregion

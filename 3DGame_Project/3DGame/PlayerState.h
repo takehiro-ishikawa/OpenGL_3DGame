@@ -6,12 +6,14 @@
 class Player;
 
 // ステート名
-#define PLAYER_IDLE      "Idle"      // 待機
-#define PLAYER_WALK      "Walk"      // 歩行
-#define PLAYER_RUN       "Run"       // ダッシュ
-#define PLAYER_SHOOT     "Shoot"     // 射撃
-#define PLAYER_SHOOTWALK "ShootWalk" // 射撃&歩行
+#define PLAYER_IDLE      "Idle"      // 待機状態
+#define PLAYER_WALK      "Walk"      // 歩行状態
+#define PLAYER_RUN       "Run"       // ダッシュ状態
+#define PLAYER_SHOOT     "Shoot"     // 射撃状態
+#define PLAYER_SHOOTWALK "ShootWalk" // 射撃&歩行状態
+#define PLAYER_ATTACK    "Attack"    // 近接攻撃状態
 
+// プレイヤーステートの基底クラス
 class PlayerState : public State
 {
 public:
@@ -21,6 +23,7 @@ protected:
 	Player* mPlayer;
 };
 
+// "待機"状態
 class PlayerIdle : public PlayerState
 {
 public:
@@ -39,6 +42,7 @@ public:
 	}
 };
 
+// "歩行"状態
 class PlayerWalk : public PlayerState
 {
 public:
@@ -57,6 +61,7 @@ public:
 	}
 };
 
+// "ダッシュ"状態
 class PlayerRun : public PlayerState
 {
 public:
@@ -75,6 +80,7 @@ public:
 	}
 };
 
+// "射撃"状態
 class PlayerShoot : public PlayerState
 {
 public:
@@ -93,6 +99,7 @@ public:
 	}
 };
 
+// "射撃&歩行"状態
 class PlayerShootWalk : public PlayerState
 {
 public:
@@ -109,4 +116,29 @@ public:
 	{
 		return PLAYER_SHOOTWALK;
 	}
+};
+
+// "近接攻撃"状態
+class PlayerAttack : public PlayerState
+{
+public:
+    PlayerAttack(Character* owner)
+		:PlayerState(owner)
+		, mAttackTime(0)
+		, mEndTime(0)
+	{ }
+
+	void Input(const struct InputState& state) override;
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return PLAYER_ATTACK;
+	}
+
+private:
+	float mAttackTime;
+	float mEndTime;
 };

@@ -73,16 +73,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>..\External\FBX SDK\2020.2\lib\vs2019\x86\debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\lib\vs2019\$(PlatformShortName)\$(Configuration);..\..\External\SDL\lib\win\x86;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\include;..\External\SDL\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\lib\vs2019\$(PlatformShortName)\$(Configuration);..\..\External\SDL\lib\win\x86;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\include;..\External\SDL\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\lib\vs2019\$(PlatformShortName)\$(Configuration);..\..\External\SDL\lib\win\x86;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\include;..\External\SDL\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\lib\vs2019\$(PlatformShortName)\$(Configuration);..\..\External\SDL\lib\win\x86;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2020.2\include;..\External\SDL\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -90,7 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\External\SDL\include;packages\rapidjson.1.0.2\build\native\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;..\..\External\FBX SDK\2020.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\External\SDL\include;packages\rapidjson.1.0.2\build\native\include;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -113,7 +120,7 @@ xcopy "..\..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\External\SDL\include;packages\rapidjson.1.0.2\build\native\include;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;..\External\FBX SDK\2020.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\External\SDL\include;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\inc;..\External\FMOD SoundSystem\FMOD Studio API Windows\api\lowlevel\inc;..\External\FBX SDK\2020.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>

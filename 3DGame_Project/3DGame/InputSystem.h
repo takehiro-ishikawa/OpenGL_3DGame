@@ -15,6 +15,7 @@
 #define INPUT_SPRINT       "Sprint"
 #define INPUT_FIRE         "Fire"
 #define INPUT_FIRE_STANDBY "FireStandBy"
+#define INPUT_ATTACK       "Attack"
 #define INPUT_OK           "OK"
 #define INPUT_MENU         "Menu"
 
@@ -185,6 +186,9 @@ public:
 	void SetIsResumed(bool value) { mIsResumed = value; }
 
 private:
+	// 入力アクション名とそれに対応するデバイス毎のボタン定数の定義を設定する
+	void SetUpInputMap();
+
 	float Filter1D(int input);                // トリガー入力の値にフィルターをかける
 	Vector2 Filter2D(int inputX, int inputY); // アナログスティック入力の値にフィルターをかける
 

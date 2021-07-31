@@ -10,6 +10,7 @@
 Character::Character(Game* game)
 	:Actor(game)
 	,mTag(CharacterTag::ENone)
+	,mCenterOffset(Vector3::Zero)
 {
 	mMeshComp = new SkeletalMeshComponent(this);
 	mAudioComp = new AudioComponent(this);
@@ -18,17 +19,26 @@ Character::Character(Game* game)
 
 bool Character::CheckGround()
 {
-	// 線分の作成
-	Vector3 start = GetPosition();
-	start.z += CHECKGROUND_OFFSET;
-	Vector3 end = start + Vector3::UnitZ * -CHECKGROUND_RENGE;
-
-	LineSegment segment(start, end);
-
 	PhysWorld* phys = GetGame()->GetPhysWorld();
 	PhysWorld::CollisionInfo info;
 
-	return phys->SegmentCast(segment, info, this);
+	// 自身のAABBの最下端の2点を線分の始点とし、それぞれで交差判定を行う
+	Vector3 start[2];
+	start[0] = mBoxComp->GetWorldBox().mMin; start[0].z += CHECKGROUND_OFFSET;
+	start[1] = mBoxComp->GetWorldBox().mMax; start[1].z = mBoxComp->GetWorldBox().mMin.z + CHECKGROUND_OFFSET;
+	for (int i = 0; i < 2; i++)
+	{
+		Vector3 end = start[i] + Vector3::UnitZ * -CHECKGROUND_RENGE;
+
+		// 線分を作成
+		LineSegment segment(start[i], end);
+
+		// 線分とボックスのどれかが交差しているなら着地しているとみなす
+		if (phys->SegmentCast(segment, info, this)) return true;
+	}
+
+	// ボックスのどれとも交差していないなら着地していない
+	return false;
 }
 
 void Character::FixCollisions()
