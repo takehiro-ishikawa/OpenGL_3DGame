@@ -19,6 +19,7 @@
 #define SE_FOOTSTEP_ENEMY "event:/EnemyFootStep" // 敵の足音
 #define SE_ENEMY_DOWN     "event:/EnemyDown"     // 敵の倒れる音
 #define SE_ENEMY_DISCOVER "event:/EnemyDiscover" // 敵のプレイヤー発見音
+#define SE_HIT_ENEMY      "event:/HitEnemy"      // 敵に攻撃が当たった音
 
 #pragma region プロトタイプ宣言
 class Game;

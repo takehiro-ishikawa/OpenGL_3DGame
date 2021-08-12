@@ -12,6 +12,7 @@ class Player;
 #define PLAYER_SHOOT     "Shoot"     // 射撃状態
 #define PLAYER_SHOOTWALK "ShootWalk" // 射撃&歩行状態
 #define PLAYER_ATTACK    "Attack"    // 近接攻撃状態
+#define PLAYER_DEAD      "Dead"      // 死亡状態
 
 // プレイヤーステートの基底クラス
 class PlayerState : public State
@@ -141,4 +142,26 @@ public:
 private:
 	float mAttackTime;
 	float mEndTime;
+};
+
+// "死亡"状態
+class PlayerDead : public PlayerState
+{
+public:
+	PlayerDead(Character* owner)
+		:PlayerState(owner)
+		,mTimeCount(0)
+	{ }
+
+	void Update(float deltaTime) override;
+	void OnEnter() override;
+	void OnExit() override;
+
+	const char* GetName() const override
+	{
+		return PLAYER_DEAD;
+	}
+
+private:
+	float mTimeCount;
 };

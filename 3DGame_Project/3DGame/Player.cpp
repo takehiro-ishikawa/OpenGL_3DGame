@@ -36,6 +36,7 @@ Player::Player(Game* game)
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_RUN, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_ATTACK, PLAYER_FILEPATH), 1.0f);
 	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_IDLE, PLAYER_FILEPATH), 1.0f);
+	mMeshComp->PlayAnimation(game->GetAnimation(PLAYER_ANIMATION_DEAD, PLAYER_FILEPATH), 1.0f);
 	
 	// 他コンポーネントの生成
 	mMoveComp = new PlayerMove(this);
@@ -49,6 +50,7 @@ Player::Player(Game* game)
 	RegisterState(new PlayerShoot(this));
 	RegisterState(new PlayerShootWalk(this));
 	RegisterState(new PlayerAttack(this));
+	RegisterState(new PlayerDead(this));
 	ChangeState(PLAYER_IDLE);
 
 	// AABBの設定
@@ -137,7 +139,10 @@ void Player::Damage(float value)
 
 void Player::Dead()
 {
-
+	if (typeid(*mCurrentState) != typeid(PlayerDead))
+	{
+		ChangeState(PLAYER_DEAD);
+	}
 }
 
 void Player::SetVisible(bool visible)
@@ -162,13 +167,12 @@ void Player::Shoot()
 	start.z += offset.z;
 	
 	// ボールをスポーンする
-	Bullet * bullet = new Bullet(GetGame(), CharacterTag::EEnemy);
+	Bullet * bullet = new Bullet(GetGame(), this, CharacterTag::EEnemy, PLAYER_BULLET_DAMAGE);
 	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH));
 	bullet->GetMoveComp()->SetMoveSpeed(Vector2(0, PLAYER_BULLET_SPEED));
 	bullet->GetPointLightComp()->mDiffuseColor = Color::Green;
-	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
-	bullet->GetPointLightComp()->mInnerRadius = 100.0f;
-	bullet->SetPlayer(this);
+	bullet->GetPointLightComp()->mOuterRadius = PLAYER_BULLET_LIGHT_OUTER;
+	bullet->GetPointLightComp()->mInnerRadius = PLAYER_BULLET_LIGHT_INNER;
 	bullet->SetPosition(start);
 	// ボールを回転させて新しい方向を向く
 	bullet->RotateToNewForward(GetForward());
@@ -193,6 +197,8 @@ void Player::Attack()
 		// キャラクターに当たった場合
 		if (target)
 		{
+			// SE再生
+			mAudioComp->PlayEvent(SE_HIT_ENEMY);
 			// 当たったキャラクターが自身の標的ならダメージを与える
 			target->Damage(10.0f);
 		}

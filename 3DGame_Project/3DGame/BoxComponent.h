@@ -14,9 +14,9 @@ public:
 
 	void OnUpdateWorldTransform() override;
 
+	// ゲッター/セッター
 	void SetObjectBox(const AABB& model) { mObjectBox = model; }
 	const AABB& GetWorldBox() const { return mWorldBox; }
-
 	void SetShouldRotate(bool value) { mShouldRotate = value; }
 
 private:

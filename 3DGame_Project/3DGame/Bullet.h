@@ -15,15 +15,15 @@ class PointLightComponent;
 class Bullet : public Actor
 {
 public:
-	Bullet(Game* game, CharacterTag target);
+	Bullet(Game* game, Actor* bulletOwner, CharacterTag target, float damage);
 
 	void UpdateActor(float deltaTime) override;
-	void SetPlayer(Actor* player);
 	MeshComponent* GetMeshComp() { return mMeshComp; }
 	BulletMove* GetMoveComp() { return mMoveComp; }
 	PointLightComponent* GetPointLightComp() { return mPointLight; }
 
-	void HitTarget();
+	// –½’†‚ÉŒÄ‚Ô
+	void HitTarget(Character* target);
 
 private:
 	MeshComponent* mMeshComp;
@@ -31,6 +31,6 @@ private:
 	AudioComponent* mAudioComp;
 	PointLightComponent* mPointLight;
 
-	// Á–Å‚·‚é‚Ü‚Å‚ÌŠÔ
-	float mLifeSpan;
+	float mDamage;   // –½’†‚É‘ÎÛ‚É—^‚¦‚éƒ_ƒ[ƒW
+	float mLifeSpan; // Á–Å‚·‚é‚Ü‚Å‚ÌŠÔ
 };

@@ -78,22 +78,33 @@ void Enemy::UpdateActor(float deltaTime)
 
 void Enemy::Damage(float value)
 {
-	if (typeid(*mCurrentState) != typeid(AIDead))
-	{
-		mHealth -= value;
-		mHealth = Math::Max(mHealth, 0.0f);
-		mHealth = Math::Min(mHealth, ENEMY_MAX_HEALTH);
+	// 体力減少処理
+	mHealth -= value;
+	mHealth = Math::Max(mHealth, 0.0f);
+	mHealth = Math::Min(mHealth, ENEMY_MAX_HEALTH);
 
-		if (mHealth <= 0)
-		{
-			Dead();
-		}
+	// SE再生
+	mAudioComp->PlayEvent(SE_HIT_ENEMY);
+
+	// 体力が0なら死亡
+	if (mHealth <= 0)
+	{
+		Dead();
+	}
+
+	// "警戒"状態だったなら"攻撃"状態に遷移
+	if (typeid(*mCurrentState) == typeid(AIVigilant))
+	{
+		ChangeState(AI_ATTACK);
 	}
 }
 
 void Enemy::Dead()
 {
-	ChangeState(AI_DEAD);
+	if (typeid(*mCurrentState) != typeid(AIDead))
+	{
+		ChangeState(AI_DEAD);
+	}
 }
 
 void Enemy::Shoot()
@@ -106,13 +117,12 @@ void Enemy::Shoot()
 	start.z += offset.z;
 
 	// ボールをスポーンする
-	Bullet* bullet = new Bullet(GetGame(), CharacterTag::EPlayer);
+	Bullet* bullet = new Bullet(GetGame(), this, CharacterTag::EPlayer, ENEMY_BULLET_DAMAGE);
 	bullet->GetMeshComp()->SetMesh(GetGame()->GetRenderer()->GetMesh(ENEMYBULLET_FILEPATH));
 	bullet->GetMoveComp()->SetMoveSpeed(Vector2(0, ENEMY_BULLET_SPEED));
 	bullet->GetPointLightComp()->mDiffuseColor = Color::Red;
-	bullet->GetPointLightComp()->mOuterRadius = 200.0f;
-	bullet->GetPointLightComp()->mInnerRadius = 100.0f;
-	bullet->SetPlayer(this);
+	bullet->GetPointLightComp()->mOuterRadius = ENEMY_BULLET_LIGHT_OUTER;
+	bullet->GetPointLightComp()->mInnerRadius = ENEMY_BULLET_LIGHT_INNER;
 	bullet->SetPosition(start);
 	// ボールを回転させて新しい方向を向く
 	bullet->RotateToNewForward(GetForward());
@@ -121,32 +131,34 @@ void Enemy::Shoot()
 	mAudioComp->PlayEvent(SE_SHOOT_E);
 }
 
-bool Enemy::CheckPlayerVisible(float angle, float length)
+bool Enemy::CheckInViewPlayer(float angle, float length)
 {
 	// 視野内にいるか
 	Vector3 playerDir = GetGame()->GetPlayer()->GetCenterPosition() - GetCenterPosition();
-	playerDir.Normalize();
-	float rad = Math::Acos(Vector3::Dot(GetForward(), playerDir));
-    if(Math::ToDegrees(rad) >= angle / 2) return false; // いないならfalseを返す
+	float rad = Math::Acos(Vector3::Dot(GetForward(), Vector3::Normalize(playerDir)));
+	if (Math::ToDegrees(rad) >= angle / 2)return false;
+	
+	// 指定距離以内か
+	if (playerDir.LengthSq() <= length * length) return true;
+	else return false;
+}
 
-	// 障害物の無い直線上の指定範囲内にプレイヤーがいるか
-	Vector3 start = GetCenterPosition();
-	Vector3 end = start + playerDir * length;
-	LineSegment segment(start, end);
+bool Enemy::CheckInterruptObject()
+{
+	Vector3 start = GetCenterPosition();  // 自身の中心座標
+	Vector3 end = GetGame()->GetPlayer()->GetCenterPosition(); // プレイヤーの中心座標
+	LineSegment l(start, end);
+
 	PhysWorld* phys = GetGame()->GetPhysWorld();
 	PhysWorld::CollisionInfo info;
-	// 視線の先に何かあるか？
-	if (phys->SegmentCast(segment, info, this))
+
+	if (phys->SegmentCast(l, info, this))
 	{
-		Player* player = dynamic_cast<Player*>(info.mActor);
-		// それはプレイヤーか？
-		if (player) return true;
-		else return false;
+		Player* p = dynamic_cast<Player*>(info.mActor);
+		return p ? true : false;
 	}
-	else
-	{
-		return false;
-	}
+	
+	return false;
 }
 
 void Enemy::PlayFootStep(bool isPlay)

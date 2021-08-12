@@ -8,6 +8,7 @@
 #include "TPSCamera.h"
 #include "PlayerMove.h"
 #include "AudioComponent.h"
+#include "ResultMenu.h"
 
 
 PlayerState::PlayerState(Character* owner)
@@ -403,6 +404,38 @@ void PlayerAttack::OnEnter()
 }
 
 void PlayerAttack::OnExit()
+{
+
+}
+
+#pragma endregion
+
+
+#pragma region "死亡"状態
+
+void PlayerDead::Update(float deltaTime)
+{
+	mTimeCount -= deltaTime;
+	
+	// "死亡"状態に遷移後、設定した秒数経過でリザルト画面生成
+	if (mTimeCount <= 0)
+	{
+		new ResultMenu(mPlayer->GetGame());
+	}
+}
+
+void PlayerDead::OnEnter()
+{
+	mPlayer->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
+	mPlayer->GetMoveComp()->SetAngularSpeed(0);
+
+	// アニメーション再生
+	mPlayer->GetMeshComp()->PlayAnimation(mPlayer->GetGame()->GetAnimation(PLAYER_ANIMATION_DEAD, PLAYER_FILEPATH), 1.0f);
+	// 時間設定
+	mTimeCount = PLAYER_DEADTIME;
+}
+
+void PlayerDead::OnExit()
 {
 
 }

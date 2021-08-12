@@ -199,7 +199,9 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="ResultMenu.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="AIState.cpp" />
@@ -254,8 +256,10 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Container.h" />
     <ClInclude Include="PlayerParameters.h" />
     <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="ResultMenu.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="StateMachine.h" />
     <ClInclude Include="AIState.h" />

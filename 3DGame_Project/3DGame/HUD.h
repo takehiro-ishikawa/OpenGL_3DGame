@@ -47,6 +47,7 @@ protected:
 	Texture* mRadarArrow;
 
 	Texture* mBack;
+	Texture* mGuide;
 
 	// ƒQ[ƒ€“à‚Ì‘S‚Ä‚ÌTargetComponent
 	std::vector<TargetComponent*> mTargetComps;

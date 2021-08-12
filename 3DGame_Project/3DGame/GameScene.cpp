@@ -12,6 +12,7 @@
 #include "InputSystem.h"
 #include "PauseMenu.h"
 #include "Enemy.h"
+#include "Container.h"
 
 GameScene::GameScene(Game* game)
 	:BaseScene(game)
@@ -39,14 +40,27 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
-	for (int i = 0; i < 1; i++)
-	{
-		a = new Enemy(mGame);
-		a->SetPosition(Vector3(1000, -1200 + (i * 300), 0));
-	}
+	a = new Container(mGame);
+	a->SetPosition(Vector3(750, -750, 0));
+	a = new Container(mGame);
+	a->SetPosition(Vector3(750, 750, 0));
+	a = new Container(mGame);
+	a->SetPosition(Vector3(-750, -750, 0));
+	a = new Container(mGame);
+	a->SetPosition(Vector3(-750, 750, 0));
+
+	// “G‚Ì¶¬
+	a = new Enemy(mGame);
+	a->SetPosition(Vector3(1500, -1500, 0));
+	a = new Enemy(mGame);
+	a->SetPosition(Vector3(1500, 1500, 0));
+	a = new Enemy(mGame);
+	a->SetPosition(Vector3(-1500, -1500, 0));
+	a = new Enemy(mGame);
+	a->SetPosition(Vector3(-1500, 1500, 0));
 
 	// •”‰®‚Ì¶¬
-	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));	
+	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
 
 	// •½sŒõŒ¹‚ÌÝ’è
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

@@ -64,7 +64,7 @@ void Room::GenerateWall()
 		{
 			a = new PlaneActor(GetGame());
 			a->SetPosition(Vector3(startX + i * PLANE_SIZE, mMaxPosition.y, startZ + j * PLANE_SIZE));
-			q = Quaternion(Vector3::UnitX, Math::PiOver2);
+			q = Quaternion(Vector3::UnitX, -Math::PiOver2);
 			a->SetRotation(q);
 
 			a = new PlaneActor(GetGame());
@@ -80,7 +80,7 @@ void Room::GenerateWall()
 		{
 			a = new PlaneActor(GetGame());
 			a->SetPosition(Vector3(mMaxPosition.x, startY + i * PLANE_SIZE, startZ + j * PLANE_SIZE));
-			q = Quaternion(Vector3::UnitY, -Math::PiOver2);
+			q = Quaternion(Vector3::UnitY, Math::PiOver2);
 			a->SetRotation(q);
 
 			a = new PlaneActor(GetGame());

@@ -7,14 +7,13 @@
 #include "AudioComponent.h"
 #include "PointLightComponent.h"
 
-Bullet::Bullet(Game* game, CharacterTag target)
+Bullet::Bullet(Game* game, Actor* bulletOwner, CharacterTag target, float damage)
 	:Actor(game)
+	,mDamage(damage)
 	,mLifeSpan(BULLET_LIFE)
-{
-	SetScale(1.0f);
-	
+{	
 	mMeshComp = new MeshComponent(this, false);
-	mMoveComp = new BulletMove(this, target);
+	mMoveComp = new BulletMove(this, bulletOwner, target, [this](Character* character) {HitTarget(character); });
 	mAudioComp = new AudioComponent(this);
 	mPointLight = new PointLightComponent(this);
 }
@@ -23,6 +22,7 @@ void Bullet::UpdateActor(float deltaTime)
 {
 	Actor::UpdateActor(deltaTime);
 
+	// ê∂ê¨å„ÅAê›íËÇµÇΩéûä‘ï™åoâﬂÇ≈è¡ñ≈
 	mLifeSpan -= deltaTime;
 	if (mLifeSpan < 0.0f)
 	{
@@ -30,12 +30,7 @@ void Bullet::UpdateActor(float deltaTime)
 	}
 }
 
-void Bullet::SetPlayer(Actor* player)
+void Bullet::HitTarget(Character* target)
 {
-	mMoveComp->SetPlayer(player);
-}
-
-void Bullet::HitTarget()
-{
-
+	target->Damage(mDamage);
 }

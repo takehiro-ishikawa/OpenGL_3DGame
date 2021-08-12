@@ -14,8 +14,8 @@ DialogBox::DialogBox(Game* game, const std::string& text, bool isInputAccept, st
 	mTitlePos = DIALOG_TITLE_POSITION;
 
 	// 背景のテクスチャを設定
-	mBackground = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/DialogBG.png");
-	SetTitle(text, Vector3::Zero, 30);
+	mBackground = mGame->GetRenderer()->GetTexture(DIALOG_BG_FILEPATH);
+	SetTitle(text, Vector3::Zero, DIALOG_TITLE_SIZE);
 
 	// ボタンの設定
 	AddButton("OK", DIALOG_OK_BUTTON_POS, [onOK]() {

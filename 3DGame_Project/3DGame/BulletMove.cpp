@@ -6,9 +6,11 @@
 #include "TargetActor.h"
 #include "Bullet.h"
 
-BulletMove::BulletMove(Actor* owner, CharacterTag targetTag)
+BulletMove::BulletMove(Actor* owner, Actor* bulletOwner, CharacterTag targetTag, std::function<void(Character*)> onHit)
 	:MoveComponent(owner)
+	,mBulletOwner(bulletOwner)
 	,mTargetTag(targetTag)
+    ,mOnHit(onHit)
 {
 
 }
@@ -25,14 +27,14 @@ void BulletMove::Update(float deltaTime)
 	// 構築した線分と全てのボックスとで衝突判定を行う
 	PhysWorld* phys = mOwner->GetGame()->GetPhysWorld();
 	PhysWorld::CollisionInfo info;
-	if (phys->SegmentCast(l, info) && info.mActor != mPlayer) // (プレイヤーとは衝突しない)
+	if (phys->SegmentCast(l, info) && info.mActor != mBulletOwner) // (弾を発射したアクターとは衝突しない)
 	{
 		Character* target = dynamic_cast<Character*>(info.mActor);
 		// キャラクターに当たった場合
 		if (target)
 		{
 			// 当たったキャラクターが自身の標的ならダメージを与える
-			if(target->GetCharacterTag() == mTargetTag) target->Damage(1.0f);
+			if(target->GetCharacterTag() == mTargetTag) mOnHit(target);
 		}
 
 		// 自身を消滅させる

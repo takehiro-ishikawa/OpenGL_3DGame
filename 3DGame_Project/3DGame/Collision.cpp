@@ -427,7 +427,7 @@ bool Intersect(const LineSegment& l, const Plane& p, float& outT)
 	}
 }
 
-// AABBの側面がしているかテストするヘルパー関数
+// AABBの側面が交差しているかテストするヘルパー関数
 bool TestSidePlane(float start, float end, float negd, const Vector3& norm,
 	std::vector<std::pair<float, Vector3>>& out)
 {

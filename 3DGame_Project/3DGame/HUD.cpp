@@ -24,6 +24,7 @@ HUD::HUD(Game* game)
 	mRadarArrow = r->GetTexture("Assets/Textures/UI/RadarArrow.png");
 
 	mBack = r->GetTexture(HUD_BACK);
+	mGuide = r->GetTexture("Assets/Textures/UI/Guide_Back.png");
 }
 
 HUD::~HUD()
@@ -40,23 +41,24 @@ void HUD::Update(float deltaTime)
 
 void HUD::Draw(Shader* shader)
 {
-	// レーダー
-	const Vector2 cRadarPos(-390.0f, 200.0f);
-	DrawTexture(shader, mRadar, cRadarPos);
+	//// レーダー
+	//const Vector2 cRadarPos(-390.0f, 200.0f);
+	//DrawTexture(shader, mRadar, cRadarPos);
 
-	// Blips
-	for (Vector2& blip : mBlips)
-	{
-		DrawTexture(shader, mBlipTex, cRadarPos + blip);
-	}
-	// Radar arrow
-	DrawTexture(shader, mRadarArrow, cRadarPos);
+	//// Blips
+	//for (Vector2& blip : mBlips)
+	//{
+	//	DrawTexture(shader, mBlipTex, cRadarPos + blip);
+	//}
+	//// Radar arrow
+	//DrawTexture(shader, mRadarArrow, cRadarPos);
 	
 	// 体力ゲージ
 	DrawHealthBar(shader);
 
 	DrawTexture(shader, mBack, Vector2(0.0f, -359.0f));
 	DrawTexture(shader, mBack, Vector2(0.0f, 359.0f));
+	DrawTexture(shader, mGuide, Vector2(0.0f, -359.0f));
 }
 
 void HUD::AddTargetComponent(TargetComponent* tc)

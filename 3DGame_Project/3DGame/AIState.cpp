@@ -40,6 +40,7 @@ void AIIdle::OnExit()
 
 #pragma endregion
 
+
 #pragma region "éÄñS"èÛë‘
 
 void AIDead::Update(float deltaTime)
@@ -76,17 +77,11 @@ void AIDead::OnExit()
 
 #pragma endregion
 
+
 #pragma region "åxâ˙"èÛë‘
 
 void AIVigilant::Update(float deltaTime)
 {
-	// éãäEÇ…ÉvÉåÉCÉÑÅ[ÇÇ∆ÇÁÇ¶ÇΩ
-	if (mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_ANGLE, ENEMY_VISIBLE_RANGE))
-	{
-		mEnemy->GetAudioComp()->PlayEvent(SE_ENEMY_DISCOVER);
-		mEnemy->ChangeState(AI_ATTACK);
-	}
-
 	// âÒì]íÜ
 	if (mIsRotate)
 	{
@@ -112,6 +107,13 @@ void AIVigilant::Update(float deltaTime)
 			mIsRotate = true;
 		}
 	}
+
+	// éãäEÇ…ÉvÉåÉCÉÑÅ[ÇÇ∆ÇÁÇ¶ÇΩ
+	if (mEnemy->CheckInViewPlayer(ENEMY_VISIBLE_ANGLE, ENEMY_VISIBLE_RANGE) && mEnemy->CheckInterruptObject())
+	{
+		// "çUåÇ"èÛë‘Ç÷ëJà⁄
+		mEnemy->ChangeState(AI_ATTACK);
+	}
 }
 
 void AIVigilant::OnEnter()
@@ -135,6 +137,7 @@ void AIVigilant::Rest()
 
 #pragma endregion
 
+
 #pragma region "çUåÇ"èÛë‘
 
 void AIAttack::Update(float deltaTime)
@@ -146,8 +149,10 @@ void AIAttack::Update(float deltaTime)
 	float angular = Vector3::Dot(mEnemy->GetRight(), playerDir);
 	mEnemy->GetMoveComp()->SetAngularSpeed(angular * ENEMY_ROTATE_SPEED);
 
-	mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_ANGLE, ENEMY_VISIBLE_RANGE);
+	// à⁄ìÆ
+	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2(0, ENEMY_MOVESPEED));
 
+	// çUåÇ
 	mAttackSpan -= deltaTime;
 	if (mAttackSpan <= 0)
 	{
@@ -158,44 +163,16 @@ void AIAttack::Update(float deltaTime)
 
 void AIAttack::OnEnter()
 {
+	// î≠å©SEçƒê∂
+	mEnemy->GetAudioComp()->PlayEvent(SE_ENEMY_DISCOVER);
 	mAttackSpan = ENEMY_ATTACK_TIME;
-	mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_IDLE, ENEMY_FILEPATH), 1.0f);
-	mEnemy->PlayFootStep(false);
+	mOwner->GetMeshComp()->PlayAnimation(mOwner->GetGame()->GetAnimation(ENEMY_ANIMATION_MOVE, ENEMY_FILEPATH), 1.0f);
+	mEnemy->PlayFootStep(true);
 }
 
 void AIAttack::OnExit()
 {
-
+	mEnemy->PlayFootStep(false);
 }
 
 #pragma endregion
-
-#pragma region "í«ê’"èÛë‘
-
-void AIChase::Update(float deltaTime)
-{
-	// ÉvÉåÉCÉÑÅ[ÇÃï˚å¸Çå¸Ç≠
-	Vector3 playerDir = mEnemy->GetGame()->GetPlayer()->GetPosition() - mEnemy->GetPosition();
-	playerDir.z = 0;
-	playerDir.Normalize();
-	float angular = Vector3::Dot(mEnemy->GetRight(), playerDir);
-	mEnemy->GetMoveComp()->SetAngularSpeed(angular * ENEMY_ROTATE_SPEED);
-
-	// ÉvÉåÉCÉÑÅ[Çï‚ë´ÇµÇƒÇ¢ÇÈÇ©
-	//if(mEnemy->CheckPlayerVisible(ENEMY_VISIBLE_RANGE))
-}
-
-void AIChase::OnEnter()
-{
-	// à⁄ìÆë¨ìxê›íË
-	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2(0, ENEMY_MOVESPEED));
-}
-
-void AIChase::OnExit()
-{
-	// í‚é~
-	mEnemy->GetMoveComp()->SetMoveSpeed(Vector2::Zero);
-}
-
-#pragma endregion
-
