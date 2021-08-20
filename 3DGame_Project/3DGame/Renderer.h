@@ -87,6 +87,9 @@ public:
 	Vector2 GetCursorPosition() { return mCursorPosition; }
 	void SetCursorPosition(Vector2 position) { mCursorPosition = position; }
 
+	// 3D座標をスクリーン座標に変換する
+	Vector2 Convert3DtoScreenPos(const Vector3& WorldPos);
+
 private:
 
 	// レンダリング処理のヘルパー関数
@@ -125,6 +128,8 @@ private:
 	// ビュー/射影 3Dシェーダー用
 	Matrix4 mView;       // ビュー行列
 	Matrix4 mProjection; // 射影行列
+
+	Matrix4 mViewPort;   // ビューポート行列
 
 	// 照明データ
 	Vector3 mAmbientLight;      // 環境光

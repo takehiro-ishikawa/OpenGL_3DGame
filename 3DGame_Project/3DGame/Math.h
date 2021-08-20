@@ -839,6 +839,7 @@ public:
 		return Matrix4(temp);
 	}
 
+	// 正射影行列を作る
 	static Matrix4 CreateOrtho(float width, float height, float near, float far)
 	{
 		float temp[4][4] =
@@ -851,6 +852,7 @@ public:
 		return Matrix4(temp);
 	}
 
+	// 透視行列を作る
 	static Matrix4 CreatePerspectiveFOV(float fovY, float width, float height, float near, float far)
 	{
 		float yScale = Math::Cot(fovY / 2.0f);
@@ -865,7 +867,7 @@ public:
 		return Matrix4(temp);
 	}
 
-	// 「単純な」ビュー-射影マトリックスを作成する
+	// 「単純な」ビュー射影マトリックスを作成する
 	static Matrix4 CreateSimpleViewProj(float width, float height)
 	{
 		float temp[4][4] =

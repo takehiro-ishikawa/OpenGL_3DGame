@@ -4,6 +4,7 @@
 
 #define CAMERA_MAX_ROTATE_SPEED 500.0f // カメラの最大回転速度
 #define INPUT_CORRECTION_VALUE  20.0f  // キーボードとコントローラ入力の補正値
+#define CAMERA_TRANSITION_SPEED  8.0f  // カメラ定位置の遷移速度
 
 // プロトタイプ宣言
 class Actor;
@@ -41,6 +42,9 @@ public:
 
 private:
 	void ComputeCameraPos(float value);
+
+	// カメラをプレイヤーから離す距離を決める
+	float ComputeCameraDist(const Vector3& pos, const Vector3& dir);
 
 	Vector3 mActualPos;    // カメラの実際の位置
 	Vector3 mVelocity;     // 実際のカメラの速度

@@ -1,7 +1,9 @@
 #include "TPSCamera.h"
 #include "PlayerParameters.h"
 #include "Actor.h"
+#include "Game.h"
 #include "InputSystem.h"
+#include "PhysWorld.h"
 #include <iostream>
 
 TPSCamera::TPSCamera(Actor* owner)
@@ -50,7 +52,7 @@ void TPSCamera::ProcessInput(const struct InputState& state)
 void TPSCamera::Update(float deltaTime)
 {
 	CameraComponent::Update(deltaTime);
-	ComputeCameraPos(deltaTime * 8.0f);
+	ComputeCameraPos(deltaTime * CAMERA_TRANSITION_SPEED);
 
 	// カメラの位置は所有アクターの位置からmCameraZOffsetだけ上
 	Vector3 cameraPos = mOwner->GetPosition();
@@ -83,8 +85,9 @@ void TPSCamera::Update(float deltaTime)
 	Vector3 cameraForward = Vector3::Transform(Vector3::UnitX, mRotation);
 	Vector3 viewForward = Vector3::Transform(cameraForward, q);
 
-	// 所有アクターからmDistだけ離す
-	cameraPos -= viewForward * mActualCameraDist;
+	// 所有アクターからカメラを離す
+	float cameraDist = ComputeCameraDist(cameraPos, viewForward);
+	cameraPos -= viewForward * cameraDist;
 
 	// ターゲットの位置は所有アクターの前方100単位
 	Vector3 target = cameraPos + viewForward * 100.0f;
@@ -101,4 +104,24 @@ void TPSCamera::ComputeCameraPos(float value)
 {
 	mActualCameraDist = Math::Lerp(mActualCameraDist, mIdealCameraDist, value);
 	mActualOffsetPos = Vector3::Lerp(mActualOffsetPos, mIdealOffsetPos, value);
+}
+
+float TPSCamera::ComputeCameraDist(const Vector3& pos, const Vector3& dir)
+{
+	Vector3 end = pos - dir * mActualCameraDist;
+	LineSegment l(pos, end);
+
+	// 本来離す距離の途中で何かに接触するかを確認する
+	PhysWorld* phys = mOwner->GetGame()->GetPhysWorld();
+	PhysWorld::CollisionInfo info;
+	// 接触した
+	if (phys->SegmentCast(l, info, mOwner))
+	{
+		// ぶつかった位置までの距離を返す
+		Vector3 cameraDist = info.mPoint - pos;
+		return cameraDist.Length();
+	}
+
+	// 接触しなかったなら本来離す距離を返す
+	return mActualCameraDist;
 }

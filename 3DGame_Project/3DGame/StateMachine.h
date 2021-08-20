@@ -5,6 +5,7 @@
 // プロトタイプ宣言
 class Character;
 
+// 全てのステートの基底クラス
 class State
 {
 public:
@@ -24,6 +25,7 @@ protected:
 	Character* mOwner;
 };
 
+// ステートマシンを制御する基底クラス
 class StateMachine
 {
 public:
@@ -35,7 +37,7 @@ public:
 	void RegisterState(State* state);
 
 protected:
-	// AIStateインスタンスを格納する連想配列
+	// Stateインスタンスを格納する連想配列
 	std::unordered_map<std::string, State*> mStateMap;
 
 	// 現在の状態

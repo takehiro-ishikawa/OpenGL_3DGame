@@ -3,7 +3,6 @@
 #include "Character.h"
 #include "Game.h"
 #include "PhysWorld.h"
-#include "TargetActor.h"
 #include "Bullet.h"
 
 BulletMove::BulletMove(Actor* owner, Actor* bulletOwner, CharacterTag targetTag, std::function<void(Character*)> onHit)

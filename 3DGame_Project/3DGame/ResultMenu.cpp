@@ -15,7 +15,7 @@ ResultMenu::ResultMenu(Game* mGame)
 	// ”wŒi‚ÌƒeƒNƒXƒ`ƒƒ‚ðÝ’è
 	mBGPos = GAMEOVER_BG_POSITION;
 	mBackground = mGame->GetRenderer()->GetTexture(GAMEOVER_BG_FILEPATH);
-	SetTitle("GAME OVER...");
+	SetTitle("GAME OVER...", Color::Red);
 	AddButton("Back to Menu", GAMEOVER_BACKMENU_POSITION, [this]() { BackMenu(); });
 }
 

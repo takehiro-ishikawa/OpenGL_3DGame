@@ -248,8 +248,6 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SoundEvent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
-    <ClCompile Include="TargetActor.cpp" />
-    <ClCompile Include="TargetComponent.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="UIScreen.cpp" />
     <ClCompile Include="VertexArray.cpp" />
@@ -306,8 +304,6 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="SoundEvent.h" />
     <ClInclude Include="SpriteComponent.h" />
-    <ClInclude Include="TargetActor.h" />
-    <ClInclude Include="TargetComponent.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="UIScreen.h" />
     <ClInclude Include="VertexArray.h" />

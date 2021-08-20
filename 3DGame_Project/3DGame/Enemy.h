@@ -29,7 +29,7 @@ class MoveComponent;
 #define ENEMY_BULLET_LIGHT_OUTER     200.0f                   // 弾の点光源の外側の範囲
 #define ENEMY_BULLET_LIGHT_INNER     100.0f                   // 弾の点光源の内側の範囲
 
-#define ENEMY_MAX_HEALTH       10.0f // 体力の最大値
+#define ENEMY_MAX_HEALTH        5.0f // 体力の最大値
 #define ENEMY_DEADTIME          1.0f // 死亡後に消滅するまでの時間（秒）
 #define ENEMY_MOVESPEED       300.0f // 移動速度(秒)
 #define ENEMY_RESTTIME          1.0f // 静止している時間

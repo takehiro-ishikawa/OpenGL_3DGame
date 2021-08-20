@@ -103,6 +103,24 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 
 	mPointLightMesh = GetMesh("Assets/Models/Sphere.fbx");
 
+	// ビューポート行列の設定
+	mViewPort.mat[0][0] = SCREEN_WIDTH / 2; 
+	mViewPort.mat[0][1] = 0; 
+	mViewPort.mat[0][2] = 0; 
+	mViewPort.mat[0][3] = 0;
+	mViewPort.mat[1][0] = 0; 
+	mViewPort.mat[1][1] = -SCREEN_HEIGHT / 2; 
+	mViewPort.mat[1][2] = 0; 
+	mViewPort.mat[1][3] = 0;
+	mViewPort.mat[2][0] = 0; 
+	mViewPort.mat[2][1] = 0; 
+	mViewPort.mat[2][2] = 1; 
+	mViewPort.mat[2][3] = 0;
+	mViewPort.mat[3][0] = SCREEN_WIDTH / 2; 
+	mViewPort.mat[3][1] = SCREEN_HEIGHT / 2; 
+	mViewPort.mat[3][2] = 0; 
+	mViewPort.mat[3][3] = 1;
+
 	return true;
 }
 
@@ -440,8 +458,8 @@ bool Renderer::LoadShaders()
 
 	// 頂点シェーダーにビュー射影行列を設定する
 	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(70.0f),
-		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
+	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(FIELD_OF_VIEW),
+		mScreenWidth, mScreenHeight, NEAR_PLANE, FAR_PLANE);
 	mMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 
@@ -457,8 +475,8 @@ bool Renderer::LoadShaders()
 
 	// ビュー射影行列を設定する
 	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(70.0f),
-		mScreenWidth, mScreenHeight, 10.0f, 10000.0f);
+	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(FIELD_OF_VIEW),
+		mScreenWidth, mScreenHeight, NEAR_PLANE, FAR_PLANE);
 	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 
@@ -550,6 +568,32 @@ Vector3 Renderer::Unproject(const Vector3& screenPoint) const
 	Matrix4 unprojection = mView * mProjection;
 	unprojection.Invert();
 	return Vector3::TransformWithPerspDiv(deviceCoord, unprojection);
+}
+
+Vector2 Renderer::Convert3DtoScreenPos(const Vector3& WorldPos)
+{
+	// 3D座標を同次座標にする
+	float posX = WorldPos.x, posY = WorldPos.y, posZ = WorldPos.z, posW = 1;
+
+	// ビュー行列を掛ける
+	posX = posX * mView.mat[0][0] + posY * mView.mat[1][0] + posZ * mView.mat[2][0] + posW * mView.mat[3][0];
+	posY = posX * mView.mat[0][1] + posY * mView.mat[1][1] + posZ * mView.mat[2][1] + posW * mView.mat[3][1];
+	posZ = posX * mView.mat[0][2] + posY * mView.mat[1][2] + posZ * mView.mat[2][2] + posW * mView.mat[3][2];
+	posW = posX * mView.mat[0][3] + posY * mView.mat[1][3] + posZ * mView.mat[2][3] + posW * mView.mat[3][3];
+
+	// 射影行列を掛ける
+	posX = posX * mProjection.mat[0][0] + posY * mProjection.mat[1][0] + posZ * mProjection.mat[2][0] + posW * mProjection.mat[3][0];
+	posY = posX * mProjection.mat[0][1] + posY * mProjection.mat[1][1] + posZ * mProjection.mat[2][1] + posW * mProjection.mat[3][1];
+	posZ = posX * mProjection.mat[0][2] + posY * mProjection.mat[1][2] + posZ * mProjection.mat[2][2] + posW * mProjection.mat[3][2];
+	posW = posX * mProjection.mat[0][3] + posY * mProjection.mat[1][3] + posZ * mProjection.mat[2][3] + posW * mProjection.mat[3][3];
+
+	// ビューポート行列を掛ける
+	posX = posX * mViewPort.mat[0][0] + posY * mViewPort.mat[1][0] + posZ * mViewPort.mat[2][0] + posW * mViewPort.mat[3][0];
+	posY = posX * mViewPort.mat[0][1] + posY * mViewPort.mat[1][1] + posZ * mViewPort.mat[2][1] + posW * mViewPort.mat[3][1];
+	posZ = posX * mViewPort.mat[0][2] + posY * mViewPort.mat[1][2] + posZ * mViewPort.mat[2][2] + posW * mViewPort.mat[3][2];
+	posW = posX * mViewPort.mat[0][3] + posY * mViewPort.mat[1][3] + posZ * mViewPort.mat[2][3] + posW * mViewPort.mat[3][3];
+
+	return Vector2(posX / posW - SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - posY / posW);
 }
 
 void Renderer::GetScreenDirection(Vector3& outStart, Vector3& outDir) const

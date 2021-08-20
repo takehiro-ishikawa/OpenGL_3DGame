@@ -93,9 +93,6 @@
     <ClCompile Include="PlaneActor.cpp">
       <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="TargetActor.cpp">
-      <Filter>ソース ファイル\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="AudioComponent.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
@@ -115,9 +112,6 @@
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
-      <Filter>ソース ファイル\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="TargetComponent.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
     <ClCompile Include="Actor.cpp">
@@ -336,12 +330,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetActor.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="TargetComponent.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">

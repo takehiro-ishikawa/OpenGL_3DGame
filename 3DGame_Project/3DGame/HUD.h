@@ -12,10 +12,12 @@ class TargetComponent;
 #pragma endregion
 
 // テクスチャ画像のファイルパス
-#define HEALTHBAR_BACK_FILEPATH  "Assets/Textures/UI/HealthBarBack.png"  // 体力ゲージ背景
-#define HEALTHBAR_FILEPATH       "Assets/Textures/UI/HealthBar.png"      // 体力ゲージ
-#define HEALTHBAR_EMPTY_FILEPATH "Assets/Textures/UI/HealthBarEmpty.png" // 体力ゲージ減少部分
-#define HUD_BACK                 "Assets/Textures/UI/HUD_Back.png"       // HUD背景
+#define HEALTHBAR_BACK_FILEPATH  "Assets/Textures/UI/HealthBarBack.png"    // 体力ゲージ背景
+#define HEALTHBAR_FILEPATH       "Assets/Textures/UI/HealthBar.png"        // 体力ゲージ
+#define HEALTHBAR_EMPTY_FILEPATH "Assets/Textures/UI/HealthBarEmpty.png"   // 体力ゲージ減少部分
+#define HUD_BACK                 "Assets/Textures/UI/HUD_Back.png"         // HUD背景
+#define GUIDE_KEYBOARD           "Assets/Textures/UI/Guide_Keyboard.png"   // キーボード操作ガイド
+#define GUIDE_CONTROLLER         "Assets/Textures/UI/Guide_Controller.png" // コントローラ操作ガイド
 
 class HUD : public UIScreen
 {
@@ -28,13 +30,7 @@ public:
 
 	void SetNormalizeHealth(float value) { mNormalizeHealth = value; }
 
-	void AddTargetComponent(TargetComponent* tc);
-	void RemoveTargetComponent(TargetComponent* tc);
-
 protected:
-	void UpdateCrosshair(float deltaTime);
-	void UpdateRadar(float deltaTime);
-
 	// 体力ゲージ関連
 	void DrawHealthBar(Shader* shader); // 体力ゲージを描画する
 	float mNormalizeHealth;             // 正規化された体力の値
@@ -42,23 +38,7 @@ protected:
 	Texture* mHealthBar;                // 体力ゲージ本体
 	Texture* mHealthBarEmpty;           // 体力ゲージ減少部分
 
-	Texture* mRadar;
-	Texture* mBlipTex;
-	Texture* mRadarArrow;
-
-	Texture* mBack;
-	Texture* mGuide;
-
-	// ゲーム内の全てのTargetComponent
-	std::vector<TargetComponent*> mTargetComps;
-
-	// レーダー中心から輝点への2D相対オフセット
-	std::vector<Vector2> mBlips;
-
-	// レーダーの範囲と半径
-	float mRadarRange;
-	float mRadarRadius;
-
-	// 十字線が敵を捉えているか
-	bool mTargetEnemy;
+	Texture* mBack;            // 背景
+	Texture* mGuideKeyBoard;   // キーボード操作ガイド
+	Texture* mGuideController; // コントローラ操作ガイド
 };

@@ -8,6 +8,9 @@
 #define SCREEN_WIDTH 1024.0f  // 画面の横幅
 #define SCREEN_HEIGHT 768.0f  // 画面の縦幅
 #define FRAME_RATE     60.0f  // フレームレート(FPS)
+#define FIELD_OF_VIEW  70.0f  // 画角
+#define NEAR_PLANE     10.0f  // 近接平面
+#define FAR_PLANE   10000.0f  // 遠方平面
 
 #pragma region プロトタイプ宣言
 class Actor;

@@ -40,6 +40,7 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
+	// コンテナの生成
 	a = new Container(mGame);
 	a->SetPosition(Vector3(750, -750, 0));
 	a = new Container(mGame);
@@ -80,6 +81,7 @@ void GameScene::LoadSceneData()
 
 void GameScene::HandleKeyPress(const struct InputState& state)
 {
+	// ポーズ
 	if (state.GetMappedButtonState(INPUT_MENU) == ButtonState::EPressed)
 	{
 		// PauseMenuを作成する
