@@ -1,10 +1,10 @@
-#include "FBXAnalyze.h"
+#include "FBXData.h"
 #include <SDL/SDL_log.h>
 #include "BoneTransform.h"
 
 using namespace std;
 
-FBXAnalyze::FBXAnalyze(const char* fileName)
+FBXData::FBXData(const char* fileName)
 :mNumIndexCount(0)
 ,mNumVertexCount(0)
 ,mIsSkeletal(false)
@@ -54,13 +54,13 @@ FBXAnalyze::FBXAnalyze(const char* fileName)
 	}
 }
 
-FBXAnalyze::~FBXAnalyze()
+FBXData::~FBXData()
 {
 	// マネージャ解放
 	mManager->Destroy();
 }
 
-FbxMesh* FBXAnalyze::GetFBXMesh(fbxsdk::FbxNode* root_node)
+FbxMesh* FBXData::GetFBXMesh(fbxsdk::FbxNode* root_node)
 {
 	FbxMesh* mesh = nullptr;
 
@@ -85,7 +85,7 @@ FbxMesh* FBXAnalyze::GetFBXMesh(fbxsdk::FbxNode* root_node)
 	return mesh;
 }
 
-void FBXAnalyze::FixTextureName(const char* textureName)
+void FBXData::FixTextureName(const char* textureName)
 {
 	int n = 0, endNum = 0;
 	string texStr = "";
@@ -104,7 +104,7 @@ void FBXAnalyze::FixTextureName(const char* textureName)
     mTextureName = FixedName;
 }
 
-std::string FBXAnalyze::FixAnimationName(const char* animationName)
+std::string FBXData::FixAnimationName(const char* animationName)
 {
 	int n = 0, endNum = 0;
 	string animStr = "";
@@ -121,7 +121,7 @@ std::string FBXAnalyze::FixAnimationName(const char* animationName)
 	return animStr;
 }
 
-void FBXAnalyze::ComputeTextureName()
+void FBXData::ComputeTextureName()
 {
 	FbxNode* node = mFbxMesh->GetNode();
 	if (node == 0) 
@@ -158,7 +158,7 @@ void FBXAnalyze::ComputeTextureName()
 	}
 }
 
-void FBXAnalyze::ComputeIndexList()
+void FBXData::ComputeIndexList()
 {
 	auto polygonCount = mFbxMesh->GetPolygonCount();
 
@@ -172,7 +172,7 @@ void FBXAnalyze::ComputeIndexList()
 	}
 }
 
-void FBXAnalyze::ComputePositionList()
+void FBXData::ComputePositionList()
 {
 	// コントロールポイントがいわゆる位置座標
 	mNumVertexCount = mFbxMesh->GetControlPointsCount();
@@ -198,7 +198,7 @@ void FBXAnalyze::ComputePositionList()
 	}
 }
 
-void FBXAnalyze::ComputeNormalList()
+void FBXData::ComputeNormalList()
 {
 	// 法線セット数を取得
 	auto elementCount = mFbxMesh->GetElementNormalCount();
@@ -274,7 +274,7 @@ void FBXAnalyze::ComputeNormalList()
 	}
 }
 
-void FBXAnalyze::ComputeUVList(int uvNo)
+void FBXData::ComputeUVList(int uvNo)
 {
 	auto elementCount = mFbxMesh->GetElementUVCount();
 	if (uvNo + 1 > elementCount)
@@ -357,7 +357,7 @@ void FBXAnalyze::ComputeUVList(int uvNo)
 	return;
 }
 
-void FBXAnalyze::ComputeBoneVertexInfo()
+void FBXData::ComputeBoneVertexInfo()
 {
 	mVertexBoneInfos.resize(mNumVertexCount);
 
@@ -417,7 +417,7 @@ void FBXAnalyze::ComputeBoneVertexInfo()
 	}
 }
 
-void FBXAnalyze::ComputeVertexData()
+void FBXData::ComputeVertexData()
 {
 	// 頂点インデックスとインデックス数を取得
 	ComputeIndexList();
@@ -442,7 +442,7 @@ void FBXAnalyze::ComputeVertexData()
 	ComputeTextureName();
 }
 
-void FBXAnalyze::ComputeBindPoses(std::vector<class BoneTransform>& bindPoses)
+bool FBXData::ComputeBindPoses(std::vector<class BoneTransform>& bindPoses)
 {
 	// スキンの数を取得
 	int skinCount = mFbxMesh->GetDeformerCount(FbxDeformer::eSkin);
@@ -450,7 +450,7 @@ void FBXAnalyze::ComputeBindPoses(std::vector<class BoneTransform>& bindPoses)
 	if (skinCount <= 0)
 	{
 		SDL_Log("Failed to Get Skeletal Information : No skeletal information");
-		return;
+		return false;
 	}
 
 	for (int i = 0; i < skinCount; ++i)
@@ -464,7 +464,7 @@ void FBXAnalyze::ComputeBindPoses(std::vector<class BoneTransform>& bindPoses)
 		if (clusterNum > 256)
 		{
 			SDL_Log("Failed to Get Skeletal Information : There are more than 256 bones");
-			return;
+			return false;
 		}
 
 		bindPoses.reserve(clusterNum);
@@ -484,10 +484,12 @@ void FBXAnalyze::ComputeBindPoses(std::vector<class BoneTransform>& bindPoses)
 			BoneTransform bone = ConvertMatToBT(bindMat);
 			bindPoses.emplace_back(bone);
 		}
+
+		return true;
 	}
 }
 
-Matrix4& FBXAnalyze::ConvertFBXMatrix(const FbxAMatrix& fbxMat)
+Matrix4& FBXData::ConvertFBXMatrix(const FbxAMatrix& fbxMat)
 {
 	Matrix4 tempMat;
 
@@ -514,7 +516,7 @@ Matrix4& FBXAnalyze::ConvertFBXMatrix(const FbxAMatrix& fbxMat)
 	return tempMat;
 }
 
-BoneTransform& FBXAnalyze::ConvertMatToBT(const Matrix4& mat)
+BoneTransform& FBXData::ConvertMatToBT(const Matrix4& mat)
 {
 	BoneTransform temp;
 
@@ -536,7 +538,7 @@ BoneTransform& FBXAnalyze::ConvertMatToBT(const Matrix4& mat)
 	return temp;
 }
 
-bool FBXAnalyze::ComputeAnimation(const std::string& animationName, AnimInfo& animInfo,
+bool FBXData::ComputeAnimation(const std::string& animationName, AnimInfo& animInfo,
 	std::vector<std::vector<BoneTransform>>& tracks)
 {
 	// アニメーション数を取得

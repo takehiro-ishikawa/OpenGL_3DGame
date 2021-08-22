@@ -23,6 +23,7 @@
 #include "InputSystem.h"
 #include "GameScene.h"
 #include "StartScene.h"
+#include "FBXData.h"
 #include <iomanip>
 
 Game::Game()
@@ -305,17 +306,27 @@ void Game::UnloadData()
 	}
 	mFonts.clear();
 
+	// FBXDataを削除
+	for (auto f : mFBXData)
+	{
+		FBXData* d = f.second;
+		delete d;
+	}
+	mFBXData.clear();
+
 	// スケルトンを削除
 	for (auto s : mSkeletons)
 	{
-		delete s.second;
+		Skeleton* d = s.second;
+		delete d;
 	}
 	mSkeletons.clear();
 
 	// アニメーションを削除
 	for (auto a : mAnims)
 	{
-		delete a.second;
+		Animation* d = a.second;
+		delete d;
 	}
 	mAnims.clear();
 }
@@ -391,15 +402,15 @@ void Game::RemoveActor(Actor* actor)
 
 Font* Game::GetFont(const std::string& fileName)
 {
+	// ロード済みか確認
 	auto iter = mFonts.find(fileName);
-
-	// fileNameのフォントがmFontsにあった場合
+	// ロード済み
 	if (iter != mFonts.end())
 	{
 		// そのフォントを返す
 		return iter->second;
 	}
-	// 無かった場合
+	// 未ロード
 	else
 	{
 		// フォントをファイルからロードする
@@ -423,17 +434,39 @@ void Game::PushUI(UIScreen* screen)
 	mUIStack.emplace_back(screen);
 }
 
+FBXData* Game::GetFBXData(const std::string& fileName)
+{
+	// ロード済みか確認
+	auto iter = mFBXData.find(fileName);
+	// ロード済み
+	if (iter != mFBXData.end())
+	{
+		return iter->second;
+	}
+	// 未ロード
+	{
+		std::cout << fileName << std::endl;
+		FBXData* data = new FBXData(fileName.c_str());
+		mFBXData.emplace(fileName, data);
+
+		return data;
+	}
+}
+
 Skeleton* Game::GetSkeleton(const std::string& fileName)
 {
+	// ロード済みか確認
 	auto iter = mSkeletons.find(fileName);
+	// ロード済み
 	if (iter != mSkeletons.end())
 	{
 		return iter->second;
 	}
+	// 未ロード
 	else
 	{
 		Skeleton* sk = new Skeleton();
-		if (sk->Load(fileName))
+		if (sk->Load(GetFBXData(fileName)))
 		{
 			mSkeletons.emplace(fileName, sk);
 		}
@@ -448,15 +481,18 @@ Skeleton* Game::GetSkeleton(const std::string& fileName)
 
 Animation* Game::GetAnimation(const std::string& animationName, const std::string& fileName)
 {
+	// ロード済みか確認
 	auto iter = mAnims.find(animationName);
+	// ロード済み
 	if (iter != mAnims.end())
 	{
 		return iter->second;
 	}
+	// 未ロード
 	else
 	{
 		Animation* anim = new Animation();
-		if (anim->Load(fileName, animationName))
+		if (anim->Load(GetFBXData(fileName), animationName))
 		{
 			mAnims.emplace(animationName, anim);
 		}

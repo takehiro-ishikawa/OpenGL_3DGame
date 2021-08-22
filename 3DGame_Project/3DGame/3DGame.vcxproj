@@ -220,7 +220,7 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DialogBox.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="FBXAnalyze.cpp" />
+    <ClCompile Include="FBXData.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="InputSystem.cpp" />
@@ -276,7 +276,7 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
     <ClInclude Include="Component.h" />
     <ClInclude Include="DialogBox.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="FBXAnalyze.h" />
+    <ClInclude Include="FBXData.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="InputSystem.h" />

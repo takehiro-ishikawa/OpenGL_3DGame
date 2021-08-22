@@ -3,13 +3,15 @@
 #include <string>
 #include <vector>
 
+// プロトタイプ宣言
+class FBXData;
+
 // 1つのスケルトンデータを管理
 class Skeleton
 {
 public:
-	
 	// ファイルから読み込む
-	bool Load(const std::string& fileName);
+	bool Load(FBXData* fbxFile);
 
 	// ゲッター
 	size_t GetNumBones() const { return mBones.size(); }

@@ -4,20 +4,15 @@
 #include <rapidjson/document.h>
 #include <SDL/SDL_log.h>
 #include "MatrixPalette.h"
-#include "FBXAnalyze.h"
+#include "FBXData.h"
 
-bool Skeleton::Load(const std::string& fileName)
-{
-	FBXAnalyze* fbxFile = new FBXAnalyze(fileName.c_str());
-	
+bool Skeleton::Load(FBXData* fbxFile)
+{	
 	// スケルトンのボーン配列を取得
-	fbxFile->ComputeBindPoses(mBones);
+	if (!fbxFile->ComputeBindPoses(mBones)) return false;
 
 	// 全てのボーンのグローバルな逆バインドポーズ行列を計算する
 	ComputeGlobalInvBindPose();
-
-	// 解放処理
-	delete fbxFile;
 
 	return true;
 }

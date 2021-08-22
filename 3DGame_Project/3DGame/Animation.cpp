@@ -4,16 +4,11 @@
 #include <sstream>
 #include <rapidjson/document.h>
 #include <SDL/SDL_log.h>
-#include "FBXAnalyze.h"
+#include "FBXData.h"
 
-bool Animation::Load(const std::string& fileName, const std::string& animationName)
+bool Animation::Load(FBXData* fbxFile, const std::string& animationName)
 {
-	FBXAnalyze* fbxFile = new FBXAnalyze(fileName.c_str());
-
 	bool result = fbxFile->ComputeAnimation(animationName, mAnimInfo, mTracks);
-
-	// ‰ğ•úˆ—
-	delete fbxFile;
 
 	return result;
 }

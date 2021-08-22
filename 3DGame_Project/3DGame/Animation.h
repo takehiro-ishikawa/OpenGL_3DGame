@@ -3,6 +3,9 @@
 #include <vector>
 #include <string>
 
+// プロトタイプ宣言
+class FBXData;
+
 // アニメーションの情報
 typedef struct
 {
@@ -16,7 +19,7 @@ typedef struct
 class Animation
 {
 public:
-	bool Load(const std::string& fileName, const std::string& animationName);
+	bool Load(FBXData* fbxFile, const std::string& animationName);
 
 	size_t GetNumBones() const { return mAnimInfo.NumBones; }
 	size_t GetNumFrames() const { return mAnimInfo.NumFrames; }

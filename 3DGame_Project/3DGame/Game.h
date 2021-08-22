@@ -26,6 +26,7 @@ class Skeleton;
 class Animation;
 class Player;
 class BaseScene;
+class FBXData;
 #pragma endregion
 
 class Game
@@ -65,6 +66,7 @@ public:
 	const std::vector<UIScreen*>& GetUIStack() { return mUIStack; }// UIスタック全体を参照で返す
 	Font* GetFont(const std::string& fileName);                    // 指定したフォントを取得する
 
+	FBXData* GetFBXData(const std::string& fileName);
 	Skeleton* GetSkeleton(const std::string& fileName);
 	Animation* GetAnimation(const std::string& animationName, const std::string& fileName);
 
@@ -98,7 +100,8 @@ private:
 	std::vector<UIScreen*> mUIStack;               // ゲーム用のUIスタック
 	std::unordered_map<std::string, Font*> mFonts; // フォントのマップ
 	
-	// アニメーション
+	// FBXファイルから取得するデータ
+	std::unordered_map<std::string, FBXData*> mFBXData;    // ロードされたFBXDataのマップ
 	std::unordered_map<std::string, Skeleton*> mSkeletons; // ロードされたスケルトンのマップ
 	std::unordered_map<std::string, Animation*> mAnims;    // ロードされたアニメーションのマップ
 
@@ -108,6 +111,6 @@ private:
 	int mWaitTime;        // ゲームの更新を待つ時間(ミリ秒)
 	float mFrameRate;     // 現在のフレームレート
 
-	
-	Player* mPlayer; // 操作するプレイヤー
+	// 操作するプレイヤー
+	Player* mPlayer; 
 };

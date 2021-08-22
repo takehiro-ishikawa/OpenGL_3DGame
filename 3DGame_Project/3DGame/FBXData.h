@@ -16,15 +16,15 @@ typedef struct
 	std::vector<uint8_t> BoneWeight; // ボーンの重み(1～255以内)
 }VertexBoneInfo;
 
-// FBXSDKを用いてFBXファイルを解析する
-class FBXAnalyze
+// FBXSDKを用いてFBXファイルのデータを管理する
+class FBXData
 {
 public:
-	FBXAnalyze(const char* filename);
-	~FBXAnalyze();
+	FBXData(const char* filename);
+	~FBXData();
 
 	void ComputeVertexData();                                     // メッシュの頂点情報を計算する
-	void ComputeBindPoses(std::vector<BoneTransform>& bindPoses); // スケルトンのボーン配列を計算して返す
+	bool ComputeBindPoses(std::vector<BoneTransform>& bindPoses); // スケルトンのボーン配列を計算して返す
 
 	// アニメーションを取得する
 	bool ComputeAnimation(const std::string& animationName, AnimInfo& animInfo,

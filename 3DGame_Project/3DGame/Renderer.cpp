@@ -269,11 +269,15 @@ void Renderer::RemovePointLight(PointLightComponent* light)
 Texture* Renderer::GetTexture(const std::string& fileName)
 {
 	Texture* tex = nullptr;
+
+	// ロード済みか確認
 	auto iter = mTextures.find(fileName);
+	// ロード済み
 	if (iter != mTextures.end())
 	{
 		tex = iter->second;
 	}
+	// 未ロード
 	else
 	{
 		tex = new Texture();
@@ -294,19 +298,19 @@ Mesh* Renderer::GetMesh(const std::string& fileName)
 {
 	Mesh* m = nullptr;
 
-	// ロードされたメッシュの中からfileNameを探す
+	// ロード済みか確認
 	auto iter = mMeshes.find(fileName);
-
-	// あったならそれをmに格納
+	// ロード済み
 	if (iter != mMeshes.end())
 	{
 		m = iter->second;
 	}
+	// 未ロード
 	else
 	{
 		m = new Mesh();
-
-		if (m->Load(fileName, this))
+		
+		if (m->Load(mGame->GetFBXData(fileName), this))
 		{
 			mMeshes.emplace(fileName, m);
 		}

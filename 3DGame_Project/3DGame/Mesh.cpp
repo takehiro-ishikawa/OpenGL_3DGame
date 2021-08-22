@@ -8,7 +8,7 @@
 #include <SDL/SDL_log.h>
 #include "Math.h"
 #include <fbxsdk.h>
-#include "FBXAnalyze.h"
+#include "FBXData.h"
 #include <iostream>
 
 namespace
@@ -32,10 +32,8 @@ Mesh::~Mesh()
 {
 }
 
-bool Mesh::Load(const std::string& fileName, Renderer* renderer)
+bool Mesh::Load(FBXData* fbxFile, Renderer* renderer)
 {
-	FBXAnalyze* fbxFile = new FBXAnalyze(fileName.c_str());
-
 	// メッシュの頂点情報を計算
 	fbxFile->ComputeVertexData();
 
@@ -135,9 +133,6 @@ bool Mesh::Load(const std::string& fileName, Renderer* renderer)
 	// 頂点配列を作成する
 	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,
 		layout, fbxFile->GetIndices().data(), static_cast<unsigned>(fbxFile->GetNumIndexCount()));
-
-	// 解放処理
-	delete fbxFile;
 
 	return true;
 }

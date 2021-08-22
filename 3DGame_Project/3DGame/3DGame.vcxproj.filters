@@ -180,7 +180,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>ソース ファイル\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="FBXAnalyze.cpp">
+    <ClCompile Include="FBXData.cpp">
       <Filter>ソース ファイル\Graphic</Filter>
     </ClCompile>
     <ClCompile Include="GBuffer.cpp">
@@ -341,7 +341,7 @@
     <ClInclude Include="Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="FBXAnalyze.h">
+    <ClInclude Include="FBXData.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="GBuffer.h">

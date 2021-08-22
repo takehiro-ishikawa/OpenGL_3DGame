@@ -7,6 +7,7 @@
 class Renderer;
 class VertexArray;
 class Texture;
+class FBXData;
 #pragma endregion
 
 
@@ -17,7 +18,7 @@ public:
 	~Mesh();
 
 	// メッシュのロード/アンロード
-	virtual bool Load(const std::string& fileName, Renderer* renderer);
+	virtual bool Load(FBXData* fbxFile, Renderer* renderer);
 	virtual void Unload();
 
 	// ゲッター
