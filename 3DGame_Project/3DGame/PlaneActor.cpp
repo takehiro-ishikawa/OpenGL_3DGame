@@ -16,11 +16,8 @@ PlaneActor::PlaneActor(Game* game, float scale)
 	// コリジョンボックスを追加
 	mBox = new BoxComponent(this);
 	mBox->SetObjectBox(mesh->GetBox());
-
-	game->AddPlane(this);
 }
 
 PlaneActor::~PlaneActor()
 {
-	GetGame()->RemovePlane(this);
 }

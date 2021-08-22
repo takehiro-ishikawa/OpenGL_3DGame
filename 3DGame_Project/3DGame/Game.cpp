@@ -468,14 +468,3 @@ Animation* Game::GetAnimation(const std::string& animationName, const std::strin
 		return anim;
 	}
 }
-
-void Game::AddPlane(PlaneActor* plane)
-{
-	mPlanes.emplace_back(plane);
-}
-
-void Game::RemovePlane(PlaneActor* plane)
-{
-	auto iter = std::find(mPlanes.begin(), mPlanes.end(), plane);
-	mPlanes.erase(iter);
-}

@@ -21,8 +21,8 @@ UIScreen::UIScreen(Game* game)
 	mGame->PushUI(this);
 
 	mFont = mGame->GetFont("Assets/Carlito-Regular.ttf");
-	mButtonOn = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonYellow.png");
-	mButtonOff = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonBlue.png");
+	mButtonOn = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonSelect.png");
+	mButtonOff = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/ButtonDefault.png");
 	mCursor = mGame->GetRenderer()->GetTexture("Assets/Textures/UI/Cursor.png");
 }
 
@@ -239,7 +239,7 @@ void Button::SetName(const std::string& name)
 		delete mNameTex;
 		mNameTex = nullptr;
 	}
-	mNameTex = mFont->RenderText(mName);
+	mNameTex = mFont->RenderText(mName, Color::Black);
 }
 
 bool Button::ContainsPoint(const Vector2& pt) const

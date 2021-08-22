@@ -24,7 +24,7 @@ Player::Player(Game* game)
 	SetScale(80.0f);
 	SetPosition(GetPosition());
 
-	// メッシュの生成
+	// メッシュ、スケルトンの取得
 	mMeshComp->SetMesh(game->GetRenderer()->GetMesh(PLAYER_FILEPATH));
 	mMeshComp->SetSkeleton(game->GetSkeleton(PLAYER_FILEPATH));
 	GetGame()->GetRenderer()->GetMesh(PLAYERBULLET_FILEPATH);

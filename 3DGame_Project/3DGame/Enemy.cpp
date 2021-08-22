@@ -27,7 +27,7 @@ Enemy::Enemy(Game* game)
 	// コンポーネントの生成
 	mMoveComp = new MoveComponent(this);
 
-	// メッシュの生成
+	// メッシュ、スケルトンの取得
 	mMeshComp->SetMesh(game->GetRenderer()->GetMesh(ENEMY_FILEPATH));
 	mMeshComp->SetSkeleton(game->GetSkeleton(ENEMY_FILEPATH));
 	game->GetRenderer()->GetMesh(ENEMYBULLET_FILEPATH);

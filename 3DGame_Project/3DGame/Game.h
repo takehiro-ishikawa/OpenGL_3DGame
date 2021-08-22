@@ -43,9 +43,6 @@ public:
 
 	void PushUI(UIScreen* screen); // 指定のUIScreenをスタックにプッシュする
 
-	void AddPlane(PlaneActor* plane);
-	void RemovePlane(PlaneActor* plane);
-
 	// ゲームの状態
 	enum class GameState
 	{
@@ -73,7 +70,6 @@ public:
 
 	Player* GetPlayer() { return mPlayer; }
 	void SetPlayer(Player* tpsActor) { mPlayer = tpsActor; }
-	std::vector<PlaneActor*>& GetPlanes() { return mPlanes; }
 	float GetFrameRate() { return mFrameRate; }
 
 private:
@@ -112,7 +108,6 @@ private:
 	int mWaitTime;        // ゲームの更新を待つ時間(ミリ秒)
 	float mFrameRate;     // 現在のフレームレート
 
-	// ゲーム固有のコード
+	
 	Player* mPlayer; // 操作するプレイヤー
-	std::vector<PlaneActor*> mPlanes;
 };
