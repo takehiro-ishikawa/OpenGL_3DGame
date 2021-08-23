@@ -1,4 +1,4 @@
-#include "GBuffer.h"
+#include "Renderer.h"
 #include <GL/glew.h>
 #include "Texture.h"
 

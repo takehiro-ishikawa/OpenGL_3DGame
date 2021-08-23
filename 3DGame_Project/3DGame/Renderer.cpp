@@ -3,14 +3,11 @@
 #include "Mesh.h"
 #include <algorithm>
 #include "Shader.h"
-#include "VertexArray.h"
 #include "SpriteComponent.h"
-#include "MeshComponent.h"
 #include "UIScreen.h"
 #include "Game.h"
 #include <GL/glew.h>
-#include "SkeletalMeshComponent.h"
-#include "GBuffer.h"
+#include "SkeletalAnimation.h"
 #include "PointLightComponent.h"
 
 Renderer::Renderer(Game* game)
@@ -402,15 +399,13 @@ void Renderer::DrawFromGBuffer()
 	// 矩形のための三角形を描画
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-	// Gバッファの深度バッファの内容を
-	// デフォルトのフレームバッファにコピー
+	// Gバッファが持つ深度バッファの内容をデフォルトのフレームバッファにコピー
 	glBindFramebuffer(GL_READ_FRAMEBUFFER, mGBuffer->GetBufferID());
 	int width = static_cast<int>(mScreenWidth);
 	int height = static_cast<int>(mScreenHeight);
 	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 
-	// 深度テストを有効にするが、
-	// 深度バッファへの書き込みは無効にする
+	// 深度テストを有効にするが、深度バッファへの書き込みは無効にする
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(GL_FALSE);
 

@@ -1,6 +1,5 @@
 #include "StateMachine.h"
 #include "Actor.h"
-#include "AIState.h"
 #include <SDL/SDL_log.h>
 
 StateMachine::StateMachine()

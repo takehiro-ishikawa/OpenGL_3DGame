@@ -1,7 +1,7 @@
 #pragma once
 #include "Character.h"
 #include "StateMachine.h"
-#include "SoundEvent.h"
+#include "Audio.h"
 #include "PlayerParameters.h"
 
 #pragma region プロトタイプ宣言

@@ -1,10 +1,7 @@
 #pragma once
 #include <fbxsdk.h>
-#include "Math.h"
-#include <vector>
 #include <iostream>
-#include "Animation.h"
-#include "string"
+#include "SkeletalAnimation.h"
 
 // プロトタイプ宣言
 class BoneTransform;

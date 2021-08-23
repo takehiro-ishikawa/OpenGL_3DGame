@@ -1,4 +1,4 @@
-#include "TPSCamera.h"
+#include "CameraComponent.h"
 #include "PlayerParameters.h"
 #include "Actor.h"
 #include "Game.h"

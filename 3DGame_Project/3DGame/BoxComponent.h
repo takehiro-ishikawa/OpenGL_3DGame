@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Collision.h"
+#include "PhysWorld.h"
 
 // プロトタイプ宣言
 class Actor;

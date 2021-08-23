@@ -1,6 +1,6 @@
-#include "DialogBox.h"
+#include "Menu.h"
 #include "Game.h"
-#include "AudioSystem.h"
+#include "Audio.h"
 #include "Renderer.h"
 #include <SDL/SDL.h>
 

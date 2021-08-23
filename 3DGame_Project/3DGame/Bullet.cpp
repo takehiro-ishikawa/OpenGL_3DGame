@@ -1,10 +1,8 @@
 #include "Bullet.h"
 #include "Game.h"
 #include "Renderer.h"
-#include "MeshComponent.h"
 #include "Mesh.h"
-#include "BulletMove.h"
-#include "AudioComponent.h"
+#include "Audio.h"
 #include "PointLightComponent.h"
 
 Bullet::Bullet(Game* game, Actor* bulletOwner, CharacterTag target, float damage)

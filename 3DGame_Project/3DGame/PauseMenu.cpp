@@ -1,10 +1,9 @@
-#include "PauseMenu.h"
+#include "Menu.h"
 #include "Game.h"
-#include "DialogBox.h"
 #include <SDL/SDL.h>
 #include "InputSystem.h"
-#include "AudioSystem.h"
-#include "StartScene.h"
+#include "Audio.h"
+#include "Scene.h"
 
 PauseMenu::PauseMenu(Game* game)
 	:UIScreen(game)

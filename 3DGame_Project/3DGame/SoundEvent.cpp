@@ -1,5 +1,4 @@
-#include "SoundEvent.h"
-#include "AudioSystem.h"
+#include "Audio.h"
 #include <fmod_studio.hpp>
 
 SoundEvent::SoundEvent(class AudioSystem* system, unsigned int id)

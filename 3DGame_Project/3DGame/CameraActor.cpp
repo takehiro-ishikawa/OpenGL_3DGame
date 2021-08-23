@@ -1,5 +1,5 @@
 #include "CameraActor.h"
-#include "PointCamera.h"
+#include "CameraComponent.h"
 
 CameraActor::CameraActor(Game* game)
 :Actor(game)

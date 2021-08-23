@@ -1,14 +1,15 @@
-#include "PlayerState.h"
+#include "StateMachine.h"
 #include "Player.h"
+#include "PlayerParameters.h"
 #include "Game.h"
 #include "Renderer.h"
 #include "Character.h"
 #include "InputSystem.h"
-#include "SkeletalMeshComponent.h"
-#include "TPSCamera.h"
+#include "SkeletalAnimation.h"
+#include "CameraComponent.h"
 #include "PlayerMove.h"
-#include "AudioComponent.h"
-#include "ResultMenu.h"
+#include "Audio.h"
+#include "Menu.h"
 
 
 PlayerState::PlayerState(Character* owner)

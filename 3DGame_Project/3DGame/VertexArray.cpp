@@ -1,4 +1,4 @@
-#include "VertexArray.h"
+#include "Mesh.h"
 #include <GL/glew.h>
 #include <iostream>
 

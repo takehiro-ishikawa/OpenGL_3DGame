@@ -1,7 +1,7 @@
 #pragma once
 #include <unordered_map>
 #include <string>
-#include "SoundEvent.h"
+#include "Component.h"
 #include "Math.h"
 
 // サウンドの呼び出し名
@@ -23,6 +23,7 @@
 
 #pragma region プロトタイプ宣言
 class Game;
+class Actor;
 class SoundEvent;
 #pragma endregion
 
@@ -93,4 +94,67 @@ private:
 
 	// イベントインスタンスへの連想配列
 	std::unordered_map<unsigned int, FMOD::Studio::EventInstance*> mEventInstances;
+};
+
+
+// ゲーム中で鳴らされる１つのサウンド
+class SoundEvent
+{
+public:
+	SoundEvent();
+
+	// 対応する FMOD イベントインスタンスが存在したら true を返す
+	bool IsValid();
+
+	// イベントをリスタートする
+	void Restart();
+
+	// イベントをストップする
+	void Stop(bool allowFadeOut = true);
+
+	// セッター/ゲッター
+	bool  GetPaused() const;
+	void  SetPaused(bool pause);
+
+	float GetVolume() const;
+	void  SetVolume(float value);
+
+	float GetPitch() const;
+	void  SetPitch(float value);
+
+	float GetParameter(const std::string& name);
+	void  SetParameter(const std::string& name, float value);
+
+	// 位置関連
+	bool Is3D() const; // イベントが3Dならtrueを返し、そうでなければfalse
+	void Set3DAttributes(const Matrix4& worldTrans);
+
+protected:
+	// このコンストラクターを保護し、AudioSystemをフレンドにする
+	// AudioSystemだけがこのコンストラクターにアクセスできるようにする。
+	friend AudioSystem;
+	SoundEvent(AudioSystem* system, unsigned int id);
+
+private:
+	AudioSystem* mSystem;
+	unsigned int mID;
+};
+
+
+// サウンドを鳴らすコンポーネント
+class AudioComponent : public Component
+{
+public:
+	AudioComponent(Actor* owner, int updateOrder = 200);
+	~AudioComponent();
+
+	void Update(float deltaTime) override;
+	void OnUpdateWorldTransform() override;
+
+	SoundEvent PlayEvent(const std::string& name);
+	void StopAllEvents();
+
+private:
+	std::vector<SoundEvent> mEvents2D;
+	std::vector<SoundEvent> mEvents3D;
 };

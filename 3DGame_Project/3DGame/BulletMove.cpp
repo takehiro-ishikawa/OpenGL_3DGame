@@ -1,6 +1,4 @@
-#include "BulletMove.h"
-#include "Actor.h"
-#include "Character.h"
+#include "Bullet.h"
 #include "Game.h"
 #include "PhysWorld.h"
 #include "Bullet.h"

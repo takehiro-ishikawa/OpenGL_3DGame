@@ -1,9 +1,4 @@
-#include "Skeleton.h"
-#include <fstream>
-#include <sstream>
-#include <rapidjson/document.h>
-#include <SDL/SDL_log.h>
-#include "MatrixPalette.h"
+#include "SkeletalAnimation.h"
 #include "FBXData.h"
 
 bool Skeleton::Load(FBXData* fbxFile)

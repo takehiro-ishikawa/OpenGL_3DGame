@@ -1,4 +1,4 @@
-#include "PointCamera.h"
+#include "CameraComponent.h"
 #include "Actor.h"
 
 PointCamera::PointCamera(Actor* owner)

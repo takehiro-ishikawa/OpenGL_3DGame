@@ -1,7 +1,7 @@
 #pragma once
 #include "Character.h"
 #include "StateMachine.h"
-#include "SoundEvent.h"
+#include "Audio.h"
 
 #pragma region プロトタイプ宣言
 class Game;
@@ -36,7 +36,7 @@ class MoveComponent;
 #define ENEMY_ROTATE_SPEED     10.0f // 回転速度の係数
 #define ENEMY_MAX_ROTATE_SPEED  2.0f // 最大回転速度
 #define ENEMY_VISIBLE_ANGLE    45.0f // 視野角
-#define ENEMY_VISIBLE_RANGE  3000.0f // 視線の届く距離
+#define ENEMY_VISIBLE_RANGE  2500.0f // 視線の届く距離
 #define ENEMY_ATTACK_RANGE   1000.0f // 攻撃を開始する距離
 
 class Enemy : public Character, public StateMachine

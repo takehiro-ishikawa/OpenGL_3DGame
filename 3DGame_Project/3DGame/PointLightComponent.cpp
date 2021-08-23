@@ -3,7 +3,6 @@
 #include "Game.h"
 #include "Renderer.h"
 #include "Mesh.h"
-#include "VertexArray.h"
 #include "Actor.h"
 
 PointLightComponent::PointLightComponent(Actor* owner)

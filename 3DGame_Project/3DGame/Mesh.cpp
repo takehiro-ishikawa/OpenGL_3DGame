@@ -1,11 +1,6 @@
 #include "Mesh.h"
 #include "Renderer.h"
 #include "Texture.h"
-#include "VertexArray.h"
-#include <fstream>
-#include <sstream>
-#include <rapidjson/document.h>
-#include <SDL/SDL_log.h>
 #include "Math.h"
 #include <fbxsdk.h>
 #include "FBXData.h"

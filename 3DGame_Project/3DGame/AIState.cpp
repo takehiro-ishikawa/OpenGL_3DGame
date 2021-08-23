@@ -1,13 +1,12 @@
-#include "AIState.h"
 #include "StateMachine.h"
 #include <SDL/SDL_log.h>
 #include "Game.h"
 #include "Actor.h"
 #include "Enemy.h"
 #include "Player.h"
-#include "SkeletalMeshComponent.h"
+#include "SkeletalAnimation.h"
 #include "MoveComponent.h"
-#include "AudioComponent.h"
+#include "Audio.h"
 #include <iostream>
 
 AIState::AIState(Character* owner)

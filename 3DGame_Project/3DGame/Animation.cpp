@@ -1,9 +1,4 @@
-#include "Animation.h"
-#include "Skeleton.h"
-#include <fstream>
-#include <sstream>
-#include <rapidjson/document.h>
-#include <SDL/SDL_log.h>
+#include "SkeletalAnimation.h"
 #include "FBXData.h"
 
 bool Animation::Load(FBXData* fbxFile, const std::string& animationName)

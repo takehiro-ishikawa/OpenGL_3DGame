@@ -2,7 +2,7 @@
 #include "Actor.h"
 #include "Renderer.h"
 #include "Game.h"
-#include "AudioSystem.h"
+#include "Audio.h"
 
 CameraComponent::CameraComponent(Actor* owner, int updateOrder)
 	:Component(owner, updateOrder)

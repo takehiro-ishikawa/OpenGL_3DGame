@@ -1,18 +1,16 @@
-#include "GameScene.h"
+#include "Scene.h"
 #include "Game.h"
-#include "AudioSystem.h"
+#include "Audio.h"
 #include "Actor.h"
 #include "Player.h"
-#include "MeshComponent.h"
-#include "PlaneActor.h"
-#include "Room.h"
+#include "Mesh.h"
+#include "Field.h"
 #include "Renderer.h"
 #include "SpriteComponent.h"
 #include "HUD.h"
 #include "InputSystem.h"
-#include "PauseMenu.h"
+#include "Menu.h"
 #include "Enemy.h"
-#include "Container.h"
 
 GameScene::GameScene(Game* game)
 	:BaseScene(game)

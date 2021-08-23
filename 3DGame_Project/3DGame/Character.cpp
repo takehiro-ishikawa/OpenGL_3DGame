@@ -1,10 +1,10 @@
 #include "Character.h"
 #include "Game.h"
 #include "PhysWorld.h"
-#include "SkeletalMeshComponent.h"
+#include "SkeletalAnimation.h"
 #include "BoxComponent.h"
-#include "AudioComponent.h"
-#include "PlaneActor.h"
+#include "Audio.h"
+#include "Field.h"
 
 
 Character::Character(Game* game)
