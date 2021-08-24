@@ -32,6 +32,7 @@ bool Font::Load(const std::string& fileName)
 	for (auto& size : fontSizes)
 	{
 		TTF_Font* font = TTF_OpenFont(fileName.c_str(), size);
+		
 		if (font == nullptr)
 		{
 			SDL_Log("フォント％sサイズ％dのロードに失敗しました", fileName.c_str(), size);
@@ -70,7 +71,9 @@ Texture* Font::RenderText(const std::string& text,
 		TTF_Font* font = iter->second;
 		
 		// SDL_Surfaceに描画（アルファブレンディングする）
-		SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), sdlColor);
+		//SDL_Surface* surf = TTF_RenderText_Blended(font, text.c_str(), sdlColor);
+		SDL_Surface* surf = TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor);
+		
 		if (surf != nullptr)
 		{
 			// SDL_Surface からテクスチャに変換する

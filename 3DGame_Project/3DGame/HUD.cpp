@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "PhysWorld.h"
 #include "Player.h"
+#include "Font.h"
 #include <algorithm>
 
 HUD::HUD(Game* game)
@@ -35,6 +36,9 @@ void HUD::Draw(Shader* shader)
 	// ‘Ì—ÍƒQ[ƒW
 	DrawHealthBar(shader);
 
+	// FPS
+	DrawFrameRate(shader);
+
 	// ”wŒi‚Æ‘€ìƒKƒCƒh
 	DrawTexture(shader, mBack, Vector2(0.0f, -359.0f));
 	DrawTexture(shader, mBack, Vector2(0.0f, 359.0f));
@@ -42,6 +46,7 @@ void HUD::Draw(Shader* shader)
 	DrawTexture(shader, mGuideController, Vector2(0.0f, 359.0f));
 }
 
+// ‘Ì—ÍƒQ[ƒW‚ð•`‰æ‚·‚é
 void HUD::DrawHealthBar(Shader* shader)
 {
 	Vector2 pos = HEALTH_POSITION;
@@ -54,4 +59,13 @@ void HUD::DrawHealthBar(Shader* shader)
 	float posX = Math::Lerp(pos.x, pos.x + mHealthBarEmpty->GetWidth() / 2, mNormalizeHealth);
 	float width = Math::Lerp(1, 0, mNormalizeHealth);
 	DrawTexture(shader, mHealthBarEmpty, Vector2(posX, pos.y), Vector2(width, 1));
+}
+
+// Œ»Ý‚ÌFPS‚ð•`‰æ‚·‚é
+void HUD::DrawFrameRate(Shader* shader)
+{
+	int n = mGame->GetFrameRate();
+	std::string s = "FPS:" + std::to_string(n);
+	mFrameRate = mFont->RenderText(s, Color::Black, FPS_FONT_SIZE);
+	DrawTexture(shader, mFrameRate, Vector2(FPS_POSITION));
 }

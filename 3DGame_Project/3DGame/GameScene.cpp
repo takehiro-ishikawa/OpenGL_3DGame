@@ -38,6 +38,12 @@ void GameScene::LoadSceneData()
 	Actor* a;
 	Quaternion q;
 
+	// 部屋の生成
+	for (int i = 0; i < 10; i++)
+	{
+		new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
+	}
+
 	// コンテナの生成
 	a = new Container(mGame);
 	a->SetPosition(Vector3(750, -750, 0));
@@ -57,9 +63,6 @@ void GameScene::LoadSceneData()
 	a->SetPosition(Vector3(-1500, -1500, 0));
 	a = new Enemy(mGame);
 	a->SetPosition(Vector3(-1500, 1500, 0));
-
-	// 部屋の生成
-	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
 
 	// 平行光源の設定
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

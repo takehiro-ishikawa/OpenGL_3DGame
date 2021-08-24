@@ -1,4 +1,4 @@
-#include "BaseScene.h"
+#include "Scene.h"
 #include "Game.h"
 
 BaseScene::BaseScene(Game* game)

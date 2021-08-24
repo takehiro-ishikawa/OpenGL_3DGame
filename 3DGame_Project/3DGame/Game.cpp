@@ -1,27 +1,22 @@
 #include "Game.h"
-#include <algorithm>
-#include <iostream>
 #include "Renderer.h"
 #include "Audio.h"
 #include "PhysWorld.h"
-#include "Actor.h"
-#include "SpriteComponent.h"
-#include "Mesh.h"
-#include "Field.h"
-#include "Player.h"
-#include <SDL/SDL_ttf.h>
-#include "UIScreen.h"
-#include "Menu.h"
-#include "HUD.h"
-#include "Font.h"
-#include <fstream>
-#include <sstream>
-#include "SkeletalAnimation.h"
-#include "PointLightComponent.h"
 #include "InputSystem.h"
 #include "Scene.h"
+#include "Actor.h"
+#include <iostream>
 #include "FBXData.h"
-#include <iomanip>
+#include "Mesh.h"
+#include "SkeletalAnimation.h"
+#include "Field.h"
+#include "Menu.h"
+#include "Player.h"
+#include "Font.h"
+#include <SDL/SDL_ttf.h>
+#include "HUD.h"
+#include "PointLightComponent.h"
+#include "SpriteComponent.h"
 
 Game::Game()
 	:mRenderer(nullptr)
@@ -30,7 +25,7 @@ Game::Game()
 	, mGameState(GameState::EPaused)
 	, mUpdatingActors(false)
 	, mCurrentScene(nullptr)
-	, mWaitTime(16.0f)
+	, mWaitTime(0.0f)
 {
 	
 }
@@ -193,7 +188,6 @@ void Game::UpdateGame()
 
 	// デルタタイムを計算
 	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
-
 	// フレームレートを計測
 	mFrameRate = 1 / deltaTime;
 
@@ -205,13 +199,16 @@ void Game::UpdateGame()
 
 	if (mGameState == GameState::EGameplay)
 	{
+		int num = 0;
 		// 全てのアクターを更新する
 		mUpdatingActors = true;
 		for (auto actor : mActors)
 		{
+			num++;
 			actor->Update(deltaTime);
 		}
 		mUpdatingActors = false;
+		std::cout << "更新数 = " << num << std::endl;
 
 		// 保留中のアクターをmActorsに移動します
 		for (auto pending : mPendingActors)

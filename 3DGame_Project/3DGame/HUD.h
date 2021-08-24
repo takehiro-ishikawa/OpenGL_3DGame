@@ -3,6 +3,8 @@
 #include <vector>
 
 #define HEALTH_POSITION Vector2(-350.0f, -300.0f)
+#define FPS_POSITION Vector2(-470.0f, 320.0f)
+#define FPS_FONT_SIZE 24
 
 #pragma region プロトタイプ宣言
 class Game;
@@ -31,8 +33,9 @@ public:
 	void SetNormalizeHealth(float value) { mNormalizeHealth = value; }
 
 protected:
-	// 体力ゲージ関連
 	void DrawHealthBar(Shader* shader); // 体力ゲージを描画する
+	void DrawFrameRate(Shader* shader); // 現在のFPSを描画する
+
 	float mNormalizeHealth;             // 正規化された体力の値
 	Texture* mHealthBarBack;            // 体力ゲージの背景
 	Texture* mHealthBar;                // 体力ゲージ本体
@@ -41,4 +44,5 @@ protected:
 	Texture* mBack;            // 背景
 	Texture* mGuideKeyBoard;   // キーボード操作ガイド
 	Texture* mGuideController; // コントローラ操作ガイド
+	Texture* mFrameRate;
 };

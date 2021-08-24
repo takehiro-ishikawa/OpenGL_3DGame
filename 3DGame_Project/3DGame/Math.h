@@ -34,6 +34,16 @@ namespace Math
 		}
 	}
 
+	// ¬”“_nˆÈ‰º‚ÅlÌŒÜ“ü‚·‚é
+	inline float Round_n(float number, double n)
+	{
+		number = number * pow(10, n - 1);
+		number = round(number);
+		number /= pow(10, n - 1);
+
+		return number;
+	}
+
 	template <typename T>
 	T Max(const T& a, const T& b)
 	{
