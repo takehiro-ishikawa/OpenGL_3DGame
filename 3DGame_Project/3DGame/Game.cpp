@@ -199,16 +199,13 @@ void Game::UpdateGame()
 
 	if (mGameState == GameState::EGameplay)
 	{
-		int num = 0;
 		// 全てのアクターを更新する
 		mUpdatingActors = true;
 		for (auto actor : mActors)
 		{
-			num++;
 			actor->Update(deltaTime);
 		}
 		mUpdatingActors = false;
-		std::cout << "更新数 = " << num << std::endl;
 
 		// 保留中のアクターをmActorsに移動します
 		for (auto pending : mPendingActors)

@@ -39,10 +39,7 @@ void GameScene::LoadSceneData()
 	Quaternion q;
 
 	// •”‰®‚Ì¶¬
-	for (int i = 0; i < 10; i++)
-	{
-		new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
-	}
+	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
 
 	// ƒRƒ“ƒeƒi‚Ì¶¬
 	a = new Container(mGame);
