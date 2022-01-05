@@ -13,6 +13,7 @@ int main(int argc, char** argv)
 	{
 		game.RunLoop();
 	}
+
 	game.Shutdown();
 
 	return 0;

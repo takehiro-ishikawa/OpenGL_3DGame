@@ -121,9 +121,10 @@ private:
 	// スプライトの頂点配列
 	VertexArray* mSpriteVerts; 
 
-	Shader* mSpriteShader;  // スプライトのシェーダー
-	Shader* mMeshShader;    // メッシュのシェーダー
-	Shader* mSkinnedShader; // スキンのシェーダー
+	// 使用するシェーダー
+	Shader* mSpriteShader;  // 画像用
+	Shader* mMeshShader;    // メッシュ用
+	Shader* mSkinnedShader; // スキン用
 
 	// ビュー/射影 3Dシェーダー用
 	Matrix4 mView;       // ビュー行列

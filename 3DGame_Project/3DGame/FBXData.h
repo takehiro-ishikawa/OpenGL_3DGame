@@ -74,7 +74,6 @@ private:
 
 	// FBXSDKŠÖ˜A
 	FbxManager* mManager;
-	FbxIOSettings* mIoSettings;
 	FbxImporter* mImporter;
 	FbxScene* mScene;
 

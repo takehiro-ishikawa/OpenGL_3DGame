@@ -32,9 +32,8 @@ private:
 	// 頂点/フラグメントプログラムがリンクするかどうかをテストする
 	bool IsValidProgram();
 
-	// シェーダーオブジェクトIDを保存します
+	// シェーダーオブジェクトIDを保存する
 	GLuint mVertexShader;
 	GLuint mFragShader;
 	GLuint mShaderProgram;
 };
-

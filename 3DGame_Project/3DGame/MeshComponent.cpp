@@ -25,8 +25,7 @@ void MeshComponent::Draw(Shader* shader)
 	if (mMesh)
 	{
 		// ワールド座標を設定する
-		shader->SetMatrixUniform("uWorldTransform",
-			mOwner->GetWorldTransform());
+		shader->SetMatrixUniform("uWorldTransform", mOwner->GetWorldTransform());
 
 		// 鏡面反射値を設定する
 		shader->SetFloatUniform("uSpecPower", mMesh->GetSpecPower());

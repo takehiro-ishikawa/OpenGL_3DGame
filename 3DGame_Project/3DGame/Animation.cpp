@@ -52,6 +52,10 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const Skelet
 		//	localMat = interp.ToMatrix();
 		//}
 
+		// ä‘à·Ç¢
 		outPoses[bone] = mTracks[bone][frame].mMatrix;
+		// Å´èCê≥î≈
+		//const auto& boneTransforms = mTracks[bone];
+		//outPoses[bone] = boneTransforms[frame % boneTransforms.size()].mMatrix;
 	}
 }

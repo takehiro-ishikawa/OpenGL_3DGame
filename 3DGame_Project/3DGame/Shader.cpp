@@ -20,17 +20,12 @@ Shader::~Shader()
 bool Shader::Load(const std::string& vertName, const std::string& fragName)
 {
 	// 頂点シェーダーとピクセルシェーダーをコンパイルします
-	if (!CompileShader(vertName,
-		GL_VERTEX_SHADER,
-		mVertexShader) ||
-		!CompileShader(fragName,
-			GL_FRAGMENT_SHADER,
-			mFragShader))
+	if (!CompileShader(vertName, GL_VERTEX_SHADER, mVertexShader) ||
+		!CompileShader(fragName, GL_FRAGMENT_SHADER, mFragShader))
 	{
 		return false;
 	}
 
-	// 次に、次のようなシェーダープログラムを作成する。
 	// 頂点/フラグメントシェーダーをリンクする
 	mShaderProgram = glCreateProgram();
 	glAttachShader(mShaderProgram, mVertexShader);
@@ -112,9 +107,7 @@ void Shader::SetIntUniform(const char* name, int value)
 	glUniform1i(loc, value);
 }
 
-bool Shader::CompileShader(const std::string& fileName,
-	GLenum shaderType,
-	GLuint& outShader)
+bool Shader::CompileShader(const std::string& fileName, GLenum shaderType, GLuint& outShader)
 {
 	// ファイルを開く
 	std::ifstream shaderFile(fileName);

@@ -12,7 +12,8 @@ FBXData::FBXData(const char* fileName)
 	mManager = FbxManager::Create();
 
 	// IOSettingを生成
-	mIoSettings = FbxIOSettings::Create(mManager, IOSROOT);
+	FbxIOSettings* ios = FbxIOSettings::Create(mManager, IOSROOT);
+	mManager->SetIOSettings(ios);
 
 	// Importerを生成
 	mImporter = FbxImporter::Create(mManager, "");
@@ -21,7 +22,7 @@ FBXData::FBXData(const char* fileName)
 		SDL_Log("FBX Failed:Importer");
 	}
 
-	// SceneオブジェクトにFBXファイル内の情報を流し込む
+	// Sceneを作成
 	mScene = FbxScene::Create(mManager, "");
 	mImporter->Import(mScene);
 	//mImporter->Destroy(); // シーンを流し込んだらImporterは解放してOK

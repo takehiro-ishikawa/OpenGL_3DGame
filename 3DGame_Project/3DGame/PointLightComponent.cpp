@@ -34,6 +34,5 @@ void PointLightComponent::Draw(Shader* shader, Mesh* mesh)
 	shader->SetFloatUniform("uPointLight.mOuterRadius", mOuterRadius);
 
 	// ‹…‚ð•`‰æ‚·‚é
-	glDrawElements(GL_TRIANGLES, mesh->GetVertexArray()->GetNumIndices(),
-		GL_UNSIGNED_INT, nullptr);
+	glDrawElements(GL_TRIANGLES, mesh->GetVertexArray()->GetNumIndices(), GL_UNSIGNED_INT, nullptr);
 }
