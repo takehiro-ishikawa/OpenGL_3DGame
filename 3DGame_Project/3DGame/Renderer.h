@@ -61,8 +61,8 @@ public:
 	Texture* GetTexture(const std::string& fileName); // テクスチャの取得
 	Mesh* GetMesh(const std::string& fileName);       // メッシュの取得
 
-	
-	void SetViewMatrix(const Matrix4& view) { mView = view; } // ビュー行列を設定する
+	// ビュー行列を設定する
+	void SetViewMatrix(const Matrix4& view) { mView = view; } 
 
 	void SetAmbientLight(const Vector3& ambient) { mAmbientLight = ambient; } // 環境光を設定する
 	DirectionalLight& GetDirectionalLight() { return mDirLight; }             // 平行光源を取得する
@@ -102,11 +102,10 @@ private:
 	void CreateSpriteVerts();
 	void SetLightUniforms(Shader* shader, const Matrix4& view);
 
-	// ロードされたテクスチャのマップ
-	std::unordered_map<std::string, Texture*> mTextures;
+	void InitInstanced();
 
-	// ロードされたメッシュのマップ
-	std::unordered_map<std::string, Mesh*> mMeshes;
+	std::unordered_map<std::string, Texture*> mTextures; // ロードされたテクスチャのマップ
+	std::unordered_map<std::string, Mesh*> mMeshes;      // ロードされたメッシュのマップ
 
 	// 描画する全てのスプライトコンポーネント
 	std::vector<SpriteComponent*> mSprites;
@@ -156,6 +155,11 @@ private:
 
 	// カーソル
 	Vector2 mCursorPosition;
+
+	// インスタンシング描画に使用するOpenGL ID
+	unsigned int mCubeVertices;
+	unsigned int mWorldMatrices;
+
 };
 
 

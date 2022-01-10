@@ -24,38 +24,12 @@ void Animation::GetGlobalPoseAtTime(std::vector<Matrix4>& outPoses, const Skelet
 	// frameとnextFrameの間の小数値を計算
 	float pct = inTime / mAnimInfo.FrameDuration - frame;
 
-	// ルートのポーズを設定する
-	// ルートはトラックを持っているか？
-	//if (mTracks[0].size() > 0)
-	//{
-	//	// 現在のフレームのポーズと次のフレームの間を補間する
-	//	BoneTransform interp = BoneTransform::Interpolate(mTracks[0][frame],
-	//		mTracks[0][nextFrame], pct);
-	//	outPoses[0] = interp.ToMatrix();
-	//}
-	//else
-	//{
-	//	outPoses[0] = Matrix4::Identity;
-	//}
-
-	// 　　　　　　　　　　↓元はBone構造体だった
 	const std::vector<BoneTransform>& bones = inSkeleton->GetBones();
 
 	// 他の全てのボーンのグローバルポーズ行列を計算する
 	for (size_t bone = 0; bone < mAnimInfo.NumBones; bone++)
 	{
-		//Matrix4 localMat; // (デフォルトでは単位行列)
-		//if (mTracks[bone].size() > 0)
-		//{
-		//	BoneTransform interp = BoneTransform::Interpolate(mTracks[bone][frame],
-		//		mTracks[bone][nextFrame], pct);
-		//	localMat = interp.ToMatrix();
-		//}
-
-		// 間違い
-		outPoses[bone] = mTracks[bone][frame].mMatrix;
-		// ↓修正版
-		//const auto& boneTransforms = mTracks[bone];
-		//outPoses[bone] = boneTransforms[frame % boneTransforms.size()].mMatrix;
+		const auto& boneTransforms = mTracks[bone];
+		outPoses[bone] = boneTransforms[frame % boneTransforms.size()].mMatrix;
 	}
 }

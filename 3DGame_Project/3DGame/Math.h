@@ -793,7 +793,7 @@ public:
 		{
 			{ Math::Cos(theta), 0.0f, -Math::Sin(theta), 0.0f },
 			{ 0.0f, 1.0f, 0.0f, 0.0f },
-			{ Math::Sin(theta), 0.0f, Math::Cos(theta), 0.0f },
+			{ Math::Sin(theta), 0.0f,  Math::Cos(theta), 0.0f },
 			{ 0.0f, 0.0f, 0.0f, 1.0f },
 		};
 		return Matrix4(temp);

@@ -12,6 +12,6 @@ Container::Container(Game* game)
 	mMeshComp = new MeshComponent(this, false);
 	mBoxComp = new BoxComponent(this);
 
-	mMeshComp->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Models/Box01.fbx"));
+	mMeshComp->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Models/Container.fbx"));
 	mBoxComp->SetObjectBox(mMeshComp->GetMesh()->GetBox());
 }

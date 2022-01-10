@@ -40,14 +40,10 @@ private:
 	// インデックスバッファ内のインデックスの数
 	unsigned int mNumIndices;
 
-	// 頂点バッファのOpenGL ID
-	unsigned int mVertexBuffer;
-
-	// インデックスバッファのOpenGL ID
-	unsigned int mIndexBuffer;
-
-	// 頂点配列オブジェクトのOpenGL ID
-	unsigned int mVertexArray;
+	// OpenGL ID
+	unsigned int mVertexBuffer; // 頂点バッファ
+	unsigned int mIndexBuffer;  // インデックスバッファ
+	unsigned int mVertexArray;  // 頂点配列オブジェクト
 };
 
 

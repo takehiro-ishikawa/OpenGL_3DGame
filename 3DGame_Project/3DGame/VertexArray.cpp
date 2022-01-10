@@ -19,7 +19,7 @@ VertexArray::VertexArray(const void* verts, unsigned int numVerts, Layout layout
 	glGenVertexArrays(1, &mVertexArray);
 	glBindVertexArray(mVertexArray);
 
-	unsigned vertexSize = 8 * sizeof(float);
+	unsigned int vertexSize = 8 * sizeof(float);
 	if (layout == Layout::PosNormSkinTex)
 	{
 		vertexSize = 8 * sizeof(float) + 8 * sizeof(uint8_t);
@@ -62,12 +62,12 @@ VertexArray::VertexArray(const void* verts, unsigned int numVerts, Layout layout
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, vertexSize,
 			reinterpret_cast<void*>(sizeof(float) * 3));
-
+		
 		// テクスチャ座標：2個のfloat
 		glEnableVertexAttribArray(4);
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, vertexSize,
 			reinterpret_cast<void*>(sizeof(float) * 6));
-		
+
 		// スキニングボーン：整数 0～255
 		glEnableVertexAttribArray(2);
 		glVertexAttribIPointer(3, 4, GL_UNSIGNED_BYTE, vertexSize,
@@ -90,4 +90,46 @@ VertexArray::~VertexArray()
 void VertexArray::SetActive()
 {
 	glBindVertexArray(mVertexArray);
+}
+
+void Test()
+{
+	//GLuint vbo[2]; // 0:CubeVertices, 1:WorldMatrix
+	//glGenBuffers(2, vbo);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(worldMatrices), worldMatrices, GL_DYNAMIC_DRAW);
+
+	//// locXX は頂点入力変数のロケーション番号が取得済みとする.
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+	//glVertexAttribPointer(locPosition, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), NULL);
+	//offset += sizeof(float) * 3;
+	//glVertexAttribPointer(locColor, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizoef(Vertex), NULL + offset);
+	//// ...
+	//glEnableVertexAttribArray(locPosition);
+	//glEnableVertexAttribArray(locColor);
+
+	//// 続いてワールド行列用のバッファに対してセット
+	//offset = 0;
+	//glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	//glVertexAttribPointer(locMat0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), NULL + offset);
+	//offset += sizeof(vec4);
+	//glVertexAttribPointer(locMat1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), NULL + offset);
+	//offset += sizeof(vec4);
+	//glVertexAttribPointer(locMat2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), NULL + offset);
+	//offset += sizeof(vec4);
+	//glVertexAttribPointer(locMat3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), NULL + offset);
+	//offset += sizeof(vec4);
+
+	//glEnableVertexAttribArray(locMat0);
+	//glEnableVertexAttribArray(locMat1);
+	//glEnableVertexAttribArray(locMat2);
+	//glEnableVertexAttribArray(locMat3);
+
+	//// インスタンス毎の更新間隔のセット
+	//glVertexAttribDivisor(locMat0, 1);
+	//glVertexAttribDivisor(locMat1, 1);
+	//glVertexAttribDivisor(locMat2, 1);
+	//glVertexAttribDivisor(locMat3, 1);
 }

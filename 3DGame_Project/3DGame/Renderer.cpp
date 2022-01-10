@@ -53,7 +53,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	// OpenGLにハードウェアアクセラレーションの使用を強制する
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-	mWindow = SDL_CreateWindow("3DGame_Study", 250, 40,
+	mWindow = SDL_CreateWindow("VoxelShooter", 250, 40,
 		static_cast<int>(mScreenWidth), static_cast<int>(mScreenHeight), SDL_WINDOW_OPENGL);
 	if (!mWindow)
 	{
@@ -98,6 +98,7 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 		return false;
 	}
 
+	// 点光源メッシュの作成
 	mPointLightMesh = GetMesh("Assets/Models/Sphere.fbx");
 
 	// ビューポート行列の設定
@@ -117,6 +118,9 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	mViewPort.mat[3][1] = SCREEN_HEIGHT / 2; 
 	mViewPort.mat[3][2] = 0; 
 	mViewPort.mat[3][3] = 1;
+
+	// インスタンシング描画の準備
+	InitInstanced();
 
 	return true;
 }
@@ -350,6 +354,7 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 	{
 		SetLightUniforms(mMeshShader, view);
 	}
+
 	for (auto mc : mMeshComps)
 	{
 		if (mc->GetVisible())
@@ -608,4 +613,9 @@ void Renderer::GetScreenDirection(Vector3& outStart, Vector3& outDir) const
 	// 方向ベクトルを定める
 	outDir = end - outStart;
 	outDir.Normalize();
+}
+
+void Renderer::InitInstanced()
+{
+
 }

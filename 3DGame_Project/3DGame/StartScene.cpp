@@ -26,7 +26,16 @@ void StartScene::LoadSceneData()
 	mPointCamera = new CameraActor(mGame);
 
 	// •”‰®‚Ì¶¬
-	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
+	//new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
+	Actor* actor;
+	actor = new Container(mGame);
+	actor->SetPosition(Vector3(2000, 400, -300));
+	actor = new Container(mGame);
+	actor->SetPosition(Vector3(2000, 1300, -300));
+	actor = new Container(mGame);
+	actor->SetPosition(Vector3(2000, -400, -300));
+	actor = new Container(mGame);
+	actor->SetPosition(Vector3(2000, -1300, -300));
 
 	// •½sŒõŒ¹‚ÌÝ’è
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

@@ -160,15 +160,16 @@ void FBXData::ComputeTextureName()
 
 void FBXData::ComputeIndexList()
 {
-	auto polygonCount = mFbxMesh->GetPolygonCount();
-
-	mIndices.reserve(polygonCount * 3);
+	int polygonCount = mFbxMesh->GetPolygonCount();
 
 	for (int i = 0; i < polygonCount; ++i)
 	{
-		mIndices.push_back(mFbxMesh->GetPolygonVertex(i, 0));
-		mIndices.push_back(mFbxMesh->GetPolygonVertex(i, 1));
-		mIndices.push_back(mFbxMesh->GetPolygonVertex(i, 2));
+		int polygonSize = mFbxMesh->GetPolygonSize(i);
+		for (int j = 0; j < polygonSize; ++j)
+		{
+			int index = mFbxMesh->GetPolygonVertex(i, j);
+			mIndices.push_back(index);
+		}
 	}
 }
 
@@ -177,24 +178,13 @@ void FBXData::ComputePositionList()
 	// コントロールポイントがいわゆる位置座標
 	mNumVertexCount = mFbxMesh->GetControlPointsCount();
 
-	mVertices.reserve(mNumVertexCount);
-	Vector3 tmp = Vector3(0, 0, 0);
+	// コントロールポイントがいわゆる位置座標
+	mNumVertexCount = mFbxMesh->GetControlPointsCount();
+	FbxVector4* ControlPoints = mFbxMesh->GetControlPoints();
+	
 	for (int i = 0; i < mNumVertexCount; i++)
 	{
-		mVertices.push_back(tmp);
-	}
-
-	int max = 0;
-	for (int i = 0; i < mIndices.size(); i++)
-	{
-		auto controlPoint = mFbxMesh->GetControlPointAt(mIndices[i]);
-
-		if (controlPoint[3] == 0.0f)
-		{
-			mVertices[mIndices[i]] = Vector3(controlPoint[0], controlPoint[2], controlPoint[1]);
-		}
-
-		if (max <= mIndices[i]) max = mIndices[i];
+		mVertices.emplace_back(Vector3(ControlPoints[i][0], ControlPoints[i][2], ControlPoints[i][1]));
 	}
 }
 
@@ -283,12 +273,9 @@ void FBXData::ComputeUVList(int uvNo)
 		return;
 	}
 
-	auto ele = mFbxMesh->GetElementVertexCrease();
 	auto element = mFbxMesh->GetElementUV(uvNo);
 	auto mappingMode = element->GetMappingMode();
 	auto referenceMode = element->GetReferenceMode();
-	const auto& indexArray = element->GetIndexArray();
-	const auto& directArray = element->GetDirectArray();
 	
 	// eDirctかeIndexDirectのみ対応
 	if ((referenceMode != FbxGeometryElement::eDirect) && (referenceMode != FbxGeometryElement::eIndexToDirect))
@@ -305,19 +292,18 @@ void FBXData::ComputeUVList(int uvNo)
 		{
 			auto uvIndex = (referenceMode == FbxGeometryElement::eDirect)
 				? index
-				: indexArray.GetAt(index);
-			auto uv = directArray.GetAt(uvIndex);
+				: element->GetIndexArray().GetAt(index);
+			auto uv = element->GetDirectArray().GetAt(uvIndex);
 			
 			mUVs[mIndices[index]] = Vector2(uv[0], uv[1]);
 		}
 	}
+	// UVが独自のインデックスバッファを持っているので複雑な処理になる
+	// UV情報の取得と同時に、頂点インデックスの中身をUV独自のインデックス配列とすり替える
 	else if (mappingMode == FbxGeometryElement::eByPolygonVertex)
 	{
-		// UVが独自のインデックスバッファを持っているので複雑な処理になる
-		// UV情報の取得と同時に、頂点インデックスの中身をUV独自のインデックス配列とすり替える
-
 		// mVerticesとmVertexBoneInfosのコピーを作る
-		mNumVertexCount = directArray.GetCount();
+		mNumVertexCount = element->GetDirectArray().GetCount();
 		vector<Vector3> tmpVertices(mVertices.size());
 		vector<VertexBoneInfo> tmpBoneInfo(mVertexBoneInfos.size());
 		tmpVertices = mVertices;
@@ -336,16 +322,17 @@ void FBXData::ComputeUVList(int uvNo)
 
 		// mVerticesとmVertexBoneInfosをUVインデックスの内容と合うように書き換える
 		mUVs.reserve(mNumVertexCount);
-		for (int i = 0; i < indexArray.GetCount(); i++)
+		for (int i = 0; i < element->GetIndexArray().GetCount(); i++)
 		{
-			mVertices[indexArray.GetAt(i)] = tmpVertices[mIndices[i]];
-			if(mIsSkeletal) mVertexBoneInfos[indexArray.GetAt(i)] = tmpBoneInfo[mIndices[i]];
+			int vertIndex = element->GetIndexArray().GetAt(i);
+			mVertices[vertIndex] = tmpVertices[mIndices[i]];
+			if(mIsSkeletal) mVertexBoneInfos[vertIndex] = tmpBoneInfo[mIndices[i]];
 			
-			auto uv = directArray.GetAt(indexArray.GetAt(i));
+			auto uv = element->GetDirectArray().GetAt(vertIndex);
 			
-			mUVs[indexArray.GetAt(i)] = Vector2(uv[0], uv[1]);
+			mUVs[vertIndex] = Vector2(uv[0], uv[1]);
 
-			mIndices[i] = indexArray.GetAt(i);
+			mIndices[i] = vertIndex;
 		}
 		mNumIndexCount = mIndices.size();
 	}
