@@ -6,15 +6,6 @@
 #include "FBXData.h"
 #include <iostream>
 
-namespace
-{
-	union Vertex
-	{
-		float f;
-		uint8_t b[4];
-	};
-}
-
 Mesh::Mesh()
 	:mBox(Vector3::Infinity, Vector3::NegInfinity)
 	, mVertexArray(nullptr)
@@ -119,11 +110,6 @@ bool Mesh::Load(FBXData* fbxFile, Renderer* renderer)
 		mBox.UpdateMinMax(positions[i]);
 	}
 	// ----------------------------------------------------------------------------
-
-	std::cout << "AABBのサイズ\n";
-	/*std::cout << "最小 x = " << mBox.mMin.x << " y = " << mBox.mMin.y << " z = " << mBox.mMin.z << std::endl;
-	std::cout << "最大 x = " << mBox.mMax.x << " y = " << mBox.mMax.y << " z = " << mBox.mMax.z << std::endl;*/
-	std::cout << "x = " << mBox.mMax.x - mBox.mMin.x << " y = " << mBox.mMax.y - mBox.mMin.y << " z = " << mBox.mMax.z - mBox.mMin.z << std::endl;
 
 	// 頂点配列を作成する
 	mVertexArray = new VertexArray(vertices.data(), static_cast<unsigned>(vertices.size()) / vertSize,

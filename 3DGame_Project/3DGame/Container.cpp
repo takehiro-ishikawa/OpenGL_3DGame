@@ -4,14 +4,15 @@
 #include "Mesh.h"
 #include "BoxComponent.h"
 
-Container::Container(Game* game)
+Container::Container(Game* game, Vector3 position, float scale)
 	:Actor(game)
 {
-	SetScale(100.0f);
+	SetPosition(position);
+	SetScale(scale);
 
-	mMeshComp = new MeshComponent(this, false);
+	ComputeWorldTransform();
+
+	GetGame()->GetRenderer()->GetCubeMesh()->AddInstance(GetWorldTransform());
+
 	mBoxComp = new BoxComponent(this);
-
-	mMeshComp->SetMesh(GetGame()->GetRenderer()->GetMesh("Assets/Models/Container.fbx"));
-	mBoxComp->SetObjectBox(mMeshComp->GetMesh()->GetBox());
 }

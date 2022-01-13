@@ -79,6 +79,9 @@
     <None Include="Shaders\GBufferPointLight.frag">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="Shaders\InstancedMesh.vert">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -239,6 +242,12 @@
     </ClCompile>
     <ClCompile Include="Container.cpp">
       <Filter>ソース ファイル\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedMeshComponent.cpp">
+      <Filter>ソース ファイル\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedMesh.cpp">
+      <Filter>ソース ファイル\Graphic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

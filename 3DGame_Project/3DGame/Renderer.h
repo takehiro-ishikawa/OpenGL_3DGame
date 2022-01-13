@@ -15,6 +15,7 @@ class SpriteComponent;
 class MeshComponent;
 class PointLightComponent;
 class SkeletalMeshComponent;
+class InstancedMesh;
 #pragma endregion
 
 // 平行光源用
@@ -90,6 +91,7 @@ public:
 	// 3D座標をスクリーン座標に変換する
 	Vector2 Convert3DtoScreenPos(const Vector3& WorldPos);
 
+	InstancedMesh* GetCubeMesh() { return mCubeMesh; }
 private:
 
 	// レンダリング処理のヘルパー関数
@@ -121,14 +123,14 @@ private:
 	VertexArray* mSpriteVerts; 
 
 	// 使用するシェーダー
-	Shader* mSpriteShader;  // 画像用
-	Shader* mMeshShader;    // メッシュ用
-	Shader* mSkinnedShader; // スキン用
+	Shader* mSpriteShader;        // 画像用
+	Shader* mMeshShader;          // メッシュ用
+	Shader* mSkinnedShader;       // スキン用
+	Shader* mInstancedMeshShader; // インスタンシング描画するメッシュ用
 
-	// ビュー/射影 3Dシェーダー用
+	// 3Dシェーダー用行列
 	Matrix4 mView;       // ビュー行列
 	Matrix4 mProjection; // 射影行列
-
 	Matrix4 mViewPort;   // ビューポート行列
 
 	// 照明データ
@@ -156,10 +158,7 @@ private:
 	// カーソル
 	Vector2 mCursorPosition;
 
-	// インスタンシング描画に使用するOpenGL ID
-	unsigned int mCubeVertices;
-	unsigned int mWorldMatrices;
-
+	InstancedMesh* mCubeMesh;
 };
 
 

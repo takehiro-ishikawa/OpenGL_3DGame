@@ -9,16 +9,19 @@
 #include <GL/glew.h>
 #include "SkeletalAnimation.h"
 #include "PointLightComponent.h"
+#include "FBXData.h"
 
 Renderer::Renderer(Game* game)
 	:mGame(game)
 	, mSpriteShader(nullptr)
 	, mMeshShader(nullptr)
 	, mSkinnedShader(nullptr)
+	, mInstancedMeshShader(nullptr)
 	, mGGlobalShader(nullptr)
 	, mGBuffer(nullptr)
 	, mGPointLightShader(nullptr)
 	, mCursorPosition(Vector2::Zero)
+	, mCubeMesh(new InstancedMesh())
 {
 }
 
@@ -140,6 +143,8 @@ void Renderer::Shutdown()
 	delete mMeshShader;
 	mSkinnedShader->Unload();
 	delete mSkinnedShader;
+	mInstancedMeshShader->Unload();
+	delete mInstancedMeshShader;
 	SDL_GL_DeleteContext(mContext);
 	SDL_DestroyWindow(mWindow);
 }
@@ -161,6 +166,9 @@ void Renderer::UnloadData()
 		delete i.second;
 	}
 	mMeshes.clear();
+
+	mCubeMesh->Unload();
+	delete mCubeMesh;
 }
 
 void Renderer::Draw()
@@ -337,7 +345,7 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 	);
 
 	// カラーバッファ/深度バッファをクリア
-	glClearColor(0.0f, 0.8f, 1.0f, 1.0f);
+	glClearColor(0.5f, 0.8f, 1.0f, 1.0f);
 	glDepthMask(GL_TRUE);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -349,11 +357,6 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 	mMeshShader->SetActive();
 	// ビュー射影行列を更新する
 	mMeshShader->SetMatrixUniform("uViewProj", view * proj);
-	// 照明のユニフォームを更新する
-	if (lit)
-	{
-		SetLightUniforms(mMeshShader, view);
-	}
 
 	for (auto mc : mMeshComps)
 	{
@@ -363,18 +366,18 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 		}
 	}
 
-	// スキンメッシュがあればここで描画する
-	mSkinnedShader->SetActive();
+	// インスタンシング描画のメッシュを描画
+	mInstancedMeshShader->SetActive();
+	// ビュー射影行列を更新
+	mInstancedMeshShader->SetMatrixUniform("uViewProj", view * proj);
 
+	mCubeMesh->Draw();
+
+	// 全てのスキンメッシュコンポーネントを描画
+	mSkinnedShader->SetActive();
 	// ビュー射影行列を更新
 	mSkinnedShader->SetMatrixUniform("uViewProj", view * proj);
-
-	// 照明のユニフォームを更新する
-	if (lit)
-	{
-		SetLightUniforms(mSkinnedShader, view);
-	}
-
+	
 	for (auto sk : mSkeletalMeshes)
 	{
 		if (sk->GetVisible())
@@ -478,11 +481,20 @@ bool Renderer::LoadShaders()
 	mSkinnedShader->SetActive();
 
 	// ビュー射影行列を設定する
-	mView = Matrix4::CreateLookAt(Vector3::Zero, Vector3::UnitX, Vector3::UnitZ);
-	mProjection = Matrix4::CreatePerspectiveFOV(Math::ToRadians(FIELD_OF_VIEW),
-		mScreenWidth, mScreenHeight, NEAR_PLANE, FAR_PLANE);
 	mSkinnedShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
+	/* -------- インスタンシング描画メッシュのシェーダーを作成する -------- */
+	mInstancedMeshShader = new Shader();
+	if (!mInstancedMeshShader->Load("Shaders/InstancedMesh.vert", "Shaders/GBufferWrite.frag"))
+	{
+		SDL_Log("Failed to load InstancedMeshShader.");
+		return false;
+	}
+
+	mInstancedMeshShader->SetActive();
+
+	// ビュー射影行列を設定する
+	mInstancedMeshShader->SetMatrixUniform("uViewProj", mView * mProjection);
 
 	/* -------- グローバルライティングシェーダーを作成する -------- */
 	mGGlobalShader = new Shader();
@@ -617,5 +629,5 @@ void Renderer::GetScreenDirection(Vector3& outStart, Vector3& outDir) const
 
 void Renderer::InitInstanced()
 {
-
+	mCubeMesh->Load(mGame->GetFBXData("Assets/Models/Container.fbx"), this);
 }

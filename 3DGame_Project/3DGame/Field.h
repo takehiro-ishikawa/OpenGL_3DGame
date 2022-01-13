@@ -39,9 +39,8 @@ private:
 class Container : public Actor
 {
 public:
-	Container(Game* game);
+	Container(Game* game, Vector3 position, float scale);
 
 private:
-	MeshComponent* mMeshComp;
 	BoxComponent* mBoxComp;
 };

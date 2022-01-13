@@ -191,6 +191,7 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
     <None Include="Shaders\GBufferGlobal.vert" />
     <None Include="Shaders\GBufferPointLight.frag" />
     <None Include="Shaders\GBufferWrite.frag" />
+    <None Include="Shaders\InstancedMesh.vert" />
     <None Include="Shaders\Phong.frag" />
     <None Include="Shaders\Phong.vert" />
     <None Include="Shaders\Sprite.frag" />
@@ -200,6 +201,8 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Container.cpp" />
+    <ClCompile Include="InstancedMesh.cpp" />
+    <ClCompile Include="InstancedMeshComponent.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="ResultMenu.cpp" />
     <ClCompile Include="Room.cpp" />
