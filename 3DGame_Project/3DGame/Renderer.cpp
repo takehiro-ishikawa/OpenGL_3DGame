@@ -21,7 +21,6 @@ Renderer::Renderer(Game* game)
 	, mGBuffer(nullptr)
 	, mGPointLightShader(nullptr)
 	, mCursorPosition(Vector2::Zero)
-	, mCubeMesh(new InstancedMesh())
 {
 }
 
@@ -122,9 +121,6 @@ bool Renderer::Initialize(float screenWidth, float screenHeight)
 	mViewPort.mat[3][2] = 0; 
 	mViewPort.mat[3][3] = 1;
 
-	// インスタンシング描画の準備
-	InitInstanced();
-
 	return true;
 }
 
@@ -167,8 +163,12 @@ void Renderer::UnloadData()
 	}
 	mMeshes.clear();
 
-	mCubeMesh->Unload();
-	delete mCubeMesh;
+	for (auto i : mInstancedData)
+	{
+		i.second->Unload();
+		delete i.second;
+	}
+	mInstancedData.clear();
 }
 
 void Renderer::Draw()
@@ -371,7 +371,10 @@ void Renderer::Draw3DScene(unsigned int framebuffer, const Matrix4& view, const 
 	// ビュー射影行列を更新
 	mInstancedMeshShader->SetMatrixUniform("uViewProj", view * proj);
 
-	mCubeMesh->Draw();
+	for (auto data : mInstancedData)
+	{
+		data.second->Draw(mInstancedMeshShader);
+	}
 
 	// 全てのスキンメッシュコンポーネントを描画
 	mSkinnedShader->SetActive();
@@ -627,7 +630,33 @@ void Renderer::GetScreenDirection(Vector3& outStart, Vector3& outDir) const
 	outDir.Normalize();
 }
 
-void Renderer::InitInstanced()
+InstancedData* Renderer::GetInstancedData(const std::string& fileName)
 {
-	mCubeMesh->Load(mGame->GetFBXData("Assets/Models/Container.fbx"), this);
+	InstancedData* data = nullptr;
+
+	// ロード済みか確認
+	auto iter = mInstancedData.find(fileName);
+	// ロード済み
+	if (iter != mInstancedData.end())
+	{
+		data = iter->second;
+	}
+	// 未ロード
+	else
+	{
+		data = new InstancedData();
+		Mesh* mesh = GetMesh(fileName);
+		if (mesh)
+		{
+			data->SetMesh(mesh);
+			mInstancedData.emplace(fileName, data);
+		}
+		else
+		{
+			delete mesh;
+			delete data;
+			data = nullptr;
+		}
+	}
+	return data;
 }

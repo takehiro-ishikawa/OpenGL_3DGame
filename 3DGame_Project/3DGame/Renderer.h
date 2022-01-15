@@ -15,7 +15,7 @@ class SpriteComponent;
 class MeshComponent;
 class PointLightComponent;
 class SkeletalMeshComponent;
-class InstancedMesh;
+class InstancedData;
 #pragma endregion
 
 // 平行光源用
@@ -88,10 +88,11 @@ public:
 	Vector2 GetCursorPosition() { return mCursorPosition; }
 	void SetCursorPosition(Vector2 position) { mCursorPosition = position; }
 
+	InstancedData* GetInstancedData(const std::string& fileName);
+
 	// 3D座標をスクリーン座標に変換する
 	Vector2 Convert3DtoScreenPos(const Vector3& WorldPos);
 
-	InstancedMesh* GetCubeMesh() { return mCubeMesh; }
 private:
 
 	// レンダリング処理のヘルパー関数
@@ -104,8 +105,6 @@ private:
 	void CreateSpriteVerts();
 	void SetLightUniforms(Shader* shader, const Matrix4& view);
 
-	void InitInstanced();
-
 	std::unordered_map<std::string, Texture*> mTextures; // ロードされたテクスチャのマップ
 	std::unordered_map<std::string, Mesh*> mMeshes;      // ロードされたメッシュのマップ
 
@@ -115,6 +114,9 @@ private:
 	// 描画する全てのメッシュコンポーネント
 	std::vector<MeshComponent*> mMeshComps;
 	std::vector<SkeletalMeshComponent*> mSkeletalMeshes;
+
+	// 描画する全てのインスタンシングメッシュデータ
+	std::unordered_map<std::string, InstancedData*> mInstancedData;
 
 	// Game
 	Game* mGame;
@@ -157,10 +159,7 @@ private:
 
 	// カーソル
 	Vector2 mCursorPosition;
-
-	InstancedMesh* mCubeMesh;
 };
-
 
 class GBuffer
 {

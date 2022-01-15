@@ -16,7 +16,7 @@ public:
 	void SetActive();
 
 	void SetMatrixUniform(const char* name, const Matrix4& matrix);             // Matrix‚Ìuniform‚ğİ’è‚·‚é
-	void SetMatrixUniforms(const char* name, Matrix4* matrices, unsigned count);// Matrix‚Ìuniform‚Ì”z—ñ‚ğİ’è‚·‚é	
+	void SetMatrixUniforms(const char* name, Matrix4* matrices, unsigned count);// Matrix‚Ìuniform”z—ñ‚ğİ’è‚·‚é
 	void SetVectorUniform(const char* name, const Vector3& vector);             // Vector3‚Ìuniform‚ğİ’è‚·‚é
 	void SetVector2Uniform(const char* name, const Vector2& vector);            // Vector3‚Ìuniform‚ğİ’è‚·‚é
 	void SetFloatUniform(const char* name, float value);                        // Float‚Ìuniform‚ğİ’è‚·‚é

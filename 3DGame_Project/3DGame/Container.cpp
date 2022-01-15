@@ -12,7 +12,6 @@ Container::Container(Game* game, Vector3 position, float scale)
 
 	ComputeWorldTransform();
 
-	GetGame()->GetRenderer()->GetCubeMesh()->AddInstance(GetWorldTransform());
-
+	mInstancedMeshComp = new InstancedMeshComponent(this, "Assets/Models/Container.fbx");
 	mBoxComp = new BoxComponent(this);
 }

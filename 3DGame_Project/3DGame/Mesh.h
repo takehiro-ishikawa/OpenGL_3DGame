@@ -26,8 +26,6 @@ public:
 
 	VertexArray(const void* verts, unsigned int numVerts, Layout layout,
 		const unsigned int* indices, unsigned int numIndices);
-	VertexArray(const void* verts, unsigned int numVerts, const unsigned int* indices, unsigned int numIndices,
-		const void* worldMatrices);
 	~VertexArray();
 
 	void SetActive();
@@ -45,9 +43,6 @@ private:
 	unsigned int mVertexBuffer;  // 頂点バッファ
 	unsigned int mIndexBuffer;   // インデックスバッファ
 	unsigned int mVertexArray;   // 頂点配列オブジェクト
-
-	// インスタンス毎のワールド変換行列用バッファ(インスタンシング描画を行う時のみ使用)
-	unsigned int mWorldMatricesID; 
 };
 
 namespace
@@ -130,47 +125,31 @@ protected:
 class InstancedMeshComponent : public Component
 {
 public:
-	InstancedMeshComponent(Actor* owner);
+	InstancedMeshComponent(Actor* owner, const std::string& fileName);
 	~InstancedMeshComponent();
 
 private:
 
 };
 
-struct WorldMatrix
-{
-	float mat0;
-	float mat1;
-	float mat2;
-	float mat3;
-	float mat4;
-	float mat5;
-	float mat6;
-	float mat7;
-	float mat8;
-	float mat9;
-	float mat10;
-	float mat11;
-	float mat12;
-	float mat13;
-	float mat14;
-	float mat15;
-};
+#define MAX_INSTANCE 10000    // インスタンシング描画するインスタンスの最大数
+#define MAX_UNIFORM_ARRAY 100 // シェーダーのユニフォーム配列の最大要素数
 
-class InstancedMesh : Mesh
+class InstancedData
 {
 public:
-	InstancedMesh();
-	~InstancedMesh();
+	InstancedData();
+	~InstancedData();
 
-	bool Load(FBXData* fbxFile, Renderer* renderer)override;
-	void Unload()override;
+	void Unload();
+
+	void SetMesh(Mesh* mesh) { mMesh = mesh; }
 
 	void AddInstance(const Matrix4& worldMat);
-
-	void Draw();
+	void Draw(Shader* shader);
 
 private:
 
-	std::vector<WorldMatrix> mWorldMatrices;
+	Mesh* mMesh;
+	std::vector<Matrix4> mWorldMatrices;
 };

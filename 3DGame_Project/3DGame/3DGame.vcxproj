@@ -201,7 +201,7 @@ xcopy "..\External\FMOD SoundSystem\FMOD Studio API Windows\api\studio\lib\*.dll
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Container.cpp" />
-    <ClCompile Include="InstancedMesh.cpp" />
+    <ClCompile Include="InstancedData.cpp" />
     <ClCompile Include="InstancedMeshComponent.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="ResultMenu.cpp" />

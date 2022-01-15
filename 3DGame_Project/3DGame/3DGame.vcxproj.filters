@@ -246,7 +246,7 @@
     <ClCompile Include="InstancedMeshComponent.cpp">
       <Filter>ソース ファイル\Component</Filter>
     </ClCompile>
-    <ClCompile Include="InstancedMesh.cpp">
+    <ClCompile Include="InstancedData.cpp">
       <Filter>ソース ファイル\Graphic</Filter>
     </ClCompile>
   </ItemGroup>

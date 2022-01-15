@@ -42,14 +42,14 @@ void GameScene::LoadSceneData()
 	new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
 
 	// “G‚Ì¶¬
-	a = new Enemy(mGame);
+	/*a = new Enemy(mGame);
 	a->SetPosition(Vector3(1500, -1500, 0));
 	a = new Enemy(mGame);
 	a->SetPosition(Vector3(1500, 1500, 0));
 	a = new Enemy(mGame);
 	a->SetPosition(Vector3(-1500, -1500, 0));
 	a = new Enemy(mGame);
-	a->SetPosition(Vector3(-1500, 1500, 0));
+	a->SetPosition(Vector3(-1500, 1500, 0));*/
 
 	// •½sŒõŒ¹‚ÌÝ’è
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

@@ -5,6 +5,7 @@
 class Game;
 class MeshComponent;
 class BoxComponent;
+class InstancedMeshComponent;
 
 #define PLANE_SIZE 500.0f // è∞ÇÃÉTÉCÉY
 
@@ -42,5 +43,6 @@ public:
 	Container(Game* game, Vector3 position, float scale);
 
 private:
+	InstancedMeshComponent* mInstancedMeshComp;
 	BoxComponent* mBoxComp;
 };
