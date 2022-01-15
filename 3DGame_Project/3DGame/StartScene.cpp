@@ -27,10 +27,7 @@ void StartScene::LoadSceneData()
 
 	// •”‰®‚Ì¶¬
 	//new Room(mGame, Vector3::Zero, Vector3(5000.0f, 5000.0f, 1500.0f));
-	new Container(mGame, Vector3(2000,   400, -300), 100.0f); // 2000, 400, -300
-	new Container(mGame, Vector3(2000,  1300, -300), 100.0f);
-	new Container(mGame, Vector3(2000,  -400, -300), 100.0f);
-	new Container(mGame, Vector3(2000, -1300, -300), 100.0f);
+	new Container(mGame, Vector3(0, 0, 0), 1.0f); // 2000, 400, -300
 
 	// •½sŒõŒ¹‚ÌÝ’è
 	mGame->GetRenderer()->SetAmbientLight(Vector3(0.4f, 0.4f, 0.4f));

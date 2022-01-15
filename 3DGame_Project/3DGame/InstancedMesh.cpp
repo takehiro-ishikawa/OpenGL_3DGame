@@ -120,7 +120,7 @@ void InstancedMesh::Draw()
 
 	mVertexArray->SetActive();
 
-	glDrawElementsInstanced(GL_TRIANGLE_STRIP, mVertexArray->GetNumIndices(), 
+	glDrawElementsInstanced(GL_TRIANGLES, mVertexArray->GetNumIndices(), 
 		GL_UNSIGNED_INT, nullptr, mWorldMatrices.size());
 
 	glBindVertexArray(0);
